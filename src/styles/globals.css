@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #0D1B2A;
+  --fg: #e6edf7;
+  --muted: rgba(230, 237, 247, 0.72);
+  --card: rgba(255, 255, 255, 0.04);
+  --border: rgba(255, 255, 255, 0.12);
+  --accent: #B87654;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+}
+
+::selection {
+  background: rgba(184, 118, 84, 0.35);
+}
+
+/* Wrap @apply in @layer to compile correctly */
+@layer base {
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-navy-800;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-copper/30 rounded;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-copper/50;
+  }
+  :focus-visible {
+    @apply outline-none ring-2 ring-copper ring-offset-2 ring-offset-navy-900;
+  }
+}
+
+/* Copper gradient utility */
+.copper-gradient {
+  background: linear-gradient(135deg, #B87654 0%, #E6B089 100%);
+}
+
+.copper-gradient-hover:hover {
+  background: linear-gradient(135deg, #E6B089 0%, #B87654 100%);
+}
