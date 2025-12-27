@@ -34,6 +34,9 @@ export const metadata: Metadata = {
     template: `%s | ${site.name}`
   },
   description: site.description,
+  icons: {
+    icon: '/favicon.jpg',
+  },
   openGraph: {
     title: site.title,
     description: site.description,
@@ -53,10 +56,22 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${orbitron.variable} ${jetbrains.variable}`}>
-      <body className="font-sans antialiased">
-        <Header />
-        <main className="mx-auto max-w-6xl px-4 py-10">{children}</main>
-        <Footer />
+      <body className="font-sans antialiased relative">
+        {/* Subtle background watermark */}
+        <div 
+          className="fixed inset-0 pointer-events-none z-0 opacity-[0.03]"
+          style={{
+            backgroundImage: 'url(/brand/cosmocrat-sigil.svg)',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center center',
+            backgroundSize: '50vmin',
+          }}
+        />
+        <div className="relative z-10">
+          <Header />
+          <main className="mx-auto max-w-6xl px-4 py-10">{children}</main>
+          <Footer />
+        </div>
       </body>
     </html>
   );
