@@ -68,9 +68,17 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Section 2: Problem (Slide 2) */}
+      {/* Section 2: Problem (Slide 2) - Graphic LEFT, Text RIGHT */}
       <section className="grid gap-10 lg:grid-cols-2 lg:items-center">
-        <div>
+        <div className="flex justify-center order-2 lg:order-1">
+          <img 
+            src="/slides/slide-2-graphic.svg" 
+            alt="" 
+            className="opacity-70 max-h-72 w-auto" 
+            loading="lazy" 
+          />
+        </div>
+        <div className="order-1 lg:order-2">
           <h2 className="text-3xl font-semibold font-heading">{problem.title}</h2>
           <div className="mt-4 space-y-3 text-[var(--muted)]">
             {problem.body.map((p) => (
@@ -78,32 +86,42 @@ export default function HomePage() {
             ))}
           </div>
         </div>
+      </section>
+
+      {/* Section 3: What Cosmocrat Is (Slide 3) - Text LEFT, Graphic RIGHT */}
+      <section className="grid gap-10 lg:grid-cols-2 lg:items-center">
+        <div>
+          <h2 className="text-3xl font-semibold font-heading">{whatItIs.title}</h2>
+          <ul className="mt-4 space-y-3 text-[var(--muted)]">
+            {whatItIs.bullets.map((b) => (
+              <li key={b} className="flex gap-3">
+                <span className="mt-2 h-1.5 w-1.5 rounded-full bg-copper shrink-0" />
+                <span>{b}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
         <div className="flex justify-center">
           <img 
-            src="/slides/slide-2-graphic.svg" 
+            src="/slides/slide-3-graphic.svg" 
             alt="" 
-            className="opacity-60 max-h-64 w-auto" 
+            className="opacity-60 max-h-72 w-auto" 
             loading="lazy" 
           />
         </div>
       </section>
 
-      {/* Section 3: What Cosmocrat Is (Slide 3) */}
-      <section className="rounded-2xl border border-[var(--border)] bg-[rgba(255,255,255,0.03)] p-8">
-        <h2 className="text-2xl font-semibold font-heading">{whatItIs.title}</h2>
-        <ul className="mt-4 space-y-3 text-[var(--muted)]">
-          {whatItIs.bullets.map((b) => (
-            <li key={b} className="flex gap-3">
-              <span className="mt-2 h-1.5 w-1.5 rounded-full bg-copper shrink-0" />
-              <span>{b}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      {/* Section 4: Side-brain Does (Slide 4) */}
-      <section className="grid gap-10 lg:grid-cols-2 lg:items-start">
-        <div>
+      {/* Section 4: Side-brain Does (Slide 4) - Graphic LEFT, Text RIGHT */}
+      <section className="grid gap-10 lg:grid-cols-2 lg:items-center">
+        <div className="flex justify-center order-2 lg:order-1">
+          <img 
+            src="/slides/slide-4-graphic.svg" 
+            alt="" 
+            className="opacity-60 max-h-80 w-auto" 
+            loading="lazy" 
+          />
+        </div>
+        <div className="order-1 lg:order-2">
           <h2 className="text-3xl font-semibold font-heading">{sidebrain.title}</h2>
           <ul className="mt-6 space-y-4">
             {sidebrain.bullets.map((b) => (
@@ -114,14 +132,6 @@ export default function HomePage() {
             ))}
           </ul>
         </div>
-        <div className="flex justify-center">
-          <img 
-            src="/slides/slide-4-graphic.svg" 
-            alt="" 
-            className="opacity-50 max-h-72 w-auto" 
-            loading="lazy" 
-          />
-        </div>
       </section>
 
       {/* Section 5: Sovereignty (Slide 6) */}
@@ -129,12 +139,32 @@ export default function HomePage() {
         <h2 className="text-3xl font-semibold text-center font-heading">{sovereignty.title}</h2>
         <p className="mt-2 text-center text-[var(--muted)]">{sovereignty.subhead}</p>
         <div className="mt-8 grid gap-6 md:grid-cols-2">
-          {sovereignty.cards.map((c) => (
-            <div key={c.title} className="rounded-2xl border border-[var(--border)] bg-[rgba(255,255,255,0.03)] p-6">
-              <h3 className="text-lg font-semibold">{c.title}</h3>
-              <p className="mt-2 text-[var(--muted)]">{c.body}</p>
+          {/* Business Model Card */}
+          <div className="rounded-2xl border border-[var(--border)] bg-[rgba(255,255,255,0.03)] p-6 flex gap-4 items-start">
+            <img 
+              src="/slides/slide-6a-graphic.svg" 
+              alt="" 
+              className="opacity-60 w-16 h-16 shrink-0" 
+              loading="lazy" 
+            />
+            <div>
+              <h3 className="text-lg font-semibold">{sovereignty.cards[0].title}</h3>
+              <p className="mt-2 text-[var(--muted)]">{sovereignty.cards[0].body}</p>
             </div>
-          ))}
+          </div>
+          {/* Architecture Card */}
+          <div className="rounded-2xl border border-[var(--border)] bg-[rgba(255,255,255,0.03)] p-6 flex gap-4 items-start">
+            <img 
+              src="/slides/slide-6b-graphic.svg" 
+              alt="" 
+              className="opacity-60 w-16 h-16 shrink-0" 
+              loading="lazy" 
+            />
+            <div>
+              <h3 className="text-lg font-semibold">{sovereignty.cards[1].title}</h3>
+              <p className="mt-2 text-[var(--muted)]">{sovereignty.cards[1].body}</p>
+            </div>
+          </div>
         </div>
       </section>
 
