@@ -3,14 +3,15 @@ import { Suspense } from 'react';
 
 import WaitlistForm from '@/components/WaitlistForm';
 import FAQ from '@/components/FAQ';
-import { hero, sections } from '@/content/site';
+import { hero, problem, whatItIs, sidebrain, sovereignty, principles } from '@/content/site';
 
 export default function HomePage() {
   const stage = process.env.SITE_STAGE || 'coming_soon';
 
   return (
-    <div className="space-y-16">
-      <section className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+    <div className="space-y-20">
+      {/* Section 1: Hero + Waitlist (Slide 1) */}
+      <section id="waitlist" className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
         <div>
           {stage !== 'live' ? (
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[rgba(255,255,255,0.03)] px-3 py-1 text-xs text-[var(--muted)]">
@@ -30,7 +31,7 @@ export default function HomePage() {
           <ul className="mt-6 space-y-2 text-sm text-[var(--muted)]">
             {hero.bullets.map((b) => (
               <li key={b} className="flex gap-2">
-                <span className="mt-2 inline-block h-1.5 w-1.5 rounded-full bg-copper" />
+                <span className="mt-2 inline-block h-1.5 w-1.5 rounded-full bg-copper shrink-0" />
                 <span>{b}</span>
               </li>
             ))}
@@ -67,38 +68,100 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="grid gap-6 md:grid-cols-2">
-        <div className="rounded-2xl border border-[var(--border)] bg-[rgba(255,255,255,0.03)] p-8">
-          <h2 className="text-xl font-semibold">{sections.whatItIs.title}</h2>
-          <div className="mt-3 space-y-3 text-[var(--muted)]">
-            {sections.whatItIs.body.map((p) => (
+      {/* Section 2: Problem (Slide 2) */}
+      <section className="grid gap-10 lg:grid-cols-2 lg:items-center">
+        <div>
+          <h2 className="text-3xl font-semibold font-heading">{problem.title}</h2>
+          <div className="mt-4 space-y-3 text-[var(--muted)]">
+            {problem.body.map((p) => (
               <p key={p}>{p}</p>
             ))}
           </div>
         </div>
-
-        <div className="rounded-2xl border border-[var(--border)] bg-[rgba(255,255,255,0.03)] p-8">
-          <h2 className="text-xl font-semibold">{sections.principles.title}</h2>
-          <div className="mt-4 grid gap-4">
-            {sections.principles.items.map((i) => (
-              <div key={i.title} className="rounded-xl border border-[var(--border)] bg-[rgba(0,0,0,0.18)] p-4">
-                <div className="font-semibold">{i.title}</div>
-                <div className="mt-1 text-sm text-[var(--muted)]">{i.body}</div>
-              </div>
-            ))}
-          </div>
+        <div className="flex justify-center">
+          <img 
+            src="/slides/slide-2-graphic.svg" 
+            alt="" 
+            className="opacity-60 max-h-64 w-auto" 
+            loading="lazy" 
+          />
         </div>
       </section>
 
+      {/* Section 3: What Cosmocrat Is (Slide 3) */}
+      <section className="rounded-2xl border border-[var(--border)] bg-[rgba(255,255,255,0.03)] p-8">
+        <h2 className="text-2xl font-semibold font-heading">{whatItIs.title}</h2>
+        <ul className="mt-4 space-y-3 text-[var(--muted)]">
+          {whatItIs.bullets.map((b) => (
+            <li key={b} className="flex gap-3">
+              <span className="mt-2 h-1.5 w-1.5 rounded-full bg-copper shrink-0" />
+              <span>{b}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* Section 4: Side-brain Does (Slide 4) */}
+      <section className="grid gap-10 lg:grid-cols-2 lg:items-start">
+        <div>
+          <h2 className="text-3xl font-semibold font-heading">{sidebrain.title}</h2>
+          <ul className="mt-6 space-y-4">
+            {sidebrain.bullets.map((b) => (
+              <li key={b} className="flex gap-3 text-[var(--muted)]">
+                <span className="mt-2 h-1.5 w-1.5 rounded-full bg-copper shrink-0" />
+                <span>{b}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="flex justify-center">
+          <img 
+            src="/slides/slide-4-graphic.svg" 
+            alt="" 
+            className="opacity-50 max-h-72 w-auto" 
+            loading="lazy" 
+          />
+        </div>
+      </section>
+
+      {/* Section 5: Sovereignty (Slide 6) */}
       <section>
-        <h2 className="text-2xl font-semibold mb-6">Frequently asked questions</h2>
+        <h2 className="text-3xl font-semibold text-center font-heading">{sovereignty.title}</h2>
+        <p className="mt-2 text-center text-[var(--muted)]">{sovereignty.subhead}</p>
+        <div className="mt-8 grid gap-6 md:grid-cols-2">
+          {sovereignty.cards.map((c) => (
+            <div key={c.title} className="rounded-2xl border border-[var(--border)] bg-[rgba(255,255,255,0.03)] p-6">
+              <h3 className="text-lg font-semibold">{c.title}</h3>
+              <p className="mt-2 text-[var(--muted)]">{c.body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Section 6: Non-negotiables (Slide 7) */}
+      <section>
+        <h2 className="text-3xl font-semibold text-center font-heading">{principles.title}</h2>
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {principles.items.map((i) => (
+            <div key={i.title} className="rounded-xl border border-[var(--border)] bg-[rgba(0,0,0,0.18)] p-5">
+              <div className="font-semibold">{i.title}</div>
+              <div className="mt-2 text-sm text-[var(--muted)]">{i.body}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Section 7: FAQ */}
+      <section>
+        <h2 className="text-2xl font-semibold mb-6 font-heading">Frequently asked questions</h2>
         <FAQ />
       </section>
 
+      {/* Section 8: CTA Bar */}
       <section className="rounded-2xl border border-[var(--border)] bg-[rgba(255,255,255,0.03)] p-8">
         <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
           <div>
-            <h2 className="text-2xl font-semibold">Get early access</h2>
+            <h2 className="text-2xl font-semibold font-heading">Get early access</h2>
             <p className="mt-1 text-[var(--muted)]">
               Join the waitlist and we&apos;ll reach out as early access opens.
             </p>
