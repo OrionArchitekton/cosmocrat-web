@@ -17,9 +17,9 @@ export const hero = {
   subhead:
     'Cosmocrat is a private, user-owned cognitive continuity layer — a side-brain that connects your digital life into memory and helps you make better decisions with full context.',
   bullets: [
-    'No behavior change: keep using the tools you already use.',
+    'No behavior change — keep using the tools you already use.',
     'Lane-aware memory to prevent context bleed across life and work.',
-    'Guidance over answers: remembers what matters and reflects prior intent.'
+    'Guidance over answers — remembers what matters and reflects intent.'
   ]
 };
 
@@ -28,9 +28,9 @@ export const problem = {
   title: "Modern life is fragmented. Your context is lost.",
   body: [
     "Life is scattered across dozens of tools and contexts—email, chats, docs, browsers, AI tools, devices.",
-    "Each system knows a fragment, but none preserve continuity.",
-    "Result: drift, missed commitments, inconsistent execution."
-  ]
+    "Each system knows a fragment, but none preserve continuity."
+  ],
+  result: "The result: drift, missed commitments, and inconsistent execution."
 };
 
 // Slide 3: What Cosmocrat Is

@@ -5,6 +5,9 @@ import WaitlistForm from '@/components/WaitlistForm';
 import FAQ from '@/components/FAQ';
 import { hero, problem, whatItIs, sidebrain, sovereignty, principles } from '@/content/site';
 
+// Type assertion for problem.result
+const problemData = problem as typeof problem & { result?: string };
+
 export default function HomePage() {
   const stage = process.env.SITE_STAGE || 'coming_soon';
 
@@ -85,6 +88,9 @@ export default function HomePage() {
               <p key={p}>{p}</p>
             ))}
           </div>
+          {problemData.result && (
+            <p className="mt-4 text-[var(--fg)] font-medium">{problemData.result}</p>
+          )}
         </div>
       </section>
 
@@ -112,12 +118,12 @@ export default function HomePage() {
       </section>
 
       {/* Section 4: Side-brain Does (Slide 4) - Graphic LEFT, Text RIGHT */}
-      <section className="grid gap-10 lg:grid-cols-2 lg:items-center">
+      <section className="rounded-2xl border border-[var(--border)] bg-navy-800/50 p-8 grid gap-10 lg:grid-cols-2 lg:items-center">
         <div className="flex justify-center order-2 lg:order-1">
           <img 
             src="/slides/slide-4-graphic.svg" 
             alt="" 
-            className="opacity-60 max-h-80 w-auto" 
+            className="opacity-70 max-h-80 w-auto" 
             loading="lazy" 
           />
         </div>
@@ -125,9 +131,9 @@ export default function HomePage() {
           <h2 className="text-3xl font-semibold font-heading">{sidebrain.title}</h2>
           <ul className="mt-6 space-y-4">
             {sidebrain.bullets.map((b) => (
-              <li key={b} className="flex gap-3 text-[var(--muted)]">
+              <li key={b} className="flex gap-3">
                 <span className="mt-2 h-1.5 w-1.5 rounded-full bg-copper shrink-0" />
-                <span>{b}</span>
+                <span className="text-[var(--fg)] opacity-90">{b}</span>
               </li>
             ))}
           </ul>
