@@ -8,9 +8,9 @@ export const metadata = {
 export default function WaitlistPage() {
   return (
     <div className="mx-auto flex max-w-2xl flex-col items-start gap-6">
-      <h1 className="text-3xl font-semibold">Join the Cosmocrat waitlist</h1>
+      <h1 className="text-3xl font-semibold">Request Early Access</h1>
       <p className="max-w-xl text-[var(--muted)]">
-        Get notified when early access opens. We&apos;ll only use your email for Cosmocrat updates.
+        We&apos;ll reach out with pilot availability and deployment options.
       </p>
 
       <Suspense fallback={<div className="h-32 w-full skeleton rounded-lg" />}>

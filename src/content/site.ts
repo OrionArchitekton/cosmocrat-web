@@ -1,98 +1,95 @@
 export const site = {
   name: 'Cosmocrat',
   domain: 'cosmocrat.ai',
-  title: 'Cosmocrat — the AI brain you own',
+  title: 'Cosmocrat — the customer-owned AI brain',
   description:
-    'A private, user-owned cognitive continuity layer that helps you remember and decide with full context.',
+    'A governed system that remembers, reasons, and acts over time — running in your environment.',
   contactEmail: process.env.CONTACT_EMAIL || 'contact@cosmocrat.ai',
   nav: [
     { label: 'Docs', href: '/docs' },
-    { label: 'Waitlist', href: '/waitlist' }
+    { label: 'Early Access', href: '/waitlist' }
   ]
 };
 
 export const hero = {
-  eyebrow: 'Coming soon',
-  headline: 'The AI brain you own.',
+  eyebrow: 'Early access',
+  headline: 'The customer-owned AI brain.',
   subhead:
-    'Cosmocrat is a private, user-owned cognitive continuity layer — a side-brain that connects your digital life into memory and helps you make better decisions with full context.',
+    'Cosmocrat is a governed system that remembers, reasons, and acts over time — running in your environment, accessed through the Cosmocrat Client (default).',
   bullets: [
-    'No behavior change — keep using the tools you already use.',
-    'Lane-aware memory to prevent context bleed across life and work.',
-    'Guidance over answers — remembers what matters and reflects intent.'
+    'Not a chatbot. Not a memory plugin.',
+    'A production-grade control plane for persistent memory + safe execution.',
+    'Your engine runs in your environment. Your keys. Your data.'
   ]
 };
 
 // Slide 2: Problem
 export const problem = {
-  title: "Modern life is fragmented. Your context is lost.",
+  title: 'Most “AI apps” forget. Most “agent stacks” drift.',
   body: [
-    "Life is scattered across dozens of tools and contexts—email, chats, docs, browsers, AI tools, devices.",
-    "Each system knows a fragment, but none preserve continuity."
+    'Ad-hoc RAG pipelines. Stateless assistants. Scripted agents with no audit trail.',
+    'Pipelines fail quietly. Governance is bolted on — if it exists at all.'
   ],
-  result: "The result: drift, missed commitments, and inconsistent execution."
+  result: 'Cosmocrat makes AI operationally real: fail-closed, drift-protected, auditable by default.'
 };
 
 // Slide 3: What Cosmocrat Is
 export const whatItIs = {
-  title: "Cosmocrat doesn't replace your tools. It connects your life.",
+  title: 'What you get',
   bullets: [
-    "You don't change your behavior—you keep using your tools exactly as you already do.",
-    "With explicit permission and clear boundaries, Cosmocrat turns meaningful signals into memory — not surveillance."
+    'Cosmocrat Client (default) — the product experience your team uses daily',
+    'Cosmocrat API — the stable interface your client and integrations call',
+    'Cosmocrat Engine — workers + memory + orchestration that run inside your environment',
+    'Governance baked in — fail-closed guardrails, drift protection, and audit-grade run records'
   ]
 };
 
 // Slide 4: Side-brain Does
 export const sidebrain = {
-  title: "A living side-brain to preserve continuity.",
+  title: 'Standard Deployment (Default)',
   bullets: [
-    "Compiles scattered digital life into a coherent timeline of meaning",
-    "Remembers commitments, priorities, patterns, and what you intended",
-    "Connects dots across tools you already use",
-    "Surfaces the right context at the right moment",
-    "Helps you make better decisions with full context—without taking agency away"
+    'Deploy the Cosmocrat Engine + API in your environment.',
+    'Your team uses the Cosmocrat Client to connect securely to your backend.',
+    'Your engine. Your keys. Your data.',
+    'We don’t require access to your databases or infrastructure.'
   ]
 };
 
 // Slide 6: Sovereignty
 export const sovereignty = {
-  title: "Designed for sovereignty.",
-  subhead: "Your data, your memory, your decisions — protected by structure, not promises.",
+  title: 'Developer Mode (Advanced)',
+  subhead: 'Prefer a custom client or direct integrations? Use the Cosmocrat API with your own UI and automation.',
   cards: [
     {
-      title: "Business model",
-      body: "Software licenses, subscriptions, enterprise support. No data resale. No training on customer data."
+      title: 'Bring your own client',
+      body: 'Use the Cosmocrat API to power a custom UI and workflow tailored to your team.'
     },
     {
-      title: "Architecture",
-      body: "Privacy is structural—enforced by encryption, boundaries, and customer-owned keys."
+      title: 'API-first integrations',
+      body: 'Connect directly to your systems and automations while keeping governance and run records intact.'
     }
   ]
 };
 
-// Slide 7: Non-negotiables (5 cards)
+// Slide 7: Non-negotiables (now: operational outcomes)
 export const principles = {
-  title: "Non-negotiables",
+  title: 'Cosmocrat makes AI operationally real',
   items: [
     {
-      title: "Memory is sacred",
-      body: "Your memory belongs to you. It is never sold, mined, or used for training."
+      title: 'Fail-closed',
+      body: 'Guardrails that stop unsafe actions instead of failing silently.'
     },
     {
-      title: "The user always retains agency",
-      body: "Nothing that changes the world happens without your confirmation. You choose sources and scopes."
+      title: 'Auditable',
+      body: 'Run records you can inspect, reason about, and trust.'
     },
     {
-      title: "No extraction. Ever.",
-      body: "You own your data, memory, and outcomes. Cosmocrat is designed to avoid extraction."
+      title: 'Persistent',
+      body: 'Long-term memory that survives sessions, tools, and time.'
     },
     {
-      title: "Ethics enforced by design",
-      body: "Not by policy or promises—by architecture that makes violation impossible."
-    },
-    {
-      title: "Boring reliability beats clever intelligence",
-      body: "The system should feel calm. Predictable. Trustworthy."
+      title: 'Governed',
+      body: 'Control, boundaries, and drift protection by default.'
     }
   ]
 };

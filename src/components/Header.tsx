@@ -25,7 +25,7 @@ export default function Header() {
             href="/waitlist"
             className="rounded-lg bg-copper px-3 py-2 text-sm font-semibold text-black"
           >
-            Join waitlist
+            Request Early Access
           </Link>
         </nav>
       </div>

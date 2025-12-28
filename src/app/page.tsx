@@ -48,7 +48,7 @@ export default function HomePage() {
 
           <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-[var(--muted)]">
             <Link href="/docs" className="hover:text-white">
-              Explore docs
+              View the Doctrine
             </Link>
             <span className="opacity-50">•</span>
             <Link href="/waitlist" className="hover:text-white">
@@ -66,7 +66,7 @@ export default function HomePage() {
             />
           </div>
           <div className="mt-6 text-center text-sm text-[var(--muted)]">
-            Continuity. Ownership. Alignment.
+            Your engine. Your keys. Your data.
           </div>
         </div>
       </section>
@@ -199,14 +199,14 @@ export default function HomePage() {
           <div>
             <h2 className="text-2xl font-semibold font-heading">Get early access</h2>
             <p className="mt-1 text-[var(--muted)]">
-              Join the waitlist and we&apos;ll reach out as early access opens.
+              We&apos;re onboarding a small number of teams for pilot deployments.
             </p>
           </div>
           <Link
             href="/waitlist"
             className="rounded-lg bg-copper px-4 py-2 text-sm font-semibold text-black"
           >
-            Join waitlist
+            Request Early Access
           </Link>
         </div>
       </section>

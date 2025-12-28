@@ -1,19 +1,19 @@
 export const faq = [
   {
     q: "Is Cosmocrat a chatbot?",
-    a: "No. It's a continuity layer that preserves context and helps decisions compound over time."
+    a: "No. Cosmocrat is a governed system — not a chatbot and not a memory plugin."
   },
   {
     q: "Do I have to change my workflow?",
-    a: "No—Cosmocrat is designed to connect what you already do without demanding new habits."
+    a: "No. Standard Deployment uses the Cosmocrat Client (default), backed by an engine + API running in your environment."
   },
   {
     q: "What about privacy?",
-    a: "User agency is absolute; nothing is ingested by default; and nothing changes the world without permission."
+    a: "Your engine runs in your environment. Your keys. Your data."
   },
   {
     q: "When does it launch?",
-    a: "Coming soon. Join the waitlist and we'll email you when early access opens."
+    a: "We’re onboarding a small number of teams for pilot deployments. Request early access and we’ll reach out with availability."
   }
 ];
 

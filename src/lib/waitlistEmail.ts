@@ -2,7 +2,7 @@ export function waitlistConfirmationEmail(opts: { name?: string | null }) {
   const firstName = opts.name?.trim().split(' ')[0];
   const greeting = firstName ? `Hey ${escapeHtml(firstName)},` : 'Hey,';
 
-  const subject = 'You’re on the Cosmocrat waitlist';
+  const subject = 'Early access request received — Cosmocrat';
 
   const html = `
   <div style="font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; background:#0E131D; color:#E6EDF7; padding:24px">
@@ -12,9 +12,9 @@ export function waitlistConfirmationEmail(opts: { name?: string | null }) {
         <h1 style="margin:10px 0 0; font-size:22px; line-height:1.25">${greeting}</h1>
       </div>
       <div style="padding:22px">
-        <p style="margin:0 0 14px; color:rgba(230,237,247,0.9)">You’re on the waitlist. We’ll reach out as early access opens.</p>
+        <p style="margin:0 0 14px; color:rgba(230,237,247,0.9)">Request received. We’ll reach out with pilot availability and deployment options.</p>
         <p style="margin:0 0 14px; color:rgba(230,237,247,0.72)">
-          Cosmocrat is being built around a simple idea: intelligence should persist across time — privately, and under your ownership.
+          Cosmocrat is a governed system that remembers, reasons, and acts over time — running in your environment.
         </p>
         <p style="margin:0 0 14px; color:rgba(230,237,247,0.72)">
           If you have a use case you want us to prioritize, just reply to this email.

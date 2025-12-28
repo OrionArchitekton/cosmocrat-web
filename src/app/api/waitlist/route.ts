@@ -33,6 +33,7 @@ export async function POST(req: Request) {
   const email = input.email.trim();
   const email_norm = normalizeEmail(input.email);
   const name = normalizeOptionalString(input.name);
+  const first_run = normalizeOptionalString(input.first_run);
 
   const ip = getRequestIp(req);
   const ip_hash = hashIp(ip);
@@ -95,8 +96,8 @@ export async function POST(req: Request) {
           await resend?.emails.send({
             from: resendFrom(),
             to: notify,
-            subject: 'New Cosmocrat waitlist signup',
-            html: `<div><b>Email:</b> ${email}<br/><b>Name:</b> ${name || ''}<br/><b>utm_campaign:</b> ${row.utm_campaign || ''}</div>`
+            subject: 'New Cosmocrat early access request',
+            html: `<div><b>Email:</b> ${email}<br/><b>Name:</b> ${name || ''}<br/><b>First run:</b> ${first_run || ''}<br/><b>utm_campaign:</b> ${row.utm_campaign || ''}</div>`
           });
         } catch {
           // ignore

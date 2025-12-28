@@ -14,6 +14,7 @@ export default function WaitlistForm(props: { variant?: 'inline' | 'page' }) {
 
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
+  const [firstRun, setFirstRun] = useState('');
   const [website, setWebsite] = useState(''); // honeypot
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<WaitlistResult | null>(null);
@@ -41,6 +42,7 @@ export default function WaitlistForm(props: { variant?: 'inline' | 'page' }) {
         body: JSON.stringify({
           email,
           name,
+          first_run: firstRun,
           website,
           ...attribution,
           referrer: typeof document !== 'undefined' ? document.referrer : '',
@@ -54,6 +56,7 @@ export default function WaitlistForm(props: { variant?: 'inline' | 'page' }) {
       if (json.ok) {
         // keep email in case they want to resubmit; clear name.
         setName('');
+        setFirstRun('');
       }
     } catch {
       setResult({ ok: false, error: 'Request failed' });
@@ -89,6 +92,14 @@ export default function WaitlistForm(props: { variant?: 'inline' | 'page' }) {
           />
         </div>
 
+        <textarea
+          className="w-full min-h-[88px] resize-y rounded-lg border border-[var(--border)] bg-[rgba(255,255,255,0.03)] px-3 py-2 text-sm outline-none focus:border-copper"
+          placeholder="What would you run Cosmocrat on first? (optional)"
+          value={firstRun}
+          onChange={(e) => setFirstRun(e.target.value)}
+          maxLength={500}
+        />
+
         {/* honeypot */}
         <input
           value={website}
@@ -105,12 +116,11 @@ export default function WaitlistForm(props: { variant?: 'inline' | 'page' }) {
           disabled={loading}
           className="w-full rounded-lg bg-copper px-4 py-2 text-sm font-semibold text-black disabled:opacity-60"
         >
-          {loading ? 'Joining…' : 'Join the waitlist'}
+          {loading ? 'Requesting…' : 'Request Early Access'}
         </button>
 
         <p className="text-xs text-[var(--muted)]">
-          We’ll only use your email for Cosmocrat updates. Reply <span className="font-semibold">REMOVE</span>{' '}
-          to unsubscribe.
+          We’ll reach out with pilot availability and deployment options.
         </p>
 
         {result ? (
