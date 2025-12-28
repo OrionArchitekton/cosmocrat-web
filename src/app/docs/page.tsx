@@ -18,13 +18,13 @@ export default function DocsPage() {
         We’ll publish documentation as early access opens.
       </p>
       <p className="text-[var(--muted)]">
-        Until then, join the waitlist and we’ll keep you updated.
+        Until then, request early access and we’ll keep you updated.
       </p>
       <Link
         href="/waitlist"
         className="inline-flex rounded-lg bg-copper px-4 py-2 text-sm font-semibold text-black"
       >
-        Join waitlist
+        Request Early Access
       </Link>
     </div>
   );

@@ -14,7 +14,7 @@ export default function TermsPage() {
       </p>
 
       <p className="text-[var(--muted)]">
-        Joining the waitlist does not guarantee access. We may change features, timelines, and availability.
+        Requesting early access does not guarantee access. We may change features, timelines, and availability.
       </p>
 
       <p className="text-[var(--muted)]">
@@ -23,7 +23,7 @@ export default function TermsPage() {
 
       <div className="flex flex-wrap gap-4 text-sm text-[var(--muted)]">
         <Link href="/privacy" className="hover:text-white">Privacy</Link>
-        <Link href="/waitlist" className="hover:text-white">Join waitlist</Link>
+        <Link href="/waitlist" className="hover:text-white">Request Early Access</Link>
       </div>
     </div>
   );
