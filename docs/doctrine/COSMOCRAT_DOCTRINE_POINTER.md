@@ -7,3 +7,7 @@ The canonical Cosmocrat Doctrine is maintained in the `cosmocrat-core` repositor
 This repository does not maintain its own doctrine.
 All doctrine changes must occur in the canonical location.
 
+
+
+
+
