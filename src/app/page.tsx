@@ -48,11 +48,11 @@ export default function HomePage() {
 
           <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-[var(--muted)]">
             <Link href="/docs" className="hover:text-white">
-              View the Doctrine
+              Read the governance doctrine
             </Link>
             <span className="opacity-50">•</span>
             <Link href="/waitlist" className="hover:text-white">
-              Dedicated signup page
+              Dedicated early access page
             </Link>
           </div>
         </div>
@@ -197,9 +197,12 @@ export default function HomePage() {
       <section className="rounded-2xl border border-[var(--border)] bg-[rgba(255,255,255,0.03)] p-8">
         <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
           <div>
-            <h2 className="text-2xl font-semibold font-heading">Get early access</h2>
+            <h2 className="text-2xl font-semibold font-heading">Request early access</h2>
             <p className="mt-1 text-[var(--muted)]">
-              We&apos;re onboarding a small number of teams for pilot deployments.
+              We&apos;re onboarding a small number of teams for enterprise pilot deployments.
+            </p>
+            <p className="mt-2 text-sm text-[var(--muted)]">
+              Designed for production AI in regulated environments.
             </p>
           </div>
           <Link
