@@ -3,7 +3,8 @@ export const site = {
   domain: 'cosmocrat.ai',
   title: 'Cosmocrat — enterprise AI operating system for governed memory',
   description:
-    'An enterprise AI control plane with governed memory, fail-closed execution, and audit-grade run records in your environment.',
+    'An enterprise AI control plane with governed memory, fail-closed execution, ' +
+      'and audit-grade run records in your environment.',
   contactEmail: process.env.CONTACT_EMAIL || 'contact@cosmocrat.ai',
   nav: [
     { label: 'Docs', href: '/docs' },
