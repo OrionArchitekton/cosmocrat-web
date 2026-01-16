@@ -199,7 +199,7 @@ export default function HomePage() {
           <div>
             <h2 className="text-2xl font-semibold font-heading">Request early access</h2>
             <p className="mt-1 text-[var(--muted)]">
-              We&apos;re onboarding a small number of teams for enterprise pilot deployments.
+              We&apos;re onboarding a small number of teams for pilot deployments.
             </p>
             <p className="mt-2 text-sm text-[var(--muted)]">
               Designed for production AI in regulated environments.
