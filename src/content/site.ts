@@ -19,7 +19,7 @@ export const hero = {
     'Cosmocrat is an enterprise AI control plane for governance. It runs in your environment and provides fail-closed AI execution, governed memory, and runtime governance with audit-grade run records, all accessed through the default Cosmocrat Client.',
   bullets: [
     'Not a chatbot. Not an agent platform. Not an automation tool.',
-    'A production-grade AI control plane for persistent, governed AI memory and auditable AI systems.',
+    'A production-grade AI control plane for persistent, governed memory and auditable intelligent systems.',
     'Your engine runs in your environment. Your keys. Your data.'
   ]
 };
