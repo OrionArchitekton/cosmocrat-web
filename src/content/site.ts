@@ -81,7 +81,7 @@ export const principles = {
   items: [
     {
       title: 'Fail-closed',
-      body: 'Fail-closed AI guardrails that stop unsafe actions instead of failing silently.'
+      body: 'AI guardrails that stop unsafe actions instead of failing silently.'
     },
     {
       title: 'Auditable',
