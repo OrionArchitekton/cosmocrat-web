@@ -40,7 +40,7 @@ export const problem = {
 export const whatItIs = {
   title: 'What you get',
   bullets: [
-    'Governance baked in — fail-closed AI guardrails, drift protection, and audit-grade run records and execution receipts',
+    'Governance baked in — fail-closed AI guardrails, drift protection, audit-grade run records, and execution receipts',
     'Cosmocrat Engine — workers, governed AI memory, and orchestration that run inside your environment',
     'Cosmocrat API — the stable interface your client and integrations call',
     'Cosmocrat Client (default) — the interface your team uses daily with human-in-the-loop AI controls'
