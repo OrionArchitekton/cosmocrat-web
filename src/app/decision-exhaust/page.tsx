@@ -261,8 +261,8 @@ export default function DecisionExhaustPage() {
                 Cosmocrat governs decision exhaust.
               </h1>
               <p className={styles.lead}>
-                Cosmocrat is the control plane for policy, receipts, and rollback—capturing every AI +
-                human action with audit-grade run records and replay.
+                The control plane that enforces, records, and replays every AI and human decision—by
+                policy, not convention.
               </p>
 
               <div className={styles.ctaRow}>
@@ -317,6 +317,9 @@ export default function DecisionExhaustPage() {
                   Answers: <strong>What happened?</strong>
                 </li>
               </ul>
+              <p className={styles.cardFootnote}>
+                Optimized for visibility and analysis after the fact.
+              </p>
             </Card>
 
             <Card title="Decision Exhaust" eyebrow="Cosmocrat">
@@ -335,11 +338,14 @@ export default function DecisionExhaustPage() {
                   Answers: <strong>What was decided—and was it allowed?</strong>
                 </li>
               </ul>
+              <p className={styles.cardFootnote}>
+                Optimized for authority and enforceability before execution.
+              </p>
             </Card>
           </div>
 
           <div className={styles.callout}>
-            Data tells you the car crashed. Governance prevents the crash.
+            Data explains incidents. Governance prevents them.
           </div>
 
           <ThreeBoxDiagram />
@@ -358,7 +364,8 @@ export default function DecisionExhaustPage() {
             <div className={styles.bullet}>
               <div className={styles.bulletTitle}>AI actions move faster than controls</div>
               <div className={styles.bulletBody}>
-                Stateless assistants can generate text. Agentic systems can execute.
+                Stateless assistants generate content. Autonomous systems execute state-changing
+                actions.
               </div>
             </div>
             <div className={styles.bullet}>
@@ -480,6 +487,8 @@ export default function DecisionExhaustPage() {
               </dl>
               <div className={styles.receiptFoot}>
                 Receipts make governance provable—not just observable.
+                <br />
+                Receipts establish intent, authority, and outcome—independent of system state.
               </div>
             </div>
           </div>
@@ -488,7 +497,33 @@ export default function DecisionExhaustPage() {
 
       <section className={styles.section}>
         <div className={styles.container}>
-          <h2 className={styles.h2}>Pricing that matches the risk surface</h2>
+          <h2 className={styles.h2}>Who this is for</h2>
+          <div className={styles.audienceGrid}>
+            <div className={styles.audienceItem}>
+              <div className={styles.audienceTitle}>Security & Risk</div>
+              <div className={styles.audienceBody}>
+                Prove intent, authority, and outcome
+              </div>
+            </div>
+            <div className={styles.audienceItem}>
+              <div className={styles.audienceTitle}>Platform & Infra</div>
+              <div className={styles.audienceBody}>
+                Enforce policy at runtime, not after incidents
+              </div>
+            </div>
+            <div className={styles.audienceItem}>
+              <div className={styles.audienceTitle}>Legal & Compliance</div>
+              <div className={styles.audienceBody}>
+                Replay decisions with audit-grade receipts
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.sectionAlt}>
+        <div className={styles.container}>
+          <h2 className={styles.h2}>Pricing aligned to governance risk</h2>
           <p className={styles.p}>
             Don’t pay for queries. Pay for safety: verified, governed actions executed under policy.
           </p>
@@ -563,6 +598,9 @@ export default function DecisionExhaustPage() {
               <Link className={styles.secondaryButton} href="/docs">
                 Read Docs
               </Link>
+            </div>
+            <div className={styles.ctaNote}>
+              Early access is limited to teams operating in regulated or high-risk environments.
             </div>
           </div>
 
