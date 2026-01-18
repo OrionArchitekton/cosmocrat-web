@@ -1,9 +1,10 @@
 export const site = {
   name: 'Cosmocrat',
   domain: 'cosmocrat.ai',
-  title: 'Cosmocrat — the customer-owned AI brain',
+  title: 'Cosmocrat — enterprise AI operating system for governed memory',
   description:
-    'A governed system that remembers, reasons, and acts over time — running in your environment.',
+    'An enterprise AI control plane with governed memory, fail-closed execution, ' +
+      'and audit-grade run records in your environment.',
   contactEmail: process.env.CONTACT_EMAIL || 'contact@cosmocrat.ai',
   nav: [
     { label: 'Docs', href: '/docs' },
@@ -12,35 +13,37 @@ export const site = {
 };
 
 export const hero = {
-  eyebrow: 'Early access',
-  headline: 'The customer-owned AI brain.',
+  eyebrow: 'Enterprise early access',
+  headline: 'The AI operating system for governed memory and controlled execution.',
   subhead:
-    'Cosmocrat is a governed system that remembers, reasons, and acts over time — running in your environment, accessed through the Cosmocrat Client (default).',
+    'Cosmocrat is an enterprise AI control plane for governance. It runs in your environment and provides fail-closed AI execution, governed memory, and runtime governance with audit-grade run records, all accessed through the default Cosmocrat Client.',
   bullets: [
-    'Not a chatbot. Not a memory plugin.',
-    'A production-grade control plane for persistent memory + safe execution.',
+    'Not a chatbot. Not an agent platform. Not an automation tool.',
+    'A production-grade AI control plane for persistent, governed memory and auditable intelligent systems.',
     'Your engine runs in your environment. Your keys. Your data.'
   ]
 };
 
 // Slide 2: Problem
 export const problem = {
-  title: 'Most “AI apps” forget. Most “agent stacks” drift.',
+  title: 'Most AI systems lack governance. Most memory drifts.',
   body: [
-    'Ad-hoc RAG pipelines. Stateless assistants. Scripted agents with no audit trail.',
-    'Pipelines fail quietly. Governance is bolted on — if it exists at all.'
+    'Ad-hoc pipelines and stateless assistants create gaps in AI execution governance.',
+    'When controls are bolted on, auditability and AI risk control are inconsistent.',
+    'Without runtime governance, AI systems drift silently and liability accumulates invisibly.'
   ],
-  result: 'Cosmocrat makes AI operationally real: fail-closed, drift-protected, auditable by default.'
+  result:
+    'Cosmocrat makes enterprise AI governance operational: fail-closed AI, drift protection, and an AI audit trail by default.'
 };
 
 // Slide 3: What Cosmocrat Is
 export const whatItIs = {
   title: 'What you get',
   bullets: [
-    'Cosmocrat Client (default) — the product experience your team uses daily',
+    'Governance baked in — fail-closed AI guardrails, drift protection, audit-grade run records, and execution receipts',
+    'Cosmocrat Engine — workers, governed AI memory, and orchestration that run inside your environment',
     'Cosmocrat API — the stable interface your client and integrations call',
-    'Cosmocrat Engine — workers + memory + orchestration that run inside your environment',
-    'Governance baked in — fail-closed guardrails, drift protection, and audit-grade run records'
+    'Cosmocrat Client (default) — the interface your team uses daily with human-in-the-loop AI controls'
   ]
 };
 
@@ -51,14 +54,15 @@ export const sidebrain = {
     'Deploy the Cosmocrat Engine + API in your environment.',
     'Your team uses the Cosmocrat Client to connect securely to your backend.',
     'Your engine. Your keys. Your data.',
-    'We don’t require access to your databases or infrastructure.'
+    'Authorization and run records stay with you — cryptographically bound and replayable. We don’t require access to your databases or infrastructure.'
   ]
 };
 
 // Slide 6: Sovereignty
 export const sovereignty = {
   title: 'Developer Mode (Advanced)',
-  subhead: 'Prefer a custom client or direct integrations? Use the Cosmocrat API with your own UI and automation.',
+  subhead:
+    'Prefer a custom client or direct integrations? Use the Cosmocrat API with your own UI while keeping AI execution governance intact.',
   cards: [
     {
       title: 'Bring your own client',
@@ -66,30 +70,30 @@ export const sovereignty = {
     },
     {
       title: 'API-first integrations',
-      body: 'Connect directly to your systems and automations while keeping governance and run records intact.'
+      body: 'Connect directly to your systems while keeping governance and run records intact.'
     }
   ]
 };
 
 // Slide 7: Non-negotiables (now: operational outcomes)
 export const principles = {
-  title: 'Cosmocrat makes AI operationally real',
+  title: 'Operational outcomes for governed AI',
   items: [
     {
       title: 'Fail-closed',
-      body: 'Guardrails that stop unsafe actions instead of failing silently.'
+      body: 'AI guardrails that stop unsafe actions instead of failing silently.'
     },
     {
       title: 'Auditable',
-      body: 'Run records you can inspect, reason about, and trust.'
+      body: 'Auditable AI systems with run records you can inspect and trust.'
     },
     {
       title: 'Persistent',
-      body: 'Long-term memory that survives sessions, tools, and time.'
+      body: 'Persistent AI memory that survives sessions, tools, and time.'
     },
     {
       title: 'Governed',
-      body: 'Control, boundaries, and drift protection by default.'
+      body: 'Governed AI memory with control, boundaries, and drift protection by default.'
     }
   ]
 };
