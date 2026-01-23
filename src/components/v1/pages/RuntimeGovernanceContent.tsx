@@ -446,6 +446,15 @@ export default function RuntimeGovernanceContent() {
                   <Network size={14} /> Inputs / Connectors
                 </div>
                 <div className="text-[10px] text-slate-500">Slack, Email, CRM, Webhooks</div>
+                {/* Connector Right with animated dot */}
+                <svg className="absolute top-1/2 left-full w-24 h-2 -translate-y-1/2 overflow-visible pointer-events-none">
+                  <line x1="0" y1="1" x2="100%" y2="1" stroke="#334155" strokeWidth="2" />
+                  <circle cx="100%" cy="1" r="3" fill="#334155" />
+                  {/* Moving Dot */}
+                  <circle r="2" fill="#d97706">
+                    <animateMotion dur="2s" repeatCount="indefinite" path="M 0 1 L 100 1" />
+                  </circle>
+                </svg>
               </div>
             </div>
 
@@ -456,6 +465,15 @@ export default function RuntimeGovernanceContent() {
                   Execution <Server size={14} />
                 </div>
                 <div className="text-[10px] text-slate-500">Workers, Tool Adapters, API Calls</div>
+                {/* Connector Left with animated dot */}
+                <svg className="absolute top-1/2 right-full w-24 h-2 -translate-y-1/2 overflow-visible pointer-events-none">
+                  <line x1="0" y1="1" x2="100%" y2="1" stroke="#334155" strokeWidth="2" />
+                  <circle cx="0" cy="1" r="3" fill="#334155" />
+                  {/* Moving Dot Outward */}
+                  <circle r="2" fill="#22c55e">
+                    <animateMotion dur="2s" repeatCount="indefinite" path="M 100 1 L 0 1" />
+                  </circle>
+                </svg>
               </div>
             </div>
           </div>
