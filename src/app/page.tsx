@@ -1,218 +1,45 @@
 import Link from 'next/link';
-import { Suspense } from 'react';
 
-import WaitlistForm from '@/components/WaitlistForm';
-import FAQ from '@/components/FAQ';
-import { hero, problem, whatItIs, sidebrain, sovereignty, principles } from '@/content/site';
-
-// Type assertion for problem.result
-const problemData = problem as typeof problem & { result?: string };
+import Hero from '@/components/Hero';
+import Narrative from '@/components/Narrative';
+import SeoFaq from '@/components/SeoFaq';
 
 export default function HomePage() {
-  const stage = process.env.SITE_STAGE || 'coming_soon';
-
   return (
-    <div className="space-y-20">
-      {/* Section 1: Hero + Waitlist (Slide 1) */}
-      <section id="waitlist" className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-        <div>
-          {stage !== 'live' ? (
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[rgba(255,255,255,0.03)] px-3 py-1 text-xs text-[var(--muted)]">
-              <span className="inline-block h-2 w-2 rounded-full bg-copper" />
-              {hero.eyebrow}
-            </div>
-          ) : null}
+    <>
+      <Hero />
+      <Narrative />
+      <SeoFaq />
 
-          <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-            {hero.headline}
-          </h1>
-
-          <p className="mt-4 max-w-2xl text-lg text-[var(--muted)]">
-            {hero.subhead}
-          </p>
-
-          <ul className="mt-6 space-y-2 text-sm text-[var(--muted)]">
-            {hero.bullets.map((b) => (
-              <li key={b} className="flex gap-2">
-                <span className="mt-2 inline-block h-1.5 w-1.5 rounded-full bg-copper shrink-0" />
-                <span>{b}</span>
-              </li>
-            ))}
-          </ul>
-
-          <div className="mt-8">
-            <Suspense fallback={<div className="h-24 skeleton rounded-lg" />}>
-              <WaitlistForm variant="inline" />
-            </Suspense>
-          </div>
-
-          <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-[var(--muted)]">
-            <Link href="/docs" className="hover:text-white">
-              Read the governance doctrine
-            </Link>
-            <span className="opacity-50">•</span>
-            <Link href="/waitlist" className="hover:text-white">
-              Dedicated early access page
-            </Link>
-          </div>
-        </div>
-
-        <div className="rounded-2xl border border-[var(--border)] bg-[rgba(255,255,255,0.03)] p-8">
-          <div className="flex items-center justify-center">
-            <img
-              src="/brand/cosmocrat-sigil.svg"
-              alt="Cosmocrat sigil"
-              className="h-56 w-56"
-            />
-          </div>
-          <div className="mt-6 text-center text-sm text-[var(--muted)]">
-            Your engine. Your keys. Your data.
-          </div>
-        </div>
-      </section>
-
-      {/* Section 2: Problem (Slide 2) - Graphic LEFT, Text RIGHT */}
-      <section className="grid gap-10 lg:grid-cols-2 lg:items-center">
-        <div className="flex justify-center order-2 lg:order-1">
-          <img 
-            src="/slides/slide-2-graphic.svg" 
-            alt="" 
-            className="opacity-70 max-h-72 w-auto" 
-            loading="lazy" 
-          />
-        </div>
-        <div className="order-1 lg:order-2">
-          <h2 className="text-3xl font-semibold font-heading">{problem.title}</h2>
-          <div className="mt-4 space-y-3 text-[var(--muted)]">
-            {problem.body.map((p) => (
-              <p key={p}>{p}</p>
-            ))}
-          </div>
-          {problemData.result && (
-            <p className="mt-4 text-[var(--fg)] font-medium">{problemData.result}</p>
-          )}
-        </div>
-      </section>
-
-      {/* Section 3: What Cosmocrat Is (Slide 3) - Text LEFT, Graphic RIGHT */}
-      <section className="grid gap-10 lg:grid-cols-2 lg:items-center">
-        <div>
-          <h2 className="text-3xl font-semibold font-heading">{whatItIs.title}</h2>
-          <ul className="mt-4 space-y-3 text-[var(--muted)]">
-            {whatItIs.bullets.map((b) => (
-              <li key={b} className="flex gap-3">
-                <span className="mt-2 h-1.5 w-1.5 rounded-full bg-copper shrink-0" />
-                <span>{b}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="flex justify-center">
-          <img 
-            src="/slides/slide-3-graphic.svg" 
-            alt="" 
-            className="opacity-60 max-h-72 w-auto" 
-            loading="lazy" 
-          />
-        </div>
-      </section>
-
-      {/* Section 4: Side-brain Does (Slide 4) - Graphic LEFT, Text RIGHT */}
-      <section className="rounded-2xl border border-[var(--border)] bg-navy-800/50 p-8 grid gap-10 lg:grid-cols-2 lg:items-center">
-        <div className="flex justify-center order-2 lg:order-1">
-          <img 
-            src="/slides/slide-4-graphic.svg" 
-            alt="" 
-            className="opacity-70 max-h-80 w-auto" 
-            loading="lazy" 
-          />
-        </div>
-        <div className="order-1 lg:order-2">
-          <h2 className="text-3xl font-semibold font-heading">{sidebrain.title}</h2>
-          <ul className="mt-6 space-y-4">
-            {sidebrain.bullets.map((b) => (
-              <li key={b} className="flex gap-3">
-                <span className="mt-2 h-1.5 w-1.5 rounded-full bg-copper shrink-0" />
-                <span className="text-[var(--fg)] opacity-90">{b}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {/* Section 5: Sovereignty (Slide 6) */}
-      <section>
-        <h2 className="text-3xl font-semibold text-center font-heading">{sovereignty.title}</h2>
-        <p className="mt-2 text-center text-[var(--muted)]">{sovereignty.subhead}</p>
-        <div className="mt-8 grid gap-6 md:grid-cols-2">
-          {/* Business Model Card */}
-          <div className="rounded-2xl border border-[var(--border)] bg-[rgba(255,255,255,0.03)] p-6 flex gap-4 items-start">
-            <img 
-              src="/slides/slide-6a-graphic.svg" 
-              alt="" 
-              className="opacity-60 w-16 h-16 shrink-0" 
-              loading="lazy" 
-            />
-            <div>
-              <h3 className="text-lg font-semibold">{sovereignty.cards[0].title}</h3>
-              <p className="mt-2 text-[var(--muted)]">{sovereignty.cards[0].body}</p>
-            </div>
-          </div>
-          {/* Architecture Card */}
-          <div className="rounded-2xl border border-[var(--border)] bg-[rgba(255,255,255,0.03)] p-6 flex gap-4 items-start">
-            <img 
-              src="/slides/slide-6b-graphic.svg" 
-              alt="" 
-              className="opacity-60 w-16 h-16 shrink-0" 
-              loading="lazy" 
-            />
-            <div>
-              <h3 className="text-lg font-semibold">{sovereignty.cards[1].title}</h3>
-              <p className="mt-2 text-[var(--muted)]">{sovereignty.cards[1].body}</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Section 6: Non-negotiables (Slide 7) */}
-      <section>
-        <h2 className="text-3xl font-semibold text-center font-heading">{principles.title}</h2>
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {principles.items.map((i) => (
-            <div key={i.title} className="rounded-xl border border-[var(--border)] bg-[rgba(0,0,0,0.18)] p-5">
-              <div className="font-semibold">{i.title}</div>
-              <div className="mt-2 text-sm text-[var(--muted)]">{i.body}</div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Section 7: FAQ */}
-      <section>
-        <h2 className="text-2xl font-semibold mb-6 font-heading">Frequently asked questions</h2>
-        <FAQ />
-      </section>
-
-      {/* Section 8: CTA Bar */}
-      <section className="rounded-2xl border border-[var(--border)] bg-[rgba(255,255,255,0.03)] p-8">
-        <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-          <div>
-            <h2 className="text-2xl font-semibold font-heading">Request early access</h2>
-            <p className="mt-1 text-[var(--muted)]">
-              We&apos;re onboarding a small number of teams for pilot deployments.
-            </p>
-            <p className="mt-2 text-sm text-[var(--muted)]">
-              Designed for production AI in regulated environments.
-            </p>
-          </div>
-          <Link
-            href="/waitlist"
-            className="rounded-lg bg-copper px-4 py-2 text-sm font-semibold text-black"
-          >
+      {/* CTA Section */}
+      <section className="py-24 bg-cosmo-card border-t border-slate-800">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             Request Early Access
-          </Link>
+          </h2>
+          <p className="text-slate-400 mb-8 max-w-2xl mx-auto">
+            We&apos;re onboarding a small number of teams for pilot deployments.
+            Designed for production AI in regulated environments.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link
+              href="/waitlist"
+              className="px-8 py-4 bg-cosmo-accent text-white font-semibold rounded hover:bg-amber-500 transition-colors"
+            >
+              Request Early Access
+            </Link>
+            <Link
+              href="/docs"
+              className="px-8 py-4 bg-slate-800 border border-slate-700 text-slate-300 font-semibold rounded hover:border-cosmo-accent hover:text-white transition-colors"
+            >
+              Read Documentation
+            </Link>
+          </div>
+          <p className="mt-6 text-sm text-slate-500">
+            Your engine. Your keys. Your data.
+          </p>
         </div>
       </section>
-    </div>
+    </>
   );
 }

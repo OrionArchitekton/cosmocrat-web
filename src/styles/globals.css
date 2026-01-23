@@ -3,12 +3,16 @@
 @tailwind utilities;
 
 :root {
-  --bg: #0D1B2A;
-  --fg: #e6edf7;
-  --muted: rgba(230, 237, 247, 0.72);
-  --card: rgba(255, 255, 255, 0.04);
-  --border: rgba(255, 255, 255, 0.12);
-  --accent: #B87654;
+  /* V1 palette (primary) */
+  --bg: #0B1120;
+  --fg: #E2E8F0;
+  --muted: #94A3B8;
+  --card: #151F32;
+  --border: #1E293B;
+  --accent: #D97706;
+  /* Legacy tokens */
+  --copper: #B87654;
+  --navy: #0D1B2A;
 }
 
 html,
@@ -22,7 +26,7 @@ body {
 }
 
 ::selection {
-  background: rgba(184, 118, 84, 0.35);
+  background: rgba(217, 119, 6, 0.35);
 }
 
 /* Wrap @apply in @layer to compile correctly */
@@ -32,20 +36,30 @@ body {
     height: 8px;
   }
   ::-webkit-scrollbar-track {
-    @apply bg-navy-800;
+    background: #0B1120;
   }
   ::-webkit-scrollbar-thumb {
-    @apply bg-copper/30 rounded;
+    background: #334155;
+    border-radius: 4px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-copper/50;
+    background: #475569;
   }
   :focus-visible {
-    @apply outline-none ring-2 ring-copper ring-offset-2 ring-offset-navy-900;
+    @apply outline-none ring-2 ring-cosmo-accent ring-offset-2 ring-offset-cosmo-dark;
   }
 }
 
-/* Copper gradient utility */
+/* Accent gradient utility (v1) */
+.accent-gradient {
+  background: linear-gradient(135deg, #D97706 0%, #F59E0B 100%);
+}
+
+.accent-gradient-hover:hover {
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+}
+
+/* Legacy copper gradient (backward compat) */
 .copper-gradient {
   background: linear-gradient(135deg, #B87654 0%, #E6B089 100%);
 }

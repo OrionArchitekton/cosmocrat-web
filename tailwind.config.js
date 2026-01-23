@@ -5,7 +5,19 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // navy.900 = bg, navy.800 = surface (no extra surface tokens)
+        // V1 palette (primary)
+        cosmo: {
+          dark: '#0B1120',
+          card: '#151F32',
+          accent: '#D97706',
+          text: '#E2E8F0',
+          muted: '#94A3B8',
+        },
+        // Legacy tokens (backward compat)
+        brand: {
+          copper: '#B87654',
+          navy: '#0D1B2A',
+        },
         copper: {
           DEFAULT: '#B87654',
           light: '#E6B089',
@@ -19,8 +31,14 @@ module.exports = {
           500: '#0c8ee9',
           600: '#0070c7',
         },
-        // Keep obsidian as alias for backwards compat with existing classes
         obsidian: '#0D1B2A',
+        // Semantic tokens (v1)
+        bg: '#0B1120',
+        surface: '#151F32',
+        border: '#1E293B',
+        text: '#E2E8F0',
+        muted: '#94A3B8',
+        accent: '#D97706',
       },
       fontFamily: {
         sans: ['var(--font-sans)', 'Inter', 'system-ui', 'sans-serif'],
