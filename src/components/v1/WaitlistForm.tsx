@@ -8,6 +8,7 @@ export default function WaitlistForm() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [firstRun, setFirstRun] = useState('');
+  const [website, setWebsite] = useState(''); // Honeypot field
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -23,6 +24,7 @@ export default function WaitlistForm() {
         email,
         name: name || undefined,
         first_run: firstRun || undefined,
+        website: website || undefined, // Honeypot - bots fill this, humans don't see it
         utm_source: params.get('utm_source') || undefined,
         utm_medium: params.get('utm_medium') || undefined,
         utm_campaign: params.get('utm_campaign') || undefined,
@@ -74,7 +76,21 @@ export default function WaitlistForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8">
+    <form onSubmit={handleSubmit} className="space-y-8 relative">
+      {/* Honeypot field - hidden from humans, bots will fill it */}
+      <div className="absolute -left-[9999px]" aria-hidden="true">
+        <label htmlFor="website">Website</label>
+        <input
+          type="text"
+          id="website"
+          name="website"
+          value={website}
+          onChange={(e) => setWebsite(e.target.value)}
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label className="block text-sm font-medium text-slate-300 mb-2">

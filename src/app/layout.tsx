@@ -3,6 +3,7 @@ import Script from 'next/script';
 import { Inter, Orbitron, JetBrains_Mono } from 'next/font/google';
 import Header from '@/components/v1/Header';
 import Footer from '@/components/v1/Footer';
+import { siteConfig } from '@/lib/siteConfig';
 import '../styles/globals.css';
 
 const GTM_ID = 'GTM-K3RWK8SD';
@@ -27,12 +28,11 @@ const jetbrains = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Cosmocrat | The Governed AI Operating System',
-    template: '%s | Cosmocrat',
+    default: siteConfig.title,
+    template: `%s | ${siteConfig.name}`,
   },
-  description:
-    'An enterprise OS for governed memory and controlled execution. Enforce fail-closed authority and audit-grade run records at the runtime kernel level.',
-  metadataBase: new URL('https://cosmocrat.ai'),
+  description: siteConfig.description,
+  metadataBase: new URL(siteConfig.url),
   manifest: '/site.webmanifest',
   icons: {
     icon: '/favicon.jpg',
@@ -41,19 +41,17 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://cosmocrat.ai',
-    siteName: 'Cosmocrat',
-    title: 'Cosmocrat | The Governed AI Operating System',
-    description:
-      'An enterprise OS for governed memory and controlled execution. Enforce fail-closed authority and audit-grade run records at the runtime kernel level.',
-    images: ['/og.png'],
+    url: siteConfig.url,
+    siteName: siteConfig.name,
+    title: siteConfig.title,
+    description: siteConfig.description,
+    images: [siteConfig.ogImage],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Cosmocrat | The Governed AI Operating System',
-    description:
-      'An enterprise OS for governed memory and controlled execution. Enforce fail-closed authority and audit-grade run records at the runtime kernel level.',
-    images: ['/og.png'],
+    title: siteConfig.title,
+    description: siteConfig.description,
+    images: [siteConfig.ogImage],
   },
   robots: { index: true, follow: true },
 };
@@ -71,10 +69,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               '@graph': [
                 {
                   '@type': 'Organization',
-                  '@id': 'https://cosmocrat.ai/#organization',
-                  name: 'Cosmocrat',
-                  url: 'https://cosmocrat.ai',
-                  logo: 'https://storage.googleapis.com/cosmocrat/cosmocrat_logos_graphics/cosmocrat-.png',
+                  '@id': `${siteConfig.url}/#organization`,
+                  name: siteConfig.name,
+                  url: siteConfig.url,
+                  logo: siteConfig.logoIcon,
                   description:
                     'Cosmocrat is a Governed AI Operating System providing controlled execution and governed memory for enterprise AI.',
                   parentOrganization: {
@@ -84,17 +82,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 },
                 {
                   '@type': 'WebSite',
-                  '@id': 'https://cosmocrat.ai/#website',
-                  url: 'https://cosmocrat.ai',
-                  name: 'Cosmocrat | Governed AI Operating System',
+                  '@id': `${siteConfig.url}/#website`,
+                  url: siteConfig.url,
+                  name: `${siteConfig.name} | Governed AI Operating System`,
                   publisher: {
-                    '@id': 'https://cosmocrat.ai/#organization',
+                    '@id': `${siteConfig.url}/#organization`,
                   },
                 },
                 {
                   '@type': 'SoftwareApplication',
-                  '@id': 'https://cosmocrat.ai/#software',
-                  name: 'Cosmocrat',
+                  '@id': `${siteConfig.url}/#software`,
+                  name: siteConfig.name,
                   applicationCategory: 'EnterpriseApplication',
                   operatingSystem: 'Cloud, On-Premise',
                   description:

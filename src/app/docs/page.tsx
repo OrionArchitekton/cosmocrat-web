@@ -1,25 +1,14 @@
-import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Shield, Terminal, Settings, Lock } from 'lucide-react';
+import { generatePageMetadata } from '@/lib/metadata';
 
-const baseUrl = 'https://cosmocrat.ai';
-
-export const metadata: Metadata = {
+export const metadata = generatePageMetadata({
   title: 'Documentation Access',
   description:
     'Cosmocrat documentation covers the architecture, APIs, and operational doctrine required to deploy governed AI in production environments.',
-  alternates: { canonical: `${baseUrl}/docs` },
-  openGraph: {
-    title: 'Documentation Access | Cosmocrat',
-    description:
-      'Cosmocrat documentation covers the architecture, APIs, and operational doctrine required to deploy governed AI in production environments.',
-    url: `${baseUrl}/docs`,
-    siteName: 'Cosmocrat',
-    images: ['/og.png'],
-    type: 'website',
-  },
-  robots: { index: false, follow: false },
-};
+  path: '/docs',
+  noIndex: true, // Gated content - not indexed
+});
 
 export default function DocsPage() {
   return (

@@ -1,24 +1,12 @@
-import type { Metadata } from 'next';
 import WaitlistForm from '@/components/v1/WaitlistForm';
+import { generatePageMetadata } from '@/lib/metadata';
 
-const baseUrl = 'https://cosmocrat.ai';
-
-export const metadata: Metadata = {
+export const metadata = generatePageMetadata({
   title: 'Request Early Access',
   description:
     'Request early access to Cosmocrat. We onboard teams deploying AI in production or regulated environments.',
-  alternates: { canonical: `${baseUrl}/waitlist` },
-  openGraph: {
-    title: 'Request Early Access | Cosmocrat',
-    description:
-      'Request early access to Cosmocrat. We onboard teams deploying AI in production or regulated environments.',
-    url: `${baseUrl}/waitlist`,
-    siteName: 'Cosmocrat',
-    images: ['/og.png'],
-    type: 'website',
-  },
-  robots: { index: true, follow: true },
-};
+  path: '/waitlist',
+});
 
 export default function WaitlistPage() {
   return (

@@ -1,31 +1,12 @@
-import type { Metadata } from 'next';
 import Link from 'next/link';
+import { generatePageMetadata } from '@/lib/metadata';
 
-const baseUrl = 'https://cosmocrat.ai';
-
-export const metadata: Metadata = {
+export const metadata = generatePageMetadata({
   title: 'About Cosmocrat',
   description:
     'Cosmocrat is a Governed AI Operating System that provides governed memory and controlled execution with auditability, authority, and fail-closed enforcement.',
-  alternates: { canonical: `${baseUrl}/about` },
-  openGraph: {
-    title: 'About Cosmocrat',
-    description:
-      'Cosmocrat is a Governed AI Operating System that provides governed memory and controlled execution with auditability, authority, and fail-closed enforcement.',
-    url: `${baseUrl}/about`,
-    siteName: 'Cosmocrat',
-    images: ['/og.png'],
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'About Cosmocrat',
-    description:
-      'Cosmocrat is a Governed AI Operating System that provides governed memory and controlled execution with auditability, authority, and fail-closed enforcement.',
-    images: ['/og.png'],
-  },
-  robots: { index: true, follow: true },
-};
+  path: '/about',
+});
 
 export default function AboutPage() {
   return (

@@ -1,8 +1,7 @@
 import { MetadataRoute } from 'next';
+import { siteConfig } from '@/lib/siteConfig';
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = 'https://cosmocrat.ai';
-
   return {
     rules: [
       {
@@ -11,6 +10,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/api/', '/docs'],
       },
     ],
-    sitemap: `${baseUrl}/sitemap.xml`,
+    sitemap: `${siteConfig.url}/sitemap.xml`,
   };
 }

@@ -1,25 +1,13 @@
-import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Mail, MessageSquare, Building } from 'lucide-react';
+import { generatePageMetadata } from '@/lib/metadata';
 
-const baseUrl = 'https://cosmocrat.ai';
-
-export const metadata: Metadata = {
+export const metadata = generatePageMetadata({
   title: 'Contact',
   description:
     'Get in touch with the Cosmocrat team. For early access requests, use our waitlist form.',
-  alternates: { canonical: `${baseUrl}/contact` },
-  openGraph: {
-    title: 'Contact | Cosmocrat',
-    description:
-      'Get in touch with the Cosmocrat team. For early access requests, use our waitlist form.',
-    url: `${baseUrl}/contact`,
-    siteName: 'Cosmocrat',
-    images: ['/og.png'],
-    type: 'website',
-  },
-  robots: { index: true, follow: true },
-};
+  path: '/contact',
+});
 
 export default function ContactPage() {
   return (

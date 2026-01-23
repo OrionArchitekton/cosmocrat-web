@@ -22,7 +22,19 @@ module.exports = {
         display: ['var(--font-orbitron)', 'system-ui', 'sans-serif'],
         mono: ['var(--font-jetbrains)', 'monospace'],
       },
+      typography: {
+        invert: {
+          css: {
+            '--tw-prose-body': '#94A3B8',
+            '--tw-prose-headings': '#E2E8F0',
+            '--tw-prose-links': '#D97706',
+            '--tw-prose-bold': '#E2E8F0',
+            '--tw-prose-quotes': '#94A3B8',
+            '--tw-prose-code': '#E2E8F0',
+          },
+        },
+      },
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/typography')],
 };

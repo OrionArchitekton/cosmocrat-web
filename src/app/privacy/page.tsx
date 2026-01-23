@@ -1,24 +1,12 @@
-import type { Metadata } from 'next';
 import { Lock } from 'lucide-react';
+import { generatePageMetadata } from '@/lib/metadata';
 
-const baseUrl = 'https://cosmocrat.ai';
-
-export const metadata: Metadata = {
+export const metadata = generatePageMetadata({
   title: 'Privacy Policy',
   description:
     'Cosmocrat acts as a data processor for governance metadata. We do not own your data.',
-  alternates: { canonical: `${baseUrl}/privacy` },
-  openGraph: {
-    title: 'Privacy Policy | Cosmocrat',
-    description:
-      'Cosmocrat acts as a data processor for governance metadata. We do not own your data.',
-    url: `${baseUrl}/privacy`,
-    siteName: 'Cosmocrat',
-    images: ['/og.png'],
-    type: 'website',
-  },
-  robots: { index: true, follow: true },
-};
+  path: '/privacy',
+});
 
 export default function PrivacyPage() {
   return (

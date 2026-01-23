@@ -1,22 +1,11 @@
-import type { Metadata } from 'next';
 import { FileText } from 'lucide-react';
+import { generatePageMetadata } from '@/lib/metadata';
 
-const baseUrl = 'https://cosmocrat.ai';
-
-export const metadata: Metadata = {
+export const metadata = generatePageMetadata({
   title: 'Terms of Service',
   description: 'Terms of operation for the Cosmocrat Engine and associated services.',
-  alternates: { canonical: `${baseUrl}/terms` },
-  openGraph: {
-    title: 'Terms of Service | Cosmocrat',
-    description: 'Terms of operation for the Cosmocrat Engine and associated services.',
-    url: `${baseUrl}/terms`,
-    siteName: 'Cosmocrat',
-    images: ['/og.png'],
-    type: 'website',
-  },
-  robots: { index: true, follow: true },
-};
+  path: '/terms',
+});
 
 export default function TermsPage() {
   return (
