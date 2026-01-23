@@ -1,31 +1,29 @@
-import type { MetadataRoute } from 'next';
+import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://cosmocrat.ai';
-  const now = new Date().toISOString();
+  const baseUrl = 'https://cosmocrat.ai';
+  const lastModified = new Date();
 
-  // Public indexed routes only (excludes noindex pages like /docs if gated)
-  const routes = [
-    { path: '/', priority: 1.0 },
-    { path: '/waitlist', priority: 0.9 },
-    { path: '/about', priority: 0.8 },
-    { path: '/contact', priority: 0.7 },
-    // Platform concept pages (SEO pillars)
-    { path: '/decision-exhaust', priority: 0.8 },
-    { path: '/runtime-governance', priority: 0.8 },
-    { path: '/gate-system', priority: 0.8 },
-    { path: '/chronicle-receipts', priority: 0.8 },
-    { path: '/drift-guard', priority: 0.8 },
-    { path: '/memory-infrastructure', priority: 0.8 },
-    // Legal
-    { path: '/privacy', priority: 0.5 },
-    { path: '/terms', priority: 0.5 },
+  // Public pages to be indexed
+  const publicPages = [
+    '',
+    '/about',
+    '/waitlist',
+    '/contact',
+    '/privacy',
+    '/terms',
+    '/decision-exhaust',
+    '/runtime-governance',
+    '/gate-system',
+    '/chronicle-receipts',
+    '/drift-guard',
+    '/memory-infrastructure',
   ];
 
-  return routes.map(({ path, priority }) => ({
-    url: `${siteUrl}${path}`,
-    lastModified: now,
-    changeFrequency: 'weekly' as const,
-    priority,
+  return publicPages.map((route) => ({
+    url: `${baseUrl}${route}`,
+    lastModified,
+    changeFrequency: route === '' ? 'weekly' : 'monthly',
+    priority: route === '' ? 1 : route.startsWith('/decision') || route.startsWith('/runtime') || route.startsWith('/gate') || route.startsWith('/chronicle') || route.startsWith('/drift') || route.startsWith('/memory') ? 0.8 : 0.6,
   }));
 }

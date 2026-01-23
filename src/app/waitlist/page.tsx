@@ -1,24 +1,43 @@
-import { Suspense } from 'react';
-import WaitlistForm from '@/components/WaitlistForm';
+import type { Metadata } from 'next';
+import WaitlistForm from '@/components/v1/WaitlistForm';
 
-export const metadata = {
-  title: 'Waitlist'
+const baseUrl = 'https://cosmocrat.ai';
+
+export const metadata: Metadata = {
+  title: 'Request Early Access',
+  description:
+    'Request early access to Cosmocrat. We onboard teams deploying AI in production or regulated environments.',
+  alternates: { canonical: `${baseUrl}/waitlist` },
+  openGraph: {
+    title: 'Request Early Access | Cosmocrat',
+    description:
+      'Request early access to Cosmocrat. We onboard teams deploying AI in production or regulated environments.',
+    url: `${baseUrl}/waitlist`,
+    siteName: 'Cosmocrat',
+    images: ['/og.png'],
+    type: 'website',
+  },
+  robots: { index: true, follow: true },
 };
 
 export default function WaitlistPage() {
   return (
-    <div className="mx-auto flex max-w-2xl flex-col items-start gap-6">
-      <h1 className="text-3xl font-semibold">Request Early Access</h1>
-      <p className="max-w-xl text-[var(--muted)]">
-        We&apos;ll reach out with pilot availability and deployment options.
-      </p>
+    <div className="bg-cosmo-dark min-h-screen flex items-center justify-center py-24 px-4">
+      <div className="max-w-2xl w-full">
+        <h1 className="text-4xl font-bold text-white mb-6">Request Early Access</h1>
 
-      <Suspense fallback={<div className="h-32 w-full skeleton rounded-lg" />}>
-        <WaitlistForm variant="page" />
-      </Suspense>
+        {/* Selectivity */}
+        <p className="text-amber-500 font-medium mb-4">
+          Early access is limited to teams deploying AI in production or regulated environments.
+        </p>
 
-      <div className="text-sm text-[var(--muted)]">
-        Prefer email? Write us at <a className="hover:text-white" href="mailto:contact@cosmocrat.ai">contact@cosmocrat.ai</a>.
+        {/* Enterprise Subhead */}
+        <p className="text-xl text-slate-400 mb-10">
+          We&apos;ll follow up with pilot availability, deployment options, and governance
+          requirements.
+        </p>
+
+        <WaitlistForm />
       </div>
     </div>
   );

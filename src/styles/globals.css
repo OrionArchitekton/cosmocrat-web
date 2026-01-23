@@ -3,33 +3,29 @@
 @tailwind utilities;
 
 :root {
-  /* V1 palette (primary) */
+  /* V1 palette */
   --bg: #0B1120;
   --fg: #E2E8F0;
   --muted: #94A3B8;
   --card: #151F32;
   --border: #1E293B;
   --accent: #D97706;
-  /* Legacy tokens */
-  --copper: #B87654;
-  --navy: #0D1B2A;
 }
 
-html,
-body {
-  height: 100%;
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--bg);
+  background-color: var(--bg);
   color: var(--fg);
 }
 
 ::selection {
-  background: rgba(217, 119, 6, 0.35);
+  background-color: rgba(217, 119, 6, 0.3);
+  color: white;
 }
 
-/* Wrap @apply in @layer to compile correctly */
 @layer base {
   ::-webkit-scrollbar {
     width: 8px;
@@ -48,22 +44,4 @@ body {
   :focus-visible {
     @apply outline-none ring-2 ring-cosmo-accent ring-offset-2 ring-offset-cosmo-dark;
   }
-}
-
-/* Accent gradient utility (v1) */
-.accent-gradient {
-  background: linear-gradient(135deg, #D97706 0%, #F59E0B 100%);
-}
-
-.accent-gradient-hover:hover {
-  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
-}
-
-/* Legacy copper gradient (backward compat) */
-.copper-gradient {
-  background: linear-gradient(135deg, #B87654 0%, #E6B089 100%);
-}
-
-.copper-gradient-hover:hover {
-  background: linear-gradient(135deg, #E6B089 0%, #B87654 100%);
 }

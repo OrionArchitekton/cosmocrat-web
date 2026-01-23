@@ -26,12 +26,12 @@ export default function Hero() {
 
         <div className="text-xl md:text-2xl text-slate-400 mb-12 max-w-2xl mx-auto font-light leading-relaxed">
           <p>
-            Cosmocrat runs in your environment to enforce fail-closed AI execution,
-            governed memory, and audit-grade run records.
+            Cosmocrat runs in your environment to enforce fail-closed AI execution, governed memory,
+            and audit-grade run records.
           </p>
           <p className="mt-4 text-lg text-slate-500 font-normal">
-            Unlike orchestration platforms, Cosmocrat enforces governance at runtime
-            — not after the fact.
+            Unlike orchestration platforms, Cosmocrat enforces governance at runtime — not after the
+            fact.
           </p>
         </div>
 

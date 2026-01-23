@@ -38,11 +38,7 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-sm font-medium transition-colors ${
-                  pathname === link.href
-                    ? 'text-cosmo-accent'
-                    : 'text-slate-300 hover:text-cosmo-accent'
-                }`}
+                className="text-sm font-medium text-slate-300 hover:text-cosmo-accent transition-colors"
               >
                 {link.label}
               </Link>
@@ -77,11 +73,7 @@ export default function Header() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setIsMenuOpen(false)}
-                className={`block px-3 py-2 rounded-md text-base font-medium ${
-                  pathname === link.href
-                    ? 'text-cosmo-accent bg-slate-800'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-800'
-                }`}
+                className="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800"
               >
                 {link.label}
               </Link>
