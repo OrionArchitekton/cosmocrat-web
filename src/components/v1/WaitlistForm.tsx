@@ -40,9 +40,17 @@ export default function WaitlistForm() {
         body: JSON.stringify(payload),
       });
 
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || 'Failed to submit');
+      // Always parse JSON response (belt + suspenders)
+      let data: { ok?: boolean; error?: string };
+      try {
+        data = await res.json();
+      } catch {
+        throw new Error('Invalid server response');
+      }
+
+      // Check both HTTP status and response payload
+      if (!res.ok || !data.ok) {
+        throw new Error(data.error || 'Request failed');
       }
 
       setStatus('success');
@@ -51,7 +59,12 @@ export default function WaitlistForm() {
       setFirstRun('');
     } catch (err) {
       setStatus('error');
-      setErrorMessage(err instanceof Error ? err.message : 'Something went wrong');
+      // User-friendly error message instead of raw JS errors
+      const rawError = err instanceof Error ? err.message : 'Unknown error';
+      console.error('Waitlist submission error:', rawError);
+      setErrorMessage(
+        "We couldn't process your request. Please try again or email contact@cosmocrat.ai."
+      );
     }
   };
 
