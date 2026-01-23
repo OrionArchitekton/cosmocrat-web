@@ -1,60 +1,57 @@
 import type { Metadata } from 'next';
-import { Inter, Orbitron, JetBrains_Mono } from 'next/font/google';
 import Script from 'next/script';
-
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { site } from '@/content/site';
-
+import { Inter, Orbitron, JetBrains_Mono } from 'next/font/google';
+import Header from '@/components/v1/Header';
+import Footer from '@/components/v1/Footer';
+import { siteConfig } from '@/lib/siteConfig';
 import '../styles/globals.css';
 
 const GTM_ID = 'GTM-K3RWK8SD';
 
 const inter = Inter({
   subsets: ['latin'],
-  variable: '--font-sans',
+  variable: '--font-inter',
   display: 'swap',
 });
 
 const orbitron = Orbitron({
   subsets: ['latin'],
-  variable: '--font-heading',
+  variable: '--font-orbitron',
   display: 'swap',
 });
 
 const jetbrains = JetBrains_Mono({
   subsets: ['latin'],
-  variable: '--font-mono',
+  variable: '--font-jetbrains',
   display: 'swap',
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://cosmocrat.ai';
-
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
   title: {
-    default: site.title,
-    template: `%s | ${site.name}`
+    default: siteConfig.title,
+    template: `%s | ${siteConfig.name}`,
   },
-  description: site.description,
+  description: siteConfig.description,
+  metadataBase: new URL(siteConfig.url),
   manifest: '/site.webmanifest',
   icons: {
     icon: '/favicon.jpg',
     apple: '/favicon.jpg',
   },
   openGraph: {
-    title: site.title,
-    description: site.description,
-    url: siteUrl,
-    siteName: site.name,
     type: 'website',
-    images: ["/og.png"]
+    locale: 'en_US',
+    url: siteConfig.url,
+    siteName: siteConfig.name,
+    title: siteConfig.title,
+    description: siteConfig.description,
+    images: [siteConfig.ogImage],
   },
   twitter: {
     card: 'summary_large_image',
-    title: site.title,
-    description: site.description,
-    images: ["/og.png"]
+    title: siteConfig.title,
+    description: siteConfig.description,
+    images: [siteConfig.ogImage],
   },
   robots: { index: true, follow: true },
 };
@@ -62,7 +59,58 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${orbitron.variable} ${jetbrains.variable}`}>
-      <body className="font-sans antialiased relative bg-cosmo-dark text-cosmo-text">
+      <head>
+        {/* JSON-LD Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@graph': [
+                {
+                  '@type': 'Organization',
+                  '@id': `${siteConfig.url}/#organization`,
+                  name: siteConfig.name,
+                  url: siteConfig.url,
+                  logo: siteConfig.logoIcon,
+                  description:
+                    'Cosmocrat is a Governed AI Operating System providing controlled execution and governed memory for enterprise AI.',
+                  parentOrganization: {
+                    '@type': 'Organization',
+                    name: 'Orion Apex Capital',
+                  },
+                },
+                {
+                  '@type': 'WebSite',
+                  '@id': `${siteConfig.url}/#website`,
+                  url: siteConfig.url,
+                  name: `${siteConfig.name} | Governed AI Operating System`,
+                  publisher: {
+                    '@id': `${siteConfig.url}/#organization`,
+                  },
+                },
+                {
+                  '@type': 'SoftwareApplication',
+                  '@id': `${siteConfig.url}/#software`,
+                  name: siteConfig.name,
+                  applicationCategory: 'EnterpriseApplication',
+                  operatingSystem: 'Cloud, On-Premise',
+                  description:
+                    'An AI Operating System that enforces fail-closed execution, governed memory, and audit-grade run records.',
+                  offers: {
+                    '@type': 'Offer',
+                    availability: 'https://schema.org/PreOrder',
+                    price: '0',
+                    priceCurrency: 'USD',
+                    description: 'Request Early Access for Enterprise Pilot',
+                  },
+                },
+              ],
+            }),
+          }}
+        />
+      </head>
+      <body className="min-h-screen flex flex-col font-sans text-cosmo-text selection:bg-cosmo-accent selection:text-white bg-cosmo-dark">
         {/* GTM noscript - immediately after body open */}
         <noscript>
           <iframe
@@ -73,21 +121,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           />
         </noscript>
 
-        {/* Subtle background watermark */}
-        <div 
-          className="fixed inset-0 pointer-events-none z-0 opacity-[0.03]"
-          style={{
-            backgroundImage: 'url(/brand/cosmocrat-sigil.svg)',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center center',
-            backgroundSize: '50vmin',
-          }}
-        />
-        <div className="relative z-10">
-          <Header />
-          <main className="pt-16">{children}</main>
-          <Footer />
-        </div>
+        <Header />
+        <main className="flex-grow pt-16">{children}</main>
+        <Footer />
 
         {/* GTM script - afterInteractive to avoid blocking render */}
         <Script

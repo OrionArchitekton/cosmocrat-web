@@ -34,22 +34,29 @@ export default function Header() {
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex space-x-8 items-center">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`text-sm font-medium transition-colors ${
-                  pathname === link.href
-                    ? 'text-cosmo-accent'
-                    : 'text-slate-300 hover:text-cosmo-accent'
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`text-sm font-medium transition-colors ${
+                    isActive
+                      ? 'text-cosmo-accent'
+                      : 'text-slate-300 hover:text-cosmo-accent'
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
             <Link
               href="/waitlist"
-              className="bg-cosmo-accent/10 border border-cosmo-accent/50 text-cosmo-accent hover:bg-cosmo-accent hover:text-white px-4 py-2 rounded text-sm font-medium transition-all duration-300"
+              className={`px-4 py-2 rounded text-sm font-medium transition-all duration-300 ${
+                pathname === '/waitlist'
+                  ? 'bg-cosmo-accent text-white'
+                  : 'bg-cosmo-accent/10 border border-cosmo-accent/50 text-cosmo-accent hover:bg-cosmo-accent hover:text-white'
+              }`}
             >
               Request Early Access
             </Link>
@@ -72,20 +79,23 @@ export default function Header() {
       {isMenuOpen && (
         <div className="md:hidden bg-cosmo-card border-b border-slate-800">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setIsMenuOpen(false)}
-                className={`block px-3 py-2 rounded-md text-base font-medium ${
-                  pathname === link.href
-                    ? 'text-cosmo-accent bg-slate-800'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-800'
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setIsMenuOpen(false)}
+                  className={`block px-3 py-2 rounded-md text-base font-medium ${
+                    isActive
+                      ? 'text-cosmo-accent bg-slate-800'
+                      : 'text-slate-300 hover:text-white hover:bg-slate-800'
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
             <Link
               href="/waitlist"
               onClick={() => setIsMenuOpen(false)}
