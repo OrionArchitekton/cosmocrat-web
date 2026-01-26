@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 import { Inter, Orbitron, JetBrains_Mono } from 'next/font/google';
 import Header from '@/components/v1/Header';
@@ -26,6 +26,11 @@ const jetbrains = JetBrains_Mono({
   display: 'swap',
 });
 
+export const viewport: Viewport = {
+  themeColor: '#0B0B0F',
+};
+
+
 export const metadata: Metadata = {
   title: {
     default: siteConfig.title,
@@ -35,8 +40,21 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   manifest: '/site.webmanifest',
   icons: {
-    icon: '/favicon.jpg',
-    apple: '/favicon.jpg',
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon-32x32.png', type: 'image/png', sizes: '32x32' },
+      { url: '/favicon-16x16.png', type: 'image/png', sizes: '16x16' },
+      { url: '/favicon-48x48.png', type: 'image/png', sizes: '48x48' },
+      { url: '/favicon-96x96.png', type: 'image/png', sizes: '96x96' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+
+  },
+  other: {
+    'msapplication-TileColor': '#0B0B0F',
+    'msapplication-config': '/browserconfig.xml',
   },
   openGraph: {
     type: 'website',

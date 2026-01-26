@@ -1,0 +1,107 @@
+{
+  "project": "Cosmocrat",
+  "generated_at_utc": "2026-01-26T21:47:19Z",
+  "source_image": "cosmocrat-.png",
+  "theme_color": "#0B0B0F",
+  "background_color": "#0B0B0F",
+  "assets": [
+    {
+      "file": "README.md",
+      "bytes": 1361,
+      "sha256": "7847f16c1dfcada79b77576261c81c7d1d6f2238158a097175eb7a05c75f1b2b",
+      "format": "Markdown"
+    },
+    {
+      "file": "android-chrome-192x192.png",
+      "bytes": 31337,
+      "sha256": "41151be04ebb9e8d885af7abe9a5cd4e42c09a1edd093aec41b9d787aedfba61",
+      "format": "PNG",
+      "width": 192,
+      "height": 192
+    },
+    {
+      "file": "android-chrome-512x512.png",
+      "bytes": 166087,
+      "sha256": "44586ba900e7ffb0a9ab9dd3c97d17b3eba6b9f85680189b4090335b6714e08c",
+      "format": "PNG",
+      "width": 512,
+      "height": 512
+    },
+    {
+      "file": "apple-touch-icon.png",
+      "bytes": 24785,
+      "sha256": "2e3570e64b3cc6a945f7d7e4f19c84745f23ea9a7ff829ba8e794097d5d091eb",
+      "format": "PNG",
+      "width": 180,
+      "height": 180
+    },
+    {
+      "file": "browserconfig.xml",
+      "bytes": 222,
+      "sha256": "3017624e3a069fd6c164c3d91db2ad27a697fd6ab1456b1005f6e8d4e39074c3",
+      "format": "XML"
+    },
+    {
+      "file": "favicon-16x16.png",
+      "bytes": 762,
+      "sha256": "8bfdd93141ace40cb9cf197a58fd81d1a77e92ee1449b880246cfe6145c2c50a",
+      "format": "PNG",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "file": "favicon-32x32.png",
+      "bytes": 1852,
+      "sha256": "95e148fbe2e59d49b0592b17d4de576cf52ebd220e8c6865ddb9bddaf3547ae2",
+      "format": "PNG",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "file": "favicon-48x48.png",
+      "bytes": 3173,
+      "sha256": "b029b6beb9b3b10314dcb62a9e6877bc19e4c3173cc3dea6a038d74795d3bcc1",
+      "format": "PNG",
+      "width": 48,
+      "height": 48
+    },
+    {
+      "file": "favicon-96x96.png",
+      "bytes": 9062,
+      "sha256": "ef36ff75d1ea0c68a36ce7e64d220273b43f9dd782bc22ff374aa4fb9763e3e4",
+      "format": "PNG",
+      "width": 96,
+      "height": 96
+    },
+    {
+      "file": "favicon.ico",
+      "bytes": 6766,
+      "sha256": "238071e708b4ce99371cbf94a9049d37aefac80d3ec9ae7b2c2585d4f263956e",
+      "format": "ICO",
+      "sizes": [
+        16,
+        32,
+        48
+      ]
+    },
+    {
+      "file": "metadata.json",
+      "bytes": 2693,
+      "sha256": "e77fb6808dbcf935dd63b21091e3a5de551c91fdd729360651dd1d62ec767342"
+    },
+    {
+      "file": "mstile-150x150.png",
+      "bytes": 20731,
+      "sha256": "5cc6a34f4f3c6b692b4058ddc4300a4a270b95797ed609d4870fb8e769737e80",
+      "format": "PNG",
+      "width": 150,
+      "height": 150
+    },
+    {
+      "file": "site.webmanifest",
+      "bytes": 378,
+      "sha256": "da09e93a85e9d25d2cdb9027fdbffb76d7707d69a24d587d16be8b89ee101824",
+      "format": "WebManifest"
+    }
+  ]
+}
