@@ -1,102 +1,257 @@
-# cosmocrat.ai
+* * *
 
-Marketing site for **Cosmocrat** (landing + waitlist + docs link). No pricing page yet.
+`cosmocrat-web`
 
-## Secrets Management
+**Marketing & Authority Surface for Cosmocrat (cosmocrat.ai)**Landing, pillar pages, and controlled early-access intake for the **AI Operating System for Governed Memory and Controlled Execution**.
 
-**Doppler is the single source of truth for all secrets.** `.env` files are local-only fallback.
+This repository **does not contain the Cosmocrat kernel or execution engine**.It exists to communicate, define, and qualify access to the system.
 
-### Setup Doppler
+* * *
 
-```bash
-# Install Doppler CLI
-# See: https://docs.doppler.com/docs/install-cli
+Purpose of this Repository
 
-# Login and setup project
-doppler login
-doppler setup  # Select cosmocrat-web project
-```
+This repo serves three roles:
 
-### Local Development
+1. **Category Definition**
+  
+  * Establishes _Governed AI Operating Systems_ as a first-class category
+    
+  * Publishes canonical explanations (Runtime Governance, Gate System, Decision Exhaust, Drift Guard, Chronicle Receipts, Memory as Infrastructure)
+    
+2. **Authority Surface**
+  
+  * Teaches search engines, operators, and buyers _what Cosmocrat is_ (and is not)
+    
+  * Reinforces runtime governance, authority, receipts, and fail-closed semantics
+    
+3. **Early Access Intake**
+  
+  * Collects and qualifies requests for pilot deployments
+    
+  * Routes serious teams into manual onboarding
+    
 
-```bash
-npm install
-doppler run --config dev -- npm run dev
-```
+This repo is intentionally **content-forward, stable, and slow-changing**.
 
-Open http://localhost:3000
+* * *
 
-### Environment Variables (add to Doppler)
+What This Repo Is **Not**
 
-| Secret | Description | Default |
-|--------|-------------|---------|
-| NEXT_PUBLIC_SITE_URL | Canonical site URL | https://cosmocrat.ai |
-| SITE_STAGE | `coming_soon` or `live` | coming_soon |
-| CONTACT_EMAIL | Footer/header mailto | contact@cosmocrat.ai |
-| DOCS_URL | External docs URL (optional) | |
-| SUPABASE_URL | Supabase project URL | |
-| SUPABASE_SERVICE_ROLE_KEY | Server-only service role key | |
-| RESEND_API_KEY | Resend API key | |
-| RESEND_FROM_EMAIL | Email sender address | contact@cosmocrat.ai |
-| RESEND_REPLY_TO | Reply-to header | contact@cosmocrat.ai |
-| WAITLIST_NOTIFY_EMAIL | Internal notification recipient | |
-| IP_HASH_SALT | Salt for hashing IPs (privacy) | |
+* ❌ Not the Cosmocrat kernel
+  
+* ❌ Not an agent framework
+  
+* ❌ Not an AI model or inference stack
+  
+* ❌ Not a playground or demo environment
+  
+* ❌ Not a pricing or sales funnel
+  
 
-## Supabase Schema
+Those concerns live elsewhere (`cosmocrat-core`, operator repos, or private infra).
 
-Create a table named `waitlist_signups` in the cosmocrat Supabase project:
+* * *
 
-```sql
-create table if not exists public.waitlist_signups (
-  id uuid primary key default gen_random_uuid(),
-  email text not null,
-  email_norm text not null,
-  name text,
-  source text default 'cosmocrat.ai',
-  landing_path text,
-  referrer text,
-  utm_source text,
-  utm_medium text,
-  utm_campaign text,
-  utm_content text,
-  utm_term text,
-  user_agent text,
-  ip_hash text,
-  created_at timestamptz not null default now()
-);
+Stack Overview
 
-create unique index if not exists waitlist_signups_email_norm_unique
-  on public.waitlist_signups (email_norm);
+* **Framework:** Next.js (App Router)
+  
+* **Hosting:** Vercel
+  
+* **Secrets:** Doppler (single source of truth)
+  
+* **Database:** Supabase (early access intake only)
+  
+* **Email:** Resend (notifications + confirmations)
+  
 
-create index if not exists waitlist_signups_created_at_idx
-  on public.waitlist_signups (created_at desc);
+* * *
 
-alter table public.waitlist_signups enable row level security;
-```
+Local Development
 
-Notes:
-- The API uses the Supabase **service role key** (server-only) to insert rows.
-- Duplicate emails (by `email_norm`) are treated as an idempotent success.
-- `email` stores the original input, `email_norm` stores the normalized (lowercase) version.
+### Requirements
 
-## Resend Notes
+* Node.js 18+ (20 recommended)
+  
+* npm
+  
+* Doppler CLI
+  
+* Supabase project
+  
+* Resend API key
+  
 
-If you use `contact@cosmocrat.ai` as the sender, you must verify the domain in Resend.
+### Install Doppler
 
-## Deploy to Vercel
+    brew install dopplerhq/cli
+    # or see https://docs.doppler.com/docs/install-cli
 
-1. Create GitHub repo `cosmocrat-web` (OrionArchitekton org)
-2. Push code to `main`
-3. Import to Vercel
-4. Install Doppler Vercel integration at vercel.com/integrations/doppler
-5. Link to `cosmocrat-web` project, `prd` config
-6. Deploy
+### Login & Select Project
 
-Secrets sync automatically from Doppler to Vercel.
+    doppler login
+    doppler setup   # select cosmocrat-web + config (dev/stg/prd)
 
-## Design System
+### Run Locally
 
-This site uses the same design tokens as `chat.orionbot.online` for future integration:
+    npm install
+    doppler run --config dev -- npm run dev
 
-- **Colors**: Navy-900 (#0D1B2A), Navy-800 (#14273A), Copper (#B87654), Cosmos Blue (#0c8ee9)
-- **Fonts**: Inter (body), Orbitron (headings), JetBrains Mono (code)
+Open: [http://localhost:3000](http://localhost:3000/)
+
+* * *
+
+Environment Variables (Doppler)
+
+Doppler is the **only** source of truth.`.env` files are local fallback only.
+
+| Variable | Description |
+| --- | --- |
+| `NEXT_PUBLIC_SITE_URL` | Canonical URL (e.g. [https://www.cosmocrat.ai](https://www.cosmocrat.ai/)) |
+| `SITE_STAGE` | `dev`, `stg`, or `prd` |
+| `CONTACT_EMAIL` | Public contact address |
+| `DOCS_URL` | Optional external docs URL (if enabled) |
+| `SUPABASE_URL` | Supabase project URL |
+| `SUPABASE_SERVICE_ROLE_KEY` | Server-only insert key |
+| `RESEND_API_KEY` | Email provider key |
+| `RESEND_FROM_EMAIL` | Verified sender |
+| `WAITLIST_NOTIFY_EMAIL` | Internal notification target |
+| `IP_HASH_SALT` | Salt for hashing IPs (privacy) |
+
+⚠️ **Never expose `SUPABASE_SERVICE_ROLE_KEY` client-side.**
+
+* * *
+
+Supabase Schema (Early Access)
+
+This repo only writes **governance-safe metadata**, not AI payloads. create table if not exists public.waitlist_signups ( id uuid primary key default gen_random_uuid(), email text not null, email_norm text not null, name text, message text, source text default 'cosmocrat.ai', landing_path text, referrer text, utm_source text, utm_medium text, utm_campaign text, utm_content text, utm_term text, user_agent text, ip_hash text, created_at timestamptz not null default now() ); create unique index if not exists waitlist_signups_email_norm_unique on public.waitlist_signups (email_norm);
+
+### Behavior
+
+* Idempotent by `email_norm`
+  
+* Raw IPs never stored (hash only)
+  
+* No prompt, decision, or model data stored
+  
+
+* * *
+
+Email Behavior (Resend)
+
+Used for:
+
+* Internal notification on new early-access request
+  
+* Optional confirmation to submitter
+  
+
+If using `contact@cosmocrat.ai`:
+
+* Domain **must** be verified in Resend
+
+* * *
+
+Canonical Pages (Do Not Rename Lightly)
+
+These pages define the category and are referenced by search synthesis:
+
+* `/about` — Entity & definition
+  
+* `/runtime-governance`
+  
+* `/gate-system`
+  
+* `/decision-exhaust`
+  
+* `/drift-guard`
+  
+* `/chronicle-receipts`
+  
+* `/memory-infrastructure`
+  
+* `/docs` — gated access explanation
+  
+* `/request-access`
+  
+
+Renaming, merging, or deleting these pages will reset indexing.
+
+* * *
+
+SEO & Indexing Guardrails
+
+This site intentionally uses **layered content**:
+
+* **Hero:** Minimal, decisive
+  
+* **Narrative:** Visual + short text
+  
+* **SEO spine:** Text-forward sections & FAQs
+  
+
+Rules:
+
+* Always keep real text in the DOM
+  
+* Never replace explanation with video only
+  
+* Avoid frequent copy churn during indexing windows
+  
+* Maintain consistent terminology across all pages
+  
+
+* * *
+
+Deployment (Vercel)
+
+### One-Time Setup
+
+1. Import repo into Vercel
+  
+2. Install Doppler Vercel integration
+  
+3. Link Doppler project + config
+  
+4. Set production domain
+  
+5. Deploy
+  
+
+### Pre-Deploy Checklist
+
+* Canonical URL correct
+  
+* JSON-LD present (Organization, WebSite, SoftwareApplication)
+  
+* Footer links wired correctly
+  
+* Robots + sitemap configured intentionally
+  
+
+* * *
+
+Governance Alignment
+
+This repo must **match Cosmocrat doctrine**:
+
+* Fail-closed semantics
+  
+* Authority before execution
+  
+* Receipts as evidence, not logs
+  
+* Memory admissibility ≠ existence
+  
+* Governance is infrastructure, not policy
+  
+
+If copy conflicts with system behavior, **system behavior wins**.
+
+* * *
+
+License & Ownership
+
+© Orion Apex Capital.All rights reserved.
+
+* * *
