@@ -19,11 +19,12 @@ export function generatePageMetadata({
   noIndex = false,
 }: PageMetadataOptions): Metadata {
   const url = `${siteConfig.url}${path}`;
+  const canonicalUrl = `https://www.cosmocrat.ai${path}`;
 
   return {
     title,
     description,
-    alternates: { canonical: url },
+    alternates: { canonical: canonicalUrl },
     openGraph: {
       title: `${title} | ${siteConfig.name}`,
       description,

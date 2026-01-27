@@ -8,22 +8,33 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const publicPages = [
     '',
     '/about',
-    '/waitlist',
-    '/contact',
-    '/privacy',
-    '/terms',
-    '/decision-exhaust',
     '/runtime-governance',
     '/gate-system',
-    '/chronicle-receipts',
+    '/decision-exhaust',
     '/drift-guard',
+    '/chronicle-receipts',
     '/memory-infrastructure',
+    '/privacy',
+    '/docs',
+    '/request-access',
   ];
 
-  return publicPages.map((route) => ({
-    url: `${siteConfig.url}${route}`,
-    lastModified,
-    changeFrequency: route === '' ? 'weekly' : 'monthly',
-    priority: route === '' ? 1 : route.startsWith('/decision') || route.startsWith('/runtime') || route.startsWith('/gate') || route.startsWith('/chronicle') || route.startsWith('/drift') || route.startsWith('/memory') ? 0.8 : 0.6,
-  }));
+  return publicPages.map((route) => {
+    const isLanding = route === '';
+    const isPillar = [
+      '/runtime-governance',
+      '/gate-system',
+      '/decision-exhaust',
+      '/drift-guard',
+      '/chronicle-receipts',
+      '/memory-infrastructure'
+    ].includes(route);
+
+    return {
+      url: `https://www.cosmocrat.ai${route}`,
+      lastModified,
+      changeFrequency: isLanding ? 'weekly' : isPillar ? 'monthly' : 'yearly',
+      priority: isLanding ? 1.0 : isPillar ? 0.8 : route === '/docs' ? 0.7 : 0.5,
+    };
+  });
 }

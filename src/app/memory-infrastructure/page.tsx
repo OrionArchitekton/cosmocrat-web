@@ -2,7 +2,7 @@ import MemoryInfrastructureContent from '@/components/v1/pages/MemoryInfrastruct
 import { generatePageMetadata } from '@/lib/metadata';
 
 export const metadata = generatePageMetadata({
-  title: 'Memory as Infrastructure | Governed AI Context',
+  title: 'Memory Infrastructure',
   description:
     'Treat AI memory as a managed resource, not a log. Enforce lane isolation and authority-scoped retrieval to prevent context contamination.',
   path: '/memory-infrastructure',

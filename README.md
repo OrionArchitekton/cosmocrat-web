@@ -255,3 +255,11 @@ License & Ownership
 © Orion Apex Capital.All rights reserved.
 
 * * *
+
+## Verification
+
+After deploy:
+* `curl -I https://www.cosmocrat.ai/ | grep -i robots` (Should be empty on prod)
+* `curl https://www.cosmocrat.ai/robots.txt`
+* `curl https://www.cosmocrat.ai/sitemap.xml | head`
+

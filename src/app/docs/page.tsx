@@ -3,11 +3,11 @@ import { Shield, Terminal, Settings, Lock } from 'lucide-react';
 import { generatePageMetadata } from '@/lib/metadata';
 
 export const metadata = generatePageMetadata({
-  title: 'Documentation Access',
+  title: 'Documentation',
   description:
     'Cosmocrat documentation covers the architecture, APIs, and operational doctrine required to deploy governed AI in production environments.',
   path: '/docs',
-  noIndex: true, // Gated content - not indexed
+
 });
 
 export default function DocsPage() {

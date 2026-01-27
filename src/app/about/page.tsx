@@ -2,9 +2,9 @@ import Link from 'next/link';
 import { generatePageMetadata } from '@/lib/metadata';
 
 export const metadata = generatePageMetadata({
-  title: 'About Cosmocrat',
+  title: 'About',
   description:
-    'Cosmocrat is a Governed AI Operating System that provides governed memory and controlled execution with auditability, authority, and fail-closed enforcement.',
+    'Cosmocrat is the AI Operating System for governed memory and controlled execution, providing auditability, authority, and fail-closed enforcement at the runtime level.',
   path: '/about',
 });
 

@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   async headers() {
-    return [
+    const headers = [
       {
         source: '/(.*)',
         headers: [
@@ -14,6 +14,25 @@ const nextConfig = {
         ]
       }
     ];
+
+    // 1) Production detection must be unambiguous
+    // Preferred (Vercel): VERCEL_ENV === "production" => PROD
+    const isProd = process.env.VERCEL_ENV === 'production' || process.env.SITE_STAGE === 'prd';
+
+    // 2) Never "noindex" production by mistake
+    if (!isProd) {
+      headers.push({
+        source: '/:path*',
+        headers: [
+          {
+            key: 'X-Robots-Tag',
+            value: 'noindex, nofollow',
+          },
+        ],
+      });
+    }
+
+    return headers;
   }
 };
 

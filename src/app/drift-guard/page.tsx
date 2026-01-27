@@ -2,7 +2,7 @@ import DriftGuardContent from '@/components/v1/pages/DriftGuardContent';
 import { generatePageMetadata } from '@/lib/metadata';
 
 export const metadata = generatePageMetadata({
-  title: 'Drift Guard | Continuous AI Integrity Detection',
+  title: 'Drift Guard',
   description:
     'Detect behavioral and policy divergence in real-time. Identify when authorized intent decouples from actual system execution.',
   path: '/drift-guard',

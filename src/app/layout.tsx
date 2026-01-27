@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
-  metadataBase: new URL(siteConfig.url),
+  metadataBase: new URL('https://www.cosmocrat.ai'),
   manifest: '/site.webmanifest',
   icons: {
     icon: [
@@ -120,7 +120,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     availability: 'https://schema.org/PreOrder',
                     price: '0',
                     priceCurrency: 'USD',
-                    description: 'Request Early Access for Enterprise Pilot',
+                    description:
+                      'Cosmocrat is the AI Operating System for governed memory and controlled execution.',
                   },
                 },
               ],
