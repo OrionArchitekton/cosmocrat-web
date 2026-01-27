@@ -6,10 +6,12 @@ import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 
 const navLinks = [
+  { label: 'Platform', href: '/platform' },
   { label: 'About', href: '/about' },
   { label: 'Docs', href: '/docs' },
   { label: 'Contact', href: '/contact' },
 ];
+
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -40,11 +42,10 @@ export default function Header() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`text-sm font-medium transition-colors ${
-                    isActive
+                  className={`text-sm font-medium transition-colors ${isActive
                       ? 'text-cosmo-accent'
                       : 'text-slate-300 hover:text-cosmo-accent'
-                  }`}
+                    }`}
                 >
                   {link.label}
                 </Link>
@@ -52,11 +53,10 @@ export default function Header() {
             })}
             <Link
               href="/waitlist"
-              className={`px-4 py-2 rounded text-sm font-medium transition-all duration-300 ${
-                pathname === '/waitlist'
+              className={`px-4 py-2 rounded text-sm font-medium transition-all duration-300 ${pathname === '/waitlist'
                   ? 'bg-cosmo-accent text-white'
                   : 'bg-cosmo-accent/10 border border-cosmo-accent/50 text-cosmo-accent hover:bg-cosmo-accent hover:text-white'
-              }`}
+                }`}
             >
               Request Early Access
             </Link>
@@ -86,11 +86,10 @@ export default function Header() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setIsMenuOpen(false)}
-                  className={`block px-3 py-2 rounded-md text-base font-medium ${
-                    isActive
+                  className={`block px-3 py-2 rounded-md text-base font-medium ${isActive
                       ? 'text-cosmo-accent bg-slate-800'
                       : 'text-slate-300 hover:text-white hover:bg-slate-800'
-                  }`}
+                    }`}
                 >
                   {link.label}
                 </Link>

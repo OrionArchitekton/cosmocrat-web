@@ -7,6 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Public pages to be indexed
   const publicPages = [
     '',
+    '/platform',
     '/about',
     '/runtime-governance',
     '/gate-system',
@@ -21,6 +22,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return publicPages.map((route) => {
     const isLanding = route === '';
+    const isPlatform = route === '/platform';
     const isPillar = [
       '/runtime-governance',
       '/gate-system',
@@ -33,8 +35,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     return {
       url: `https://www.cosmocrat.ai${route}`,
       lastModified,
-      changeFrequency: isLanding ? 'weekly' : isPillar ? 'monthly' : 'yearly',
-      priority: isLanding ? 1.0 : isPillar ? 0.8 : route === '/docs' ? 0.7 : 0.5,
+      changeFrequency: isLanding || isPlatform ? 'weekly' : isPillar ? 'monthly' : 'yearly',
+      priority: isLanding ? 1.0 : isPlatform ? 0.9 : isPillar ? 0.8 : route === '/docs' ? 0.7 : 0.5,
     };
   });
+
 }
