@@ -72,6 +72,46 @@ export async function POST(req: Request) {
     }
   }
 
+  // Non-blocking: forward to Cosmocrat ingest API for Hub visibility
+  // This triggers cross_write_to_ilca() which makes the lead visible in Hub
+  // SAFETY: ingest failure must NEVER degrade waitlist signup
+  if (!duplicate) {
+    const ingestUrl = process.env.COSMOCRAT_INGEST_URL;
+    const ingestToken = process.env.COSMOCRAT_INGEST_TOKEN;
+    if (ingestUrl && ingestToken) {
+      try {
+        await fetch(`${ingestUrl}/api/tenants/cosmocrat/leads`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${ingestToken}`,
+          },
+          body: JSON.stringify({
+            type: 'waitlist',
+            source: 'cosmocrat-web',
+            lead: {
+              email,
+              name: name || '',
+              company: '',
+              role: '',
+              pain: first_run || '',
+              workflow: '',
+            },
+            campaign: {
+              utm_source: row.utm_source || '',
+              utm_medium: row.utm_medium || '',
+              utm_campaign: row.utm_campaign || '',
+              utm_content: row.utm_content || '',
+              utm_term: row.utm_term || '',
+            },
+          }),
+        });
+      } catch {
+        // Ingest forward failed — do not degrade waitlist signup
+      }
+    }
+  }
+
   let emailSent = false;
   if (!duplicate) {
     const resend = resendClient();
