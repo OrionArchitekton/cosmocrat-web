@@ -33,6 +33,9 @@ export async function POST(req: Request) {
   const email = input.email.trim();
   const email_norm = normalizeEmail(input.email);
   const name = normalizeOptionalString(input.name);
+  const company = input.company.trim();
+  const role = input.role.trim();
+  const ai_system = normalizeOptionalString(input.ai_system);
   const first_run = normalizeOptionalString(input.first_run);
 
   const ip = getRequestIp(req);
@@ -43,6 +46,9 @@ export async function POST(req: Request) {
     email,
     email_norm,
     name,
+    company,
+    role,
+    ai_system,
     first_run,
     source: 'cosmocrat_web_v1',
     utm_source: normalizeOptionalString(input.utm_source),
@@ -92,10 +98,10 @@ export async function POST(req: Request) {
             lead: {
               email,
               name: name || '',
-              company: '',
-              role: '',
+              company: company || '',
+              role: role || '',
               pain: first_run || '',
-              workflow: '',
+              workflow: ai_system || '',
             },
             campaign: {
               utm_source: row.utm_source || '',
@@ -138,7 +144,7 @@ export async function POST(req: Request) {
             from: resendFrom(),
             to: notify,
             subject: 'New Cosmocrat early access request',
-            html: `<div><b>Email:</b> ${email}<br/><b>Name:</b> ${name || ''}<br/><b>First run:</b> ${first_run || ''}<br/><b>utm_campaign:</b> ${row.utm_campaign || ''}</div>`
+            html: `<div><b>Email:</b> ${email}<br/><b>Name:</b> ${name || ''}<br/><b>Company:</b> ${company}<br/><b>Role:</b> ${role}<br/><b>AI System:</b> ${ai_system || ''}<br/><b>Goal:</b> ${first_run || ''}<br/><b>utm_campaign:</b> ${row.utm_campaign || ''}</div>`
           });
         } catch {
           // ignore

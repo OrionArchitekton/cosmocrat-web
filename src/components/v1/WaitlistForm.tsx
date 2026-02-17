@@ -7,6 +7,9 @@ import { Lock, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 export default function WaitlistForm() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [company, setCompany] = useState('');
+  const [role, setRole] = useState('');
+  const [aiSystem, setAiSystem] = useState('');
   const [firstRun, setFirstRun] = useState('');
   const [website, setWebsite] = useState(''); // Honeypot field
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -23,6 +26,9 @@ export default function WaitlistForm() {
       const payload = {
         email,
         name: name || undefined,
+        company,
+        role,
+        ai_system: aiSystem || undefined,
         first_run: firstRun || undefined,
         website: website || undefined, // Honeypot - bots fill this, humans don't see it
         utm_source: params.get('utm_source') || undefined,
@@ -56,6 +62,9 @@ export default function WaitlistForm() {
       setStatus('success');
       setName('');
       setEmail('');
+      setCompany('');
+      setRole('');
+      setAiSystem('');
       setFirstRun('');
     } catch (err) {
       setStatus('error');
@@ -107,7 +116,7 @@ export default function WaitlistForm() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label className="block text-sm font-medium text-slate-300 mb-2">
-            Name (optional)
+            Name <span className="text-slate-500 font-normal">(optional)</span>
           </label>
           <input
             type="text"
@@ -128,22 +137,56 @@ export default function WaitlistForm() {
         </div>
       </div>
 
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label className="block text-sm font-medium text-slate-300 mb-2">Company</label>
+          <input
+            type="text"
+            required
+            value={company}
+            onChange={(e) => setCompany(e.target.value)}
+            placeholder="e.g. Acme Corp"
+            className="w-full bg-slate-900 border border-slate-700 rounded p-3 text-white placeholder-slate-600 focus:border-cosmo-accent focus:outline-none focus:ring-1 focus:ring-cosmo-accent transition-colors"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-slate-300 mb-2">Role</label>
+          <input
+            type="text"
+            required
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            placeholder="e.g. VP Engineering, CTO, Head of AI"
+            className="w-full bg-slate-900 border border-slate-700 rounded p-3 text-white placeholder-slate-600 focus:border-cosmo-accent focus:outline-none focus:ring-1 focus:ring-cosmo-accent transition-colors"
+          />
+        </div>
+      </div>
+
       <div>
         <label className="block text-sm font-medium text-slate-300 mb-2">
-          What would you run Cosmocrat on first?{' '}
-          <span className="text-slate-500 font-normal ml-1">
-            (High-risk, high-authority workflows are ideal)
-          </span>
+          What system is AI touching?{' '}
+          <span className="text-slate-500 font-normal">(optional)</span>
+        </label>
+        <input
+          type="text"
+          value={aiSystem}
+          onChange={(e) => setAiSystem(e.target.value)}
+          placeholder="e.g. Production agents, financial ops, customer support"
+          className="w-full bg-slate-900 border border-slate-700 rounded p-3 text-white placeholder-slate-600 focus:border-cosmo-accent focus:outline-none focus:ring-1 focus:ring-cosmo-accent transition-colors"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-slate-300 mb-2">
+          What are you trying to do with Cosmocrat?{' '}
+          <span className="text-slate-500 font-normal">(optional)</span>
         </label>
         <textarea
           value={firstRun}
           onChange={(e) => setFirstRun(e.target.value)}
-          className="w-full bg-slate-900 border border-slate-700 rounded p-3 text-white focus:border-cosmo-accent focus:outline-none focus:ring-1 focus:ring-cosmo-accent h-32 transition-colors"
+          className="w-full bg-slate-900 border border-slate-700 rounded p-3 text-white placeholder-slate-600 focus:border-cosmo-accent focus:outline-none focus:ring-1 focus:ring-cosmo-accent h-24 transition-colors"
+          placeholder="High-risk, high-authority workflows are ideal"
         ></textarea>
-        <p className="text-xs text-slate-500 mt-2">
-          Examples: production agent workflows, financial operations, customer support, internal
-          decision systems.
-        </p>
       </div>
 
       {status === 'error' && (

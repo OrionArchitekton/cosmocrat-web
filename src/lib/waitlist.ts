@@ -3,6 +3,9 @@ import { z } from 'zod';
 export const WaitlistSignupSchema = z.object({
   email: z.string().email().max(320),
   name: z.string().max(120).optional().or(z.literal('')),
+  company: z.string().min(1, 'Company is required').max(200),
+  role: z.string().min(1, 'Role is required').max(200),
+  ai_system: z.string().max(500).optional().or(z.literal('')),
   first_run: z.string().max(500).optional().or(z.literal('')),
 
   // attribution (optional)
