@@ -107,8 +107,9 @@ Doppler is the **only** source of truth.`.env` files are local fallback only.
 
 | Variable | Description |
 | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | Canonical URL (e.g. [https://www.cosmocrat.ai](https://www.cosmocrat.ai/)) |
-| `SITE_STAGE` | `dev`, `stg`, or `prd` |
+| `NEXT_PUBLIC_SITE_URL` | Canonical origin URL (production must be `https://www.cosmocrat.ai`) |
+| `SITE_ENV` | Required. One of `development`, `staging`, `production` |
+| `SITE_STAGE` | Legacy optional flag. Non-authoritative for SEO/indexing decisions |
 | `CONTACT_EMAIL` | Public contact address |
 | `DOCS_URL` | Optional external docs URL (if enabled) |
 | `SUPABASE_URL` | Supabase project URL |
@@ -117,6 +118,8 @@ Doppler is the **only** source of truth.`.env` files are local fallback only.
 | `RESEND_FROM_EMAIL` | Verified sender |
 | `WAITLIST_NOTIFY_EMAIL` | Internal notification target |
 | `IP_HASH_SALT` | Salt for hashing IPs (privacy) |
+
+Builds fail closed if `SITE_ENV` is missing/invalid. When `SITE_ENV=production`, builds also fail unless `NEXT_PUBLIC_SITE_URL` is exactly `https://www.cosmocrat.ai`.
 
 ⚠️ **Never expose `SUPABASE_SERVICE_ROLE_KEY` client-side.**
 
@@ -259,6 +262,7 @@ License & Ownership
 ## Verification
 
 After deploy:
+* `curl -I https://cosmocrat.ai/` (Should be permanent redirect to `https://www.cosmocrat.ai/...`)
 * `curl -I https://www.cosmocrat.ai/ | grep -i robots` (Should be empty on prod)
 * `curl https://www.cosmocrat.ai/robots.txt`
 * `curl https://www.cosmocrat.ai/sitemap.xml | head`

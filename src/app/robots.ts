@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { siteConfig } from '@/lib/siteConfig';
 
 export default function robots(): MetadataRoute.Robots {
-  const isProd = process.env.VERCEL_ENV === 'production' || process.env.SITE_STAGE === 'prd';
+  const isProd = process.env.SITE_ENV === 'production';
 
   return {
     rules: {
@@ -10,6 +10,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: isProd ? '/' : undefined,
       disallow: isProd ? ['/api/'] : '/',
     },
-    sitemap: 'https://www.cosmocrat.ai/sitemap.xml',
+    sitemap: `${siteConfig.origin}/sitemap.xml`,
   };
 }

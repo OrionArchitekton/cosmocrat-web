@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Linkedin } from 'lucide-react';
 
 const platformLinks = [
@@ -26,9 +27,11 @@ export default function Footer() {
           {/* Brand Column */}
           <div className="col-span-1 md:col-span-2">
             <Link href="/" className="flex items-center gap-3 mb-6 group w-fit">
-              <img
+              <Image
                 src="https://storage.googleapis.com/cosmocrat/cosmocrat_logos_graphics/cosmocrat-.png"
                 alt="Cosmocrat Sigil"
+                width={40}
+                height={40}
                 className="w-10 h-10 transition-transform group-hover:scale-105"
               />
               <span className="text-2xl font-bold text-cosmo-text group-hover:text-white transition-colors">

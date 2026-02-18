@@ -1,4 +1,3 @@
-import Script from 'next/script';
 import RuntimeGovernanceContent from '@/components/v1/pages/RuntimeGovernanceContent';
 import { generatePageMetadata } from '@/lib/metadata';
 import { generateFeatureSchema } from '@/lib/schemas';
@@ -16,15 +15,16 @@ const schema = generateFeatureSchema({
     'Prevent unauthorized AI execution. The Cosmocrat kernel enforces policy, authority, and lane isolation before any tool use or memory access occurs.',
   path: '/runtime-governance',
 });
+const schemaJson = JSON.stringify(schema);
 
 export default function RuntimeGovernancePage() {
   return (
     <>
-      <Script
+      <script
         id="ldjson-runtime-governance"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-        strategy="afterInteractive"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: schemaJson }}
       />
       <RuntimeGovernanceContent />
     </>

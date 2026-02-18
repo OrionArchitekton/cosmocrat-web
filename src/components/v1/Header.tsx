@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 
@@ -26,9 +27,12 @@ export default function Header() {
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
             <Link href="/" className="flex items-center gap-2 group">
-              <img
+              <Image
                 src="https://storage.googleapis.com/cosmocrat/cosmocrat_logos_graphics/wordmark-logo_light.png"
                 alt="Cosmocrat"
+                width={420}
+                height={56}
+                priority
                 className="h-8 w-auto opacity-90 group-hover:opacity-100 transition-opacity"
               />
             </Link>

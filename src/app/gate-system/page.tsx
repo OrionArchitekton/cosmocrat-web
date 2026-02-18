@@ -1,4 +1,3 @@
-import Script from 'next/script';
 import GateSystemContent from '@/components/v1/pages/GateSystemContent';
 import { generatePageMetadata } from '@/lib/metadata';
 import { generateFeatureSchema } from '@/lib/schemas';
@@ -16,15 +15,16 @@ const schema = generateFeatureSchema({
     'A deterministic enforcement pipeline. Validates input, memory, authority, and intent. The system fails closed if any gate conditions are not met.',
   path: '/gate-system',
 });
+const schemaJson = JSON.stringify(schema);
 
 export default function GateSystemPage() {
   return (
     <>
-      <Script
+      <script
         id="ldjson-gate-system"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-        strategy="afterInteractive"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: schemaJson }}
       />
       <GateSystemContent />
     </>

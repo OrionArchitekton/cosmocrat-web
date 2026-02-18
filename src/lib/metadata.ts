@@ -18,8 +18,7 @@ export function generatePageMetadata({
   path,
   noIndex = false,
 }: PageMetadataOptions): Metadata {
-  const url = `${siteConfig.url}${path}`;
-  const canonicalUrl = `https://www.cosmocrat.ai${path}`;
+  const canonicalUrl = new URL(path, siteConfig.origin).toString();
 
   return {
     title,
@@ -28,7 +27,7 @@ export function generatePageMetadata({
     openGraph: {
       title: `${title} | ${siteConfig.name}`,
       description,
-      url,
+      url: canonicalUrl,
       siteName: siteConfig.name,
       images: [siteConfig.ogImage],
       type: 'website',

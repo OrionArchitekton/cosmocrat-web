@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Script from 'next/script';
 import { Database, FileText, Terminal, Lock, FileCode, ShieldAlert } from 'lucide-react';
 import { generatePageMetadata } from '@/lib/metadata';
 import { generateFeatureSchema } from '@/lib/schemas';
@@ -17,15 +16,16 @@ const schema = generateFeatureSchema({
         'Cosmocrat is an enterprise AI operating system for governed memory and controlled execution. It runs in your environment to enforce fail-closed AI execution, runtime governance, and audit-grade run records.',
     path: '/platform',
 });
+const schemaJson = JSON.stringify(schema);
 
 export default function PlatformPage() {
     return (
         <>
-            <Script
+            <script
                 id="ldjson-platform"
                 type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-                strategy="afterInteractive"
+                suppressHydrationWarning
+                dangerouslySetInnerHTML={{ __html: schemaJson }}
             />
             <div className="bg-cosmo-dark min-h-screen">
             {/* Hero Section */}

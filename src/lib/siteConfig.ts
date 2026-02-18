@@ -2,9 +2,18 @@
  * Centralized site configuration.
  * Allows env-based base URL for staging/preview environments.
  */
+const DEFAULT_SITE_ORIGIN = 'https://www.cosmocrat.ai';
+
+function normalizeOrigin(origin: string): string {
+  return origin.endsWith('/') ? origin.slice(0, -1) : origin;
+}
+
+const origin = normalizeOrigin(process.env.NEXT_PUBLIC_SITE_URL || DEFAULT_SITE_ORIGIN);
+
 export const siteConfig = {
   name: 'Cosmocrat',
-  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://www.cosmocrat.ai',
+  origin,
+  url: origin,
   title: 'Cosmocrat | The AI Operating System for Governed Memory and Controlled Execution',
   description:
     'Cosmocrat is the AI Operating System for governed memory and controlled execution. It runs in your environment to enforce fail-closed AI execution, runtime governance, and audit-grade run records.',

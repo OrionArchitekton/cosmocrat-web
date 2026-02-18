@@ -1,4 +1,3 @@
-import Script from 'next/script';
 import DecisionExhaustContent from '@/components/v1/pages/DecisionExhaustContent';
 import { generatePageMetadata } from '@/lib/metadata';
 import { generateFeatureSchema } from '@/lib/schemas';
@@ -16,15 +15,16 @@ const schema = generateFeatureSchema({
     'Capture the "why" behind every AI action. A complete, replayable record of policy evaluation, authority context, and state transitions.',
   path: '/decision-exhaust',
 });
+const schemaJson = JSON.stringify(schema);
 
 export default function DecisionExhaustPage() {
   return (
     <>
-      <Script
+      <script
         id="ldjson-decision-exhaust"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-        strategy="afterInteractive"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: schemaJson }}
       />
       <DecisionExhaustContent />
     </>

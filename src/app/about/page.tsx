@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Linkedin } from 'lucide-react';
 import { generatePageMetadata } from '@/lib/metadata';
 
@@ -106,9 +107,11 @@ export default function AboutPage() {
           <h2 className="text-2xl font-bold text-white mb-6">Architect &amp; Steward</h2>
           <div className="bg-slate-900/40 border border-slate-800 rounded-xl p-6">
             <div className="flex items-center gap-4 mb-5">
-              <img
+              <Image
                 src="/dan-mercede-executive-authority-sm.webp"
                 alt="Dan Mercede"
+                width={64}
+                height={64}
                 className="w-16 h-16 rounded-full object-cover"
               />
               <div>

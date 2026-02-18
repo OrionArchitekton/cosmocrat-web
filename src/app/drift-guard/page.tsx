@@ -1,4 +1,3 @@
-import Script from 'next/script';
 import DriftGuardContent from '@/components/v1/pages/DriftGuardContent';
 import { generatePageMetadata } from '@/lib/metadata';
 import { generateFeatureSchema } from '@/lib/schemas';
@@ -16,15 +15,16 @@ const schema = generateFeatureSchema({
     'Detect behavioral and policy divergence in real-time. Identify when authorized intent decouples from actual system execution.',
   path: '/drift-guard',
 });
+const schemaJson = JSON.stringify(schema);
 
 export default function DriftGuardPage() {
   return (
     <>
-      <Script
+      <script
         id="ldjson-drift-guard"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-        strategy="afterInteractive"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: schemaJson }}
       />
       <DriftGuardContent />
     </>

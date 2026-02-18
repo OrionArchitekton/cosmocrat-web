@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
-  metadataBase: new URL('https://www.cosmocrat.ai'),
+  metadataBase: new URL(siteConfig.origin),
   manifest: '/site.webmanifest',
   icons: {
     icon: [
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: siteConfig.url,
+    url: siteConfig.origin,
     siteName: siteConfig.name,
     title: siteConfig.title,
     description: siteConfig.description,
@@ -87,10 +87,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               '@graph': [
                 {
                   '@type': 'Organization',
-                  '@id': `${siteConfig.url}/#organization`,
+                  '@id': `${siteConfig.origin}/#organization`,
                   name: siteConfig.name,
-                  url: siteConfig.url,
-                  logo: `${siteConfig.url}${siteConfig.logoSchema}`,
+                  url: siteConfig.origin,
+                  logo: `${siteConfig.origin}${siteConfig.logoSchema}`,
                   description:
                     'Cosmocrat develops a governed AI operating system for enforcing authority, memory, and execution constraints at runtime.',
                   sameAs: siteConfig.sameAs,
@@ -111,23 +111,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 },
                 {
                   '@type': 'WebSite',
-                  '@id': `${siteConfig.url}/#website`,
-                  url: siteConfig.url,
+                  '@id': `${siteConfig.origin}/#website`,
+                  url: siteConfig.origin,
                   name: `${siteConfig.name} | Governed AI Operating System`,
                   publisher: {
-                    '@id': `${siteConfig.url}/#organization`,
+                    '@id': `${siteConfig.origin}/#organization`,
                   },
                 },
                 {
                   '@type': 'SoftwareApplication',
-                  '@id': `${siteConfig.url}/#software`,
+                  '@id': `${siteConfig.origin}/#software`,
                   name: siteConfig.name,
                   applicationCategory: 'EnterpriseSoftware',
                   operatingSystem: 'Cloud',
                   description:
                     'Cosmocrat is a governed AI operating system that enforces authority, memory, and execution constraints at runtime.',
-                  url: siteConfig.url,
-                  creator: { '@id': `${siteConfig.url}/#organization` },
+                  url: siteConfig.origin,
+                  creator: { '@id': `${siteConfig.origin}/#organization` },
                 },
               ],
             }),

@@ -1,6 +1,7 @@
 /**
  * JSON-LD schema generators for SEO.
  */
+import { siteConfig } from './siteConfig';
 
 interface FeatureSchemaOptions {
   name: string;
@@ -13,7 +14,7 @@ interface FeatureSchemaOptions {
  * Links to the main website, software, and organization entities.
  */
 export function generateFeatureSchema({ name, description, path }: FeatureSchemaOptions) {
-  const base = 'https://www.cosmocrat.ai';
+  const base = siteConfig.origin;
   return {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
