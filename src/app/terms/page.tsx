@@ -104,7 +104,7 @@ export default function TermsPage() {
           <section>
             <h3 className="text-white font-bold text-xl mb-4">7. Governing Law</h3>
             <p>
-              These terms are governed by the laws of [Jurisdiction], without regard to
+              These terms are governed by the laws of Ohio, without regard to
               conflict-of-law principles.
             </p>
           </section>

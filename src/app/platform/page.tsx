@@ -172,6 +172,49 @@ export default function PlatformPage() {
                     </div>
                 </div>
             </section>
+
+            <section className="pb-24">
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="bg-slate-900/40 border border-slate-800 rounded-xl p-8 md:p-10">
+                        <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+                            Deployment &amp; Commercial Model
+                        </h2>
+                        <p className="text-slate-300 leading-relaxed mb-8">
+                            Cosmocrat is delivered as enterprise software infrastructure.
+                        </p>
+                        <p className="text-slate-400 leading-relaxed mb-10">
+                            Organizations deploy Cosmocrat inside their own cloud environment (AWS, GCP, or hybrid)
+                            as a governed AI runtime layer that enforces memory, authority, and execution controls
+                            before AI actions occur.
+                        </p>
+
+                        <h3 className="text-xl font-bold text-white mb-5">Commercial Model</h3>
+                        <ul className="space-y-3 text-slate-300 mb-8">
+                            <li className="flex items-start gap-3">
+                                <span className="text-cosmo-accent mt-1">•</span>
+                                <span>Annual enterprise platform subscription</span>
+                            </li>
+                            <li className="flex items-start gap-3">
+                                <span className="text-cosmo-accent mt-1">•</span>
+                                <span>
+                                    Usage priced in Verified &amp; Governed Actions (base fee + committed usage +
+                                    premium overage)
+                                </span>
+                            </li>
+                            <li className="flex items-start gap-3">
+                                <span className="text-cosmo-accent mt-1">•</span>
+                                <span>Optional governance modules for regulated environments</span>
+                            </li>
+                            <li className="flex items-start gap-3">
+                                <span className="text-cosmo-accent mt-1">•</span>
+                                <span>No services-heavy delivery; configuration-driven deployment</span>
+                            </li>
+                        </ul>
+
+                        <p className="text-cosmo-accent font-medium">Currently in private early access.</p>
+                    </div>
+                </div>
+            </section>
         </div>
         </>
     );
