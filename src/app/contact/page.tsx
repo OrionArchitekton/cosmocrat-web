@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Mail, MessageSquare, Building } from 'lucide-react';
+import { Mail, MessageSquare } from 'lucide-react';
 import { generatePageMetadata } from '@/lib/metadata';
 
 export const metadata = generatePageMetadata({
@@ -59,16 +59,6 @@ export default function ContactPage() {
           </div>
         </div>
 
-        {/* Company Info */}
-        <div className="mt-16 text-center">
-          <div className="flex items-center justify-center gap-2 text-slate-500 mb-4">
-            <Building size={16} />
-            <span className="text-sm">Operated by Orion Apex Capital</span>
-          </div>
-          <p className="text-xs text-slate-600">
-            Cosmocrat is originated, operated, and validated by Orion Apex Capital.
-          </p>
-        </div>
       </div>
     </div>
   );

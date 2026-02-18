@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Terminal } from 'lucide-react';
+import { Linkedin } from 'lucide-react';
 
 const platformLinks = [
   { label: 'Memory as Infrastructure', href: '/memory-infrastructure' },
@@ -35,13 +35,20 @@ export default function Footer() {
                 Cosmocrat
               </span>
             </Link>
-            <p className="text-slate-400 max-w-sm mb-6">
+            <p className="text-slate-400 max-w-sm mb-4">
               Live and Lead with Clarity.
               <br />
               The Governed AI Operating System.
-              <br />
-              Operated by Orion Apex Capital.
             </p>
+            <a
+              href="https://www.linkedin.com/company/cosmocrat/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-slate-500 hover:text-white transition-colors inline-block mb-6"
+              aria-label="Cosmocrat on LinkedIn"
+            >
+              <Linkedin size={16} />
+            </a>
           </div>
 
           {/* Platform Links */}
@@ -85,12 +92,18 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-slate-500">
-          <p>&copy; {new Date().getFullYear()} Orion Apex Capital. All rights reserved.</p>
-          <div className="flex items-center gap-4 mt-4 md:mt-0">
-            <span className="flex items-center gap-1">
-              <Terminal size={14} />
-              System Normal
-            </span>
+          <p>&copy; {new Date().getFullYear()} Cosmocrat. All rights reserved.</p>
+          <div className="flex items-center gap-2 mt-4 md:mt-0 text-slate-500">
+            <span>Dan Mercede &mdash; Founder &amp; Systems Architect</span>
+            <a
+              href="https://www.linkedin.com/in/danmercede/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white transition-colors"
+              aria-label="Dan Mercede on LinkedIn"
+            >
+              <Linkedin size={14} />
+            </a>
           </div>
         </div>
       </div>

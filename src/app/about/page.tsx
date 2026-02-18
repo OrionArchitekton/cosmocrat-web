@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Linkedin } from 'lucide-react';
 import { generatePageMetadata } from '@/lib/metadata';
 
 export const metadata = generatePageMetadata({
@@ -102,22 +103,36 @@ export default function AboutPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-bold text-white mb-6">Operated by Orion Apex Capital</h2>
-          <article className="prose prose-invert prose-lg text-slate-400">
-            <p>
-              Cosmocrat is originated, operated, and validated by Orion Apex Capital. Orion Apex
-              Capital is an operating and systems architecture firm focused on the design and
-              operation of technical systems. Cosmocrat is maintained as part of that operating
-              scope and evaluated for consistent governance characteristics.
+          <h2 className="text-2xl font-bold text-white mb-6">Architect &amp; Steward</h2>
+          <div className="bg-slate-900/40 border border-slate-800 rounded-xl p-6">
+            <div className="flex items-center gap-4 mb-5">
+              <img
+                src="/dan-mercede-executive-authority-sm.webp"
+                alt="Dan Mercede"
+                className="w-16 h-16 rounded-full object-cover"
+              />
+              <div>
+                <p className="text-white font-semibold">Dan Mercede</p>
+                <p className="text-slate-400 text-sm">Founder &amp; Systems Architect</p>
+                <a
+                  href="https://www.linkedin.com/in/danmercede/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-slate-500 hover:text-white transition-colors mt-1 inline-block"
+                  aria-label="Dan Mercede on LinkedIn"
+                >
+                  <Linkedin size={16} />
+                </a>
+              </div>
+            </div>
+            <p className="text-slate-400 leading-relaxed">
+              Cosmocrat is architected and maintained by Dan Mercede, Founder &amp; Systems
+              Architect. Cosmocrat enforces deterministic runtime governance across agent
+              workflows: authority is evaluated before state mutation, every decision produces an
+              immutable receipt, drift is constrained over time, and execution is physically gated
+              at the substrate. If policy cannot be verified, execution halts.
             </p>
-            <p>
-              The relationship is operational rather than purely financial. Orion Apex Capital is
-              responsible for ongoing system stewardship, including the definition of governing
-              requirements and the maintenance of the operating environment. This ensures Cosmocrat
-              is maintained as a governed AI operating system with clear accountability for its
-              design and operation.
-            </p>
-          </article>
+          </div>
         </section>
 
         <section>
