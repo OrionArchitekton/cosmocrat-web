@@ -20,6 +20,7 @@ import {
 const useInView = (options = { threshold: 0.2 }) => {
   const [hasEntered, setHasEntered] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const { threshold } = options;
 
   useEffect(() => {
     if (!ref.current) return;
@@ -28,10 +29,10 @@ const useInView = (options = { threshold: 0.2 }) => {
         setHasEntered(true);
         observer.disconnect();
       }
-    }, options);
+    }, { threshold });
     observer.observe(ref.current);
     return () => observer.disconnect();
-  }, []);
+  }, [threshold]);
 
   return [ref, hasEntered] as const;
 };

@@ -48,7 +48,15 @@ What This Repo Is **Not**
 * ❌ Not a pricing or sales funnel
   
 
-Those concerns live elsewhere (`cosmocrat-core`, operator repos, or private infra).
+Those concerns live in their own canonical homes:
+
+- governance kernel: `cosmocrat-kernel`
+- shared execution substrate: `orion-runtime`
+- shared deploy / infra packaging: `orion-infra`
+- GTM workflow truth: `cosmocrat-gtm-engine`
+
+This repo is the public web surface only. It does not inherit ownership from
+legacy `cosmocrat-core` placement or from any operator-facing repo.
 
 * * *
 
@@ -266,4 +274,3 @@ After deploy:
 * `curl -I https://www.cosmocrat.ai/ | grep -i robots` (Should be empty on prod)
 * `curl https://www.cosmocrat.ai/robots.txt`
 * `curl https://www.cosmocrat.ai/sitemap.xml | head`
-
