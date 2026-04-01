@@ -1,0 +1,4 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "sh -c 'if [ \"${SITE_ENV:-}\" = \"preview\" ]; then export SITE_ENV=staging; fi; if [ -z \"${SITE_ENV:-}\" ]; then case \"${VERCEL_ENV:-}\" in preview) export SITE_ENV=staging ;; development) export SITE_ENV=development ;; esac; fi; npm run build'"
+}
