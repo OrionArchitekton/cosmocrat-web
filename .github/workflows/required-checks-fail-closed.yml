@@ -44,7 +44,7 @@ jobs:
               pullRequest?.head?.sha && pullRequest?.head?.sha !== primarySha
                 ? pullRequest.head.sha
                 : null;
-            const passingCheckRunConclusions = new Set(["success", "neutral", "skipped"]);
+            const passingCheckRunConclusions = new Set(["success"]);
 
             function sleep(ms) {
               return new Promise((resolve) => setTimeout(resolve, ms));
@@ -185,6 +185,7 @@ jobs:
             }
 
             let lastFailureMessage = "required checks did not reach a successful terminal state in time";
+            const lastNonSuccessByCheck = new Map();
 
             for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
               try {
@@ -213,14 +214,17 @@ jobs:
                     fallbackStatuses,
                   );
                   if (state === "SUCCESS") {
+                    lastNonSuccessByCheck.delete(name);
                     core.info(`check '${name}' OK (${state})`);
                     continue;
                   }
                   if (state === "PENDING" || state === "MISSING") {
+                    lastNonSuccessByCheck.set(name, state);
                     core.info(`check '${name}' not ready yet (${state})`);
                     pending = true;
                     continue;
                   }
+                  lastNonSuccessByCheck.set(name, state);
                   core.warning(`check '${name}' currently failing (${state})`);
                   hasFailure = true;
                   lastFailureMessage = `required check '${name}' not successful: ${state}`;
@@ -242,6 +246,14 @@ jobs:
               }
 
               if (attempt === maxAttempts) {
+                if (lastNonSuccessByCheck.size > 0) {
+                  const details = Array.from(lastNonSuccessByCheck.entries())
+                    .map(([name, state]) => `${name}: ${state}`)
+                    .join("; ");
+                  lastFailureMessage =
+                    `required checks did not reach a successful terminal state in time. ` +
+                    `Last observed states: ${details}`;
+                }
                 core.setFailed(lastFailureMessage);
                 return;
               }
