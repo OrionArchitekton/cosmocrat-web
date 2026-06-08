@@ -86,7 +86,7 @@ doppler run --config dev -- npm run dev
 `SITE_ENV` is required at build/dev time (see Environment variables). Without Doppler, set it inline:
 
 ```bash
-SITE_ENV=staging npm run dev
+SITE_ENV=development npm run dev
 ```
 
 Open: http://localhost:3000
