@@ -271,7 +271,7 @@ Pre-deploy checklist:
 
 - `.github/workflows/ci.yml` runs typecheck, lint, and build on every PR and on push to `main` (Node 20, `SITE_ENV=staging`).
 - `gitleaks-scan.yml` and `required-checks-fail-closed.yml` gate the repo.
-- `scripts/verify.sh` (and `verify.ps1`) run install + lint + typecheck + best-effort build locally.
+- `scripts/verify.sh` (and `scripts/verify.ps1`) run install + lint + typecheck + best-effort build locally.
 
 After deploy:
 
