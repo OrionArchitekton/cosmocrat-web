@@ -16,7 +16,7 @@ const schema = generateFeatureSchema({
         'Cosmocrat is the enterprise AI operating system and control plane for governed AI execution. It governs what AI is allowed to do, when it must stop, and who authorized it — enforcing authorization, auditability, and fail-closed execution at the operating-system layer.',
     path: '/platform',
 });
-const schemaJson = JSON.stringify(schema);
+const schemaJson = JSON.stringify(schema).replace(/</g, '\\u003c');
 
 export default function PlatformPage() {
     return (

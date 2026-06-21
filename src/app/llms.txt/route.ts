@@ -49,6 +49,7 @@ const content = `# Cosmocrat
 - ${base}/memory-infrastructure
 - ${base}/contact
 - ${base}/docs
+- ${base}/waitlist
 - ${base}/privacy
 - ${base}/terms
 
