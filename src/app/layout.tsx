@@ -85,14 +85,10 @@ const siteJsonLd = JSON.stringify({
       logo: `${siteConfig.origin}${siteConfig.logoSchema}`,
       description: siteConfig.description,
       sameAs: siteConfig.sameAs,
-      // Reference the founder by canonical @id; the authoritative Person
-      // entity (with sameAs) is defined on danmercede.com, not redefined here.
-      founder: {
-        '@type': 'Person',
-        '@id': siteConfig.founder.id,
-        name: siteConfig.founder.name,
-        url: siteConfig.founder.url,
-      },
+      // Reference the founder by canonical @id only; the authoritative Person
+      // entity (with name, url, and sameAs) is defined on danmercede.com and is
+      // not redefined here, so this site never publishes conflicting entity truth.
+      founder: { '@id': siteConfig.founder.id },
       parentOrganization: {
         '@type': 'Organization',
         '@id': siteConfig.parentOrganization.id,
