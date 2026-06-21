@@ -23,7 +23,7 @@ export default function PrivacyPage() {
           <p className="text-lg text-slate-400">
             Cosmocrat acts as a data processor for governance metadata. We do not own your data.
           </p>
-          <div className="mt-6 text-xs text-slate-500 font-mono">Last Updated: January 2025</div>
+          <div className="mt-6 text-xs text-slate-500 font-mono">Last Updated: June 2026</div>
         </div>
 
         {/* Content */}

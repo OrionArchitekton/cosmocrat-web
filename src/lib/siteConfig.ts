@@ -14,9 +14,9 @@ export const siteConfig = {
   name: 'Cosmocrat',
   origin,
   url: origin,
-  title: 'Cosmocrat | The AI Operating System for Governed Memory and Controlled Execution',
+  title: 'Cosmocrat | Enterprise AI Operating System & Control Plane',
   description:
-    'Cosmocrat is the AI Operating System for governed memory and controlled execution. It runs in your environment to enforce fail-closed AI execution, runtime governance, and audit-grade run records.',
+    'Cosmocrat is the enterprise AI operating system that governs what AI is allowed to do, when it must stop, and who authorized it — turning AI execution into an auditable, accountable, and fail-closed asset.',
   ogImage: '/og.png',
   logo: 'https://storage.googleapis.com/cosmocrat/cosmocrat_logos_graphics/wordmark-logo_light.png',
   logoIcon: 'https://storage.googleapis.com/cosmocrat/cosmocrat_logos_graphics/sigil-gold.png',
@@ -39,7 +39,7 @@ export const siteConfig = {
     id: 'https://www.orionapexcapital.com/#organization',
     name: 'Orion Apex Capital',
     url: 'https://www.orionapexcapital.com/',
-    sameAs: ['https://www.linkedin.com/company/orioncapexcapital'],
+    sameAs: ['https://www.linkedin.com/company/orionapexcapital'],
   },
 } as const;
 

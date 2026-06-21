@@ -74,6 +74,51 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
+const siteJsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${siteConfig.origin}/#organization`,
+      name: siteConfig.name,
+      url: siteConfig.origin,
+      logo: `${siteConfig.origin}${siteConfig.logoSchema}`,
+      description: siteConfig.description,
+      sameAs: siteConfig.sameAs,
+      // Reference the founder by canonical @id only; the authoritative Person
+      // entity (with name, url, and sameAs) is defined on danmercede.com and is
+      // not redefined here, so this site never publishes conflicting entity truth.
+      founder: { '@id': siteConfig.founder.id },
+      parentOrganization: {
+        '@type': 'Organization',
+        '@id': siteConfig.parentOrganization.id,
+        name: siteConfig.parentOrganization.name,
+        url: siteConfig.parentOrganization.url,
+        sameAs: siteConfig.parentOrganization.sameAs,
+      },
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${siteConfig.origin}/#website`,
+      url: siteConfig.origin,
+      name: `${siteConfig.name} | Enterprise AI Operating System & Control Plane`,
+      publisher: {
+        '@id': `${siteConfig.origin}/#organization`,
+      },
+    },
+    {
+      '@type': 'SoftwareApplication',
+      '@id': `${siteConfig.origin}/#software`,
+      name: siteConfig.name,
+      applicationCategory: 'EnterpriseSoftware',
+      operatingSystem: 'Cloud',
+      description: siteConfig.description,
+      url: siteConfig.origin,
+      creator: { '@id': `${siteConfig.origin}/#organization` },
+    },
+  ],
+}).replace(/</g, '\\u003c');
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${orbitron.variable} ${jetbrains.variable}`}>
@@ -81,57 +126,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* JSON-LD Structured Data */}
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@graph': [
-                {
-                  '@type': 'Organization',
-                  '@id': `${siteConfig.origin}/#organization`,
-                  name: siteConfig.name,
-                  url: siteConfig.origin,
-                  logo: `${siteConfig.origin}${siteConfig.logoSchema}`,
-                  description:
-                    'Cosmocrat develops a governed AI operating system for enforcing authority, memory, and execution constraints at runtime.',
-                  sameAs: siteConfig.sameAs,
-                  founder: {
-                    '@type': 'Person',
-                    '@id': siteConfig.founder.id,
-                    name: siteConfig.founder.name,
-                    url: siteConfig.founder.url,
-                    sameAs: siteConfig.founder.sameAs,
-                  },
-                  parentOrganization: {
-                    '@type': 'Organization',
-                    '@id': siteConfig.parentOrganization.id,
-                    name: siteConfig.parentOrganization.name,
-                    url: siteConfig.parentOrganization.url,
-                    sameAs: siteConfig.parentOrganization.sameAs,
-                  },
-                },
-                {
-                  '@type': 'WebSite',
-                  '@id': `${siteConfig.origin}/#website`,
-                  url: siteConfig.origin,
-                  name: `${siteConfig.name} | Governed AI Operating System`,
-                  publisher: {
-                    '@id': `${siteConfig.origin}/#organization`,
-                  },
-                },
-                {
-                  '@type': 'SoftwareApplication',
-                  '@id': `${siteConfig.origin}/#software`,
-                  name: siteConfig.name,
-                  applicationCategory: 'EnterpriseSoftware',
-                  operatingSystem: 'Cloud',
-                  description:
-                    'Cosmocrat is a governed AI operating system that enforces authority, memory, and execution constraints at runtime.',
-                  url: siteConfig.origin,
-                  creator: { '@id': `${siteConfig.origin}/#organization` },
-                },
-              ],
-            }),
-          }}
+          dangerouslySetInnerHTML={{ __html: siteJsonLd }}
         />
       </head>
       <body className="min-h-screen flex flex-col font-sans text-cosmo-text selection:bg-cosmo-accent selection:text-white bg-cosmo-dark">

@@ -6,17 +6,17 @@ import { generateFeatureSchema } from '@/lib/schemas';
 export const metadata = generatePageMetadata({
     title: 'Platform',
     description:
-        'Cosmocrat is an enterprise AI operating system for governed memory and controlled execution. It runs in your environment to enforce fail-closed AI execution, runtime governance, and audit-grade run records.',
+        'Cosmocrat is the enterprise AI operating system and control plane for governed AI execution. It governs what AI is allowed to do, when it must stop, and who authorized it — enforcing authorization, auditability, and fail-closed execution at the operating-system layer.',
     path: '/platform',
 });
 
 const schema = generateFeatureSchema({
     name: 'Cosmocrat Platform',
     description:
-        'Cosmocrat is an enterprise AI operating system for governed memory and controlled execution. It runs in your environment to enforce fail-closed AI execution, runtime governance, and audit-grade run records.',
+        'Cosmocrat is the enterprise AI operating system and control plane for governed AI execution. It governs what AI is allowed to do, when it must stop, and who authorized it — enforcing authorization, auditability, and fail-closed execution at the operating-system layer.',
     path: '/platform',
 });
-const schemaJson = JSON.stringify(schema);
+const schemaJson = JSON.stringify(schema).replace(/</g, '\\u003c');
 
 export default function PlatformPage() {
     return (
@@ -32,12 +32,12 @@ export default function PlatformPage() {
             <section className="pt-32 pb-16 border-b border-slate-900">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <h1 className="text-4xl md:text-5xl font-bold text-white mb-8 tracking-tight leading-tight">
-                        Cosmocrat is an enterprise AI operating system for governed memory and controlled execution.
+                        Cosmocrat is the enterprise AI operating system and control plane for governed AI execution.
                     </h1>
 
                     <div className="prose prose-invert max-w-3xl mx-auto text-slate-400 text-lg leading-relaxed mb-12">
                         <p>
-                            Cosmocrat provides a runtime control plane for AI systems, enforcing authorization, auditability, and fail-closed execution at the operating-system layer. It is designed for organizations that need durable AI memory, human-in-the-loop control, and provable run records across workflows and tools.
+                            It governs what AI is allowed to do, when it must stop, and who authorized it — enforcing authorization, auditability, and fail-closed execution at the operating-system layer. It is designed for organizations that need durable AI memory, human-in-the-loop control, and provable run records across workflows and tools.
                         </p>
                     </div>
 

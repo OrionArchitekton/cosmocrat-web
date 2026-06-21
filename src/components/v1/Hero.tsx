@@ -17,21 +17,19 @@ export default function Hero() {
         </div>
 
         <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-white mb-8 leading-tight">
-          The AI Operating System for{' '}
+          The enterprise AI operating system that{' '}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-cosmo-accent">
-            Governed Memory
-          </span>{' '}
-          and Controlled Execution
+            governs what AI is allowed to do
+          </span>
         </h1>
 
         <div className="text-xl md:text-2xl text-slate-400 mb-12 max-w-2xl mx-auto font-light leading-relaxed">
           <p>
-            Cosmocrat runs in your environment to enforce fail-closed AI execution, governed memory,
-            and audit-grade run records.
+            Cosmocrat governs what AI is allowed to do, when it must stop, and who authorized it —
+            turning AI execution into an auditable, accountable, and fail-closed asset.
           </p>
           <p className="mt-4 text-lg text-slate-500 font-normal">
-            Unlike orchestration platforms, Cosmocrat enforces governance at runtime — not after the
-            fact.
+            Governance at runtime, not in retrospect.
           </p>
         </div>
 
