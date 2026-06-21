@@ -91,8 +91,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   name: siteConfig.name,
                   url: siteConfig.origin,
                   logo: `${siteConfig.origin}${siteConfig.logoSchema}`,
-                  description:
-                    'Cosmocrat develops a governed AI operating system for enforcing authority, memory, and execution constraints at runtime.',
+                  description: siteConfig.description,
                   sameAs: siteConfig.sameAs,
                   // Reference the founder by canonical @id; the authoritative Person
                   // entity (with sameAs) is defined on danmercede.com, not redefined here.
@@ -125,8 +124,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   name: siteConfig.name,
                   applicationCategory: 'EnterpriseSoftware',
                   operatingSystem: 'Cloud',
-                  description:
-                    'Cosmocrat is a governed AI operating system that enforces authority, memory, and execution constraints at runtime.',
+                  description: siteConfig.description,
                   url: siteConfig.origin,
                   creator: { '@id': `${siteConfig.origin}/#organization` },
                 },

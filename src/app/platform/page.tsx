@@ -6,14 +6,14 @@ import { generateFeatureSchema } from '@/lib/schemas';
 export const metadata = generatePageMetadata({
     title: 'Platform',
     description:
-        'Cosmocrat is an enterprise AI operating system for governed memory and controlled execution. It runs in your environment to enforce fail-closed AI execution, runtime governance, and audit-grade run records.',
+        'Cosmocrat is the enterprise AI operating system and control plane for governed AI execution. It governs what AI is allowed to do, when it must stop, and who authorized it — enforcing authorization, auditability, and fail-closed execution at the operating-system layer.',
     path: '/platform',
 });
 
 const schema = generateFeatureSchema({
     name: 'Cosmocrat Platform',
     description:
-        'Cosmocrat is an enterprise AI operating system for governed memory and controlled execution. It runs in your environment to enforce fail-closed AI execution, runtime governance, and audit-grade run records.',
+        'Cosmocrat is the enterprise AI operating system and control plane for governed AI execution. It governs what AI is allowed to do, when it must stop, and who authorized it — enforcing authorization, auditability, and fail-closed execution at the operating-system layer.',
     path: '/platform',
 });
 const schemaJson = JSON.stringify(schema);

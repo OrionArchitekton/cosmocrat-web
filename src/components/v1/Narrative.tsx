@@ -37,6 +37,15 @@ const useInView = (options = { threshold: 0.2 }) => {
   return [ref, hasEntered] as const;
 };
 
+// Competitive contrast rails (locked) — static, hoisted out of the component
+// so it is not re-created on every render.
+const COMPETITIVE_RAILS = [
+  ['Others observe.', 'Cosmocrat enforces.'],
+  ['Others log.', 'Cosmocrat governs.'],
+  ['Others fail-open.', 'Cosmocrat fails-closed.'],
+  ['Others sell agents.', 'Cosmocrat governs agents.'],
+] as const;
+
 export default function Narrative() {
   const [bridgeRef, bridgeVisible] = useInView({ threshold: 0.3 });
   const [featureRef, featureVisible] = useInView({ threshold: 0.4 });
@@ -216,12 +225,7 @@ export default function Narrative() {
 
           {/* Competitive contrast rails (locked) */}
           <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
-            {[
-              ['Others observe.', 'Cosmocrat enforces.'],
-              ['Others log.', 'Cosmocrat governs.'],
-              ['Others fail-open.', 'Cosmocrat fails-closed.'],
-              ['Others sell agents.', 'Cosmocrat governs agents.'],
-            ].map(([before, after]) => (
+            {COMPETITIVE_RAILS.map(([before, after]) => (
               <div
                 key={after}
                 className="px-5 py-4 rounded-lg bg-slate-900/40 border border-slate-800 text-center"

@@ -16,7 +16,7 @@ export const metadata = generatePageMetadata({
 
 const homeWebPageJson = JSON.stringify(
   generateHomeWebPage({ name: HOME_TITLE, description: HOME_DESCRIPTION }),
-);
+).replace(/</g, '\\u003c');
 
 export default function HomePage() {
   return (

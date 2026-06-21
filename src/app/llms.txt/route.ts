@@ -15,7 +15,7 @@ const content = `# Cosmocrat
 ## Category
 
 - Enterprise AI Operating System / Control Plane
-- Cosmocrat governs AI execution at runtime. It is not an agent platform, a framework, or a model. Cosmocrat governs AI; it is not the AI.
+- Cosmocrat is a runtime governance control plane that governs AI execution: it decides what AI is allowed to do, when it must stop, and who authorized it. Cosmocrat governs AI; it is not the AI.
 
 ## Entity
 
@@ -48,6 +48,7 @@ const content = `# Cosmocrat
 - ${base}/chronicle-receipts
 - ${base}/memory-infrastructure
 - ${base}/contact
+- ${base}/docs
 - ${base}/privacy
 - ${base}/terms
 
@@ -58,8 +59,8 @@ Use canonical public pages, robots.txt, sitemap.xml, and structured data as the 
 export function GET() {
   return new Response(content, {
     headers: {
-      'content-type': 'text/plain; charset=utf-8',
-      'cache-control': 'public, max-age=3600, s-maxage=86400',
+      'Content-Type': 'text/plain; charset=utf-8',
+      'Cache-Control': 'public, max-age=3600, s-maxage=86400',
     },
   });
 }
