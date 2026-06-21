@@ -94,12 +94,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   description:
                     'Cosmocrat develops a governed AI operating system for enforcing authority, memory, and execution constraints at runtime.',
                   sameAs: siteConfig.sameAs,
+                  // Reference the founder by canonical @id; the authoritative Person
+                  // entity (with sameAs) is defined on danmercede.com, not redefined here.
                   founder: {
                     '@type': 'Person',
                     '@id': siteConfig.founder.id,
                     name: siteConfig.founder.name,
                     url: siteConfig.founder.url,
-                    sameAs: siteConfig.founder.sameAs,
                   },
                   parentOrganization: {
                     '@type': 'Organization',
@@ -113,7 +114,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   '@type': 'WebSite',
                   '@id': `${siteConfig.origin}/#website`,
                   url: siteConfig.origin,
-                  name: `${siteConfig.name} | Governed AI Operating System`,
+                  name: `${siteConfig.name} | Enterprise AI Operating System & Control Plane`,
                   publisher: {
                     '@id': `${siteConfig.origin}/#organization`,
                   },

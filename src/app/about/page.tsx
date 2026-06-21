@@ -6,7 +6,7 @@ import { generatePageMetadata } from '@/lib/metadata';
 export const metadata = generatePageMetadata({
   title: 'About',
   description:
-    'Cosmocrat is the AI Operating System for governed memory and controlled execution, providing auditability, authority, and fail-closed enforcement at the runtime level.',
+    'Cosmocrat is the enterprise AI operating system and control plane that governs what AI is allowed to do, when it must stop, and who authorized it — with auditability, authority, and fail-closed enforcement at the runtime level.',
   path: '/about',
 });
 
@@ -17,8 +17,9 @@ export default function AboutPage() {
         <div className="max-w-3xl mx-auto px-4">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">About Cosmocrat</h1>
           <p className="text-xl text-slate-400 leading-relaxed">
-            Cosmocrat is a Governed AI Operating System that provides governed memory and controlled
-            execution with auditability, authority, and fail-closed enforcement.
+            Cosmocrat is the enterprise AI operating system that governs what AI is allowed to do,
+            when it must stop, and who authorized it — turning AI execution into an auditable,
+            accountable, and fail-closed asset.
           </p>
         </div>
       </div>
@@ -99,6 +100,33 @@ export default function AboutPage() {
               decisions rather than reconstructing activity from scattered logs. Cosmocrat is
               intended for environments where accountability and traceability are baseline
               requirements, not optional additions.
+            </p>
+          </article>
+        </section>
+
+        <section>
+          <h2 className="text-2xl font-bold text-white mb-6">How Cosmocrat Is Built Today</h2>
+          <article className="prose prose-invert prose-lg text-slate-400">
+            <p>
+              Cosmocrat began as a single bundled system. As the product matured, its boundaries
+              became part of the design. Today Cosmocrat is a narrow{' '}
+              <em>governor of record</em> — a deterministic kernel that decides whether an action is
+              permitted, under what policy, and with what receipt-backed proof — surrounded by a
+              family of governed surfaces: versioned policy packs, client SDKs and contracts,
+              reference deployment architectures, and fail-closed admission gates that place the
+              kernel&apos;s enforcement in front of new action surfaces.
+            </p>
+            <p>
+              Execution itself — pipelines, integrations, and orchestration — lives in a separate
+              runtime that calls Cosmocrat before any governed action occurs. The kernel does not
+              perform the work; it governs it. Intelligence may propose, but the world changes only
+              after authority and policy are satisfied, and the decision becomes durable evidence. If
+              evidence or authorization cannot be produced, execution halts.
+            </p>
+            <p>
+              That separation is deliberate. Keeping governance, execution, and the enterprise proof
+              surface in distinct boundaries is what makes each provable on its own.{' '}
+              <strong>Cosmocrat governs AI; it is not the AI.</strong>
             </p>
           </article>
         </section>

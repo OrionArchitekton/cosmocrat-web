@@ -22,7 +22,7 @@ export default function TermsPage() {
           <p className="text-lg text-slate-400">
             Terms of operation for the Cosmocrat Engine and associated services.
           </p>
-          <div className="mt-6 text-xs text-slate-500 font-mono">Last Updated: January 2025</div>
+          <div className="mt-6 text-xs text-slate-500 font-mono">Last Updated: June 2026</div>
         </div>
 
         {/* Content */}

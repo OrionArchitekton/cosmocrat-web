@@ -81,12 +81,12 @@ export default function SeoSpine() {
               </p>
             </AccordionItem>
 
-            <AccordionItem title="Does Cosmocrat allow AI to act autonomously?">
+            <AccordionItem title="Does Cosmocrat let AI act without oversight?">
               <p>
-                Cosmocrat enables controlled autonomy. The system allows AI to execute workflows and
-                access tools, but strictly within the bounds defined by your governance policy. It
-                is designed to prevent &quot;silent drift&quot; where an AI slowly deviates from its
-                intended parameters.
+                No. Cosmocrat enforces governed execution. The system allows AI to execute workflows
+                and access tools, but strictly within the authority and policy bounds you define. It
+                is designed to prevent &quot;silent drift&quot; where a system slowly deviates from
+                its intended parameters.
               </p>
             </AccordionItem>
 

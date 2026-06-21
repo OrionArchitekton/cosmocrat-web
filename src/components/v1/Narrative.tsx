@@ -169,11 +169,11 @@ export default function Narrative() {
                 />
               </div>
               <h3 className="text-xl font-bold text-white mb-3 group-hover:text-amber-100 transition-colors">
-                Fail-Closed by Default
+                Fail-Closed Control
               </h3>
               <p className="text-sm text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">
-                Actions halt without authority. The system defaults to denial unless explicitly
-                authorized.
+                Gates stop execution when authority is missing. The system defaults to denial unless
+                an action is explicitly authorized.
               </p>
             </div>
 
@@ -187,11 +187,11 @@ export default function Narrative() {
                 />
               </div>
               <h3 className="text-xl font-bold text-white mb-3 group-hover:text-amber-100 transition-colors">
-                Governed Memory
+                Structural Accountability
               </h3>
               <p className="text-sm text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">
-                Context is auditable, policy-bound, and non-transitive. Memory cannot bleed between
-                isolated lanes.
+                Lane isolation and governed memory. Context cannot bleed between workflows; authority
+                boundaries are enforced by structure, not convention.
               </p>
             </div>
 
@@ -205,13 +205,31 @@ export default function Narrative() {
                 />
               </div>
               <h3 className="text-xl font-bold text-white mb-3 group-hover:text-amber-100 transition-colors">
-                Execution with Receipts
+                Provable Trust
               </h3>
               <p className="text-sm text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">
-                If it isn&apos;t receipted, it didn&apos;t happen. Immutable, tamper-evident audit
-                logs for every decision.
+                Receipts, replay, and audit defensibility. Every decision becomes durable,
+                tamper-evident evidence you can inspect and prove later.
               </p>
             </div>
+          </div>
+
+          {/* Competitive contrast rails (locked) */}
+          <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
+            {[
+              ['Others observe.', 'Cosmocrat enforces.'],
+              ['Others log.', 'Cosmocrat governs.'],
+              ['Others fail-open.', 'Cosmocrat fails-closed.'],
+              ['Others sell agents.', 'Cosmocrat governs agents.'],
+            ].map(([before, after]) => (
+              <div
+                key={after}
+                className="px-5 py-4 rounded-lg bg-slate-900/40 border border-slate-800 text-center"
+              >
+                <p className="text-sm text-slate-500">{before}</p>
+                <p className="text-sm font-semibold text-cosmo-accent mt-1">{after}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -262,8 +280,8 @@ export default function Narrative() {
                       Cosmocrat Engine
                     </h3>
                     <p className="text-slate-400 mt-2 text-sm leading-relaxed">
-                      Workers, governed AI memory, and orchestration that run inside your
-                      environment.
+                      The deployable control plane — policy evaluation, governed memory, and
+                      receipts — running inside your environment.
                     </p>
                   </div>
                 </div>
