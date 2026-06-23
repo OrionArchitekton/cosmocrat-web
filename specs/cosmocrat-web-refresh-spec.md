@@ -100,15 +100,25 @@ AEO doctrine names.
 
 ## Out of scope (explicitly deferred)
 
-- **Host-path leak scrub** of `AGENTS.md` / `docs/doctrine/COSMOCRAT_DOCTRINE_POINTER.md`
-  (pre-existing; tracked as a separate decision — not addressed here).
 - **identityGuard CI / vitest.** No test runner is introduced this round.
 - **Full rewrite** of the six pillar content pages (they already align with the
   capability model).
 - **Deeper legal-content review** beyond the date refresh.
-- **`/about` narrow-core prose reconciliation (tracked follow-up).** The pre-existing
-  "What Cosmocrat Is" / "Governed Execution by Design" prose still says Cosmocrat "manages
-  how AI systems… execute actions across tools and workflows," which softly over-claims
-  execution against the new "How Cosmocrat Is Built Today" section. Deferred to a separate
-  editorial PR (operator decision, 2026-06-21) — this PR's `/about` scope is the divergence
-  section + retained bio/disambiguation.
+
+## Addressed in the followup PR (formerly deferred)
+
+The original refresh PR deferred the two items below; the followup PR
+(`/about` narrow-core prose + opsec scrub) now carries them, so they are in
+scope for this spec's acceptance:
+
+- **Host-path leak scrub** of `AGENTS.md` / `docs/doctrine/COSMOCRAT_DOCTRINE_POINTER.md`.
+  The followup PR converts the pre-existing workstation host-prefix estate-tree absolute
+  paths and the dev-workstation host reference to repo-relative refs; tracked files carry
+  no workstation host paths. (Whether to additionally strip the private-repo name and its
+  internal directory layout remains an open operator decision, not part of this PR.)
+- **`/about` narrow-core prose reconciliation.** The followup PR tightens the
+  "What Cosmocrat Is" copy so Cosmocrat **governs** execution (the runtime executes
+  it after governance is satisfied), resolving the soft over-claim against the
+  "How Cosmocrat Is Built Today" narrow-core section. Acceptance: the `/about`
+  execution/governance wording must keep Cosmocrat as the governor of execution,
+  never as the performer of execution, consistent with the narrow-Core boundary.
