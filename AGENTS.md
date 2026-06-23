@@ -68,9 +68,13 @@ Stop and escalate before changing:
 
 ## Validation
 
-Use the supported local toolchain for verification (Node 20.x, matching CI):
+Use the supported local toolchain for verification (Node 20.x, matching CI).
+The repo pins Node 20 via `.nvmrc`; select it before validating so the local
+major version matches CI (`actions/setup-node` at `node-version: 20`):
 
 ```bash
+nvm use            # selects Node 20 from .nvmrc
+node -v            # confirm v20.x before continuing
 npm ci
 npm run lint
 npm run typecheck
