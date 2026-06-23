@@ -52,6 +52,14 @@ const nextConfig = {
       },
     ],
   },
+  async rewrites() {
+    return [
+      // Backward-compat: the social card moved from the static /og.png to the
+      // dynamic /og route. Keep the old URL serving the new card so externally
+      // cached / bookmarked og.png references do not 404 after the cutover.
+      { source: '/og.png', destination: '/og' },
+    ];
+  },
   async redirects() {
     return [
       {
