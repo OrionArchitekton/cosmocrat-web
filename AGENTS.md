@@ -20,11 +20,12 @@ Do not treat this repo as:
 
 ## Authority Order
 
-When editing this repo, follow authority in this order:
+When editing this repo, follow authority in this order (estate documents
+resolve in the private `orion-estate-audit` governance repo):
 
-1. `/home/orion/src/orion-estate/platform/orion-estate-audit/AGENTS.md`
-2. `/home/orion/src/orion-estate/platform/orion-estate-audit/ORION_ESTATE_MASTER_CONTRACT.md`
-3. `/home/orion/src/orion-estate/platform/orion-estate-audit/estate_home_registry.yaml`
+1. `orion-estate-audit/AGENTS.md`
+2. `orion-estate-audit/ORION_ESTATE_MASTER_CONTRACT.md`
+3. `orion-estate-audit/estate_home_registry.yaml`
 4. this repo's `README.md`
 5. source, tests, and CI config in this repo
 
@@ -67,12 +68,12 @@ Stop and escalate before changing:
 
 ## Validation
 
-Use the supported local toolchain for verification:
+Use the supported local toolchain for verification (Node 20.x, matching CI):
 
 ```bash
-PATH=/home/orion/.nvm/versions/node/v20.20.0/bin:$PATH npm ci
-PATH=/home/orion/.nvm/versions/node/v20.20.0/bin:$PATH npm run lint
-PATH=/home/orion/.nvm/versions/node/v20.20.0/bin:$PATH npm run typecheck
+npm ci
+npm run lint
+npm run typecheck
 ```
 
 If a public-site check fails, fix the repo-local issue rather than weakening

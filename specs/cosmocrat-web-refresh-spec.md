@@ -28,11 +28,16 @@ AEO doctrine names.
 3. **Positioning embargo.** No open-source / MIT / free-tier / standalone / OSS-wedge
    claims in public copy. Enterprise commercial framing (subscription, private early
    access) is allowed.
-4. **AEO entity doctrine (shape).** A page-level `WebPage` node lives on the homepage
-   only (via `page.tsx`), never in `RootLayout`. This site's own entity `@id`s are
-   env-derived from `siteConfig.origin` so they resolve on preview deploys. Sitemap
-   `lastModified` is a committed constant, never `new Date()`. No per-page Person/Org
-   redefinition; the founder is referenced by canonical `@id`. `llms.txt` is served.
+4. **AEO entity doctrine (shape).** No `WebPage` node belongs in the shared `RootLayout`
+   (`layout.tsx`) — that would emit one duplicated node on every route. Each page that
+   warrants one carries its OWN per-route `WebPage`: the homepage via `page.tsx`
+   (`generateHomeWebPage`), and content pages (`/platform` + the pillar routes) via
+   `generateFeatureSchema`. "Homepage-only" means "not in `RootLayout`", **not** "only the
+   homepage may have a WebPage" — distinct per-route nodes are correct and retained. This
+   site's own entity `@id`s are env-derived from `siteConfig.origin` so they resolve on
+   preview deploys. Sitemap `lastModified` is a committed constant, never a build-time clock
+   read. No per-page Person/Org redefinition; the founder is referenced by canonical `@id`.
+   `llms.txt` is served.
 5. **Public-repo opsec.** No host paths, no personal email, no estate-tree paths, no
    secrets in committed files.
 
@@ -101,3 +106,9 @@ AEO doctrine names.
 - **Full rewrite** of the six pillar content pages (they already align with the
   capability model).
 - **Deeper legal-content review** beyond the date refresh.
+- **`/about` narrow-core prose reconciliation (tracked follow-up).** The pre-existing
+  "What Cosmocrat Is" / "Governed Execution by Design" prose still says Cosmocrat "manages
+  how AI systems… execute actions across tools and workflows," which softly over-claims
+  execution against the new "How Cosmocrat Is Built Today" section. Deferred to a separate
+  editorial PR (operator decision, 2026-06-21) — this PR's `/about` scope is the divergence
+  section + retained bio/disambiguation.
