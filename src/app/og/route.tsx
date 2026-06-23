@@ -1,9 +1,12 @@
 import { ImageResponse } from 'next/og';
 
-// Dynamic OpenGraph / Twitter card. Rendered on-brand from the locked enterprise
-// positioning so the social card never drifts from product truth (it replaced a
-// stale consumer-era static og.png). Referenced via siteConfig.ogImage -> '/og'.
-export const runtime = 'edge';
+// On-brand OpenGraph / Twitter card rendered from the locked enterprise positioning
+// so the social card never drifts from product truth (it replaced a stale consumer-era
+// static og.png). Referenced via siteConfig.ogImage -> '/og'.
+//
+// The card has no per-request input, so it is generated ONCE at build time
+// (force-static) — the Google Font fetches below run at build, not on every request.
+export const dynamic = 'force-static';
 
 const SIZE = { width: 1200, height: 630 };
 const DESCRIPTOR = 'Enterprise AI Operating System & Control Plane';
@@ -15,7 +18,8 @@ async function loadGoogleFont(family: string, weight: number, text: string): Pro
     family,
   )}:wght@${weight}&text=${encodeURIComponent(text)}`;
   const css = await (await fetch(url)).text();
-  const src = css.match(/src: url\((.+?)\) format/);
+  // Tolerate optional quotes around the URL and any following format()/src entries.
+  const src = css.match(/src:\s*url\(\s*['"]?([^'")]+?)['"]?\s*\)/);
   if (!src) throw new Error(`font load failed: ${family}`);
   return (await fetch(src[1])).arrayBuffer();
 }
