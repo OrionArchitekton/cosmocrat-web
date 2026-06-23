@@ -29,12 +29,13 @@ export default function AboutPage() {
           <h2 className="text-2xl font-bold text-white mb-6">What Cosmocrat Is</h2>
           <article className="prose prose-invert prose-lg text-slate-400">
             <p>
-              An <strong>AI Operating System</strong> is the layer that manages how AI systems
-              retain memory, make decisions, and execute actions across tools and workflows. It
-              defines the runtime environment for AI, much like an operating system coordinates
-              resources and enforces rules for software on a computer. Cosmocrat provides that layer
-              for organizations that need durable AI memory and controlled execution across systems,
-              not just isolated tasks.
+              An <strong>AI Operating System</strong> is the governance layer that decides what AI
+              is allowed to do — how memory is retained, how decisions are formed, and whether an
+              action may touch the real world — across tools and workflows. Much like an operating
+              system coordinates resources and enforces rules for software on a computer, it sets and
+              enforces the rules of the runtime for AI. Cosmocrat provides that governance layer for
+              organizations that need durable, governed AI memory and controlled execution across
+              systems, not just isolated tasks.
             </p>
             <p>
               Cosmocrat extends the AI Operating System concept with governance at the OS layer.
@@ -56,11 +57,11 @@ export default function AboutPage() {
               remains aligned with authority and compliance requirements.
             </p>
             <p>
-              <strong>Controlled execution</strong> is the counterpart to governed memory. The
-              system defines how and when AI can act, what it is allowed to do, and which resources
-              it can access. By keeping the execution layer governed alongside memory and
-              decisioning, Cosmocrat defines a complete operating system boundary for AI rather than
-              a set of isolated tools.
+              <strong>Controlled execution</strong> is the counterpart to governed memory. Cosmocrat
+              defines how and when AI can act, what it is allowed to do, and which resources it can
+              access — then the action runs in your own runtime, only after governance is satisfied.
+              By governing the execution path alongside memory and decisioning, Cosmocrat defines a
+              complete governance boundary for AI rather than a set of isolated tools.
             </p>
           </article>
         </section>

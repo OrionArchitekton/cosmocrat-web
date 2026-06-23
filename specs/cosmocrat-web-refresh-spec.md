@@ -28,11 +28,16 @@ AEO doctrine names.
 3. **Positioning embargo.** No open-source / MIT / free-tier / standalone / OSS-wedge
    claims in public copy. Enterprise commercial framing (subscription, private early
    access) is allowed.
-4. **AEO entity doctrine (shape).** A page-level `WebPage` node lives on the homepage
-   only (via `page.tsx`), never in `RootLayout`. This site's own entity `@id`s are
-   env-derived from `siteConfig.origin` so they resolve on preview deploys. Sitemap
-   `lastModified` is a committed constant, never `new Date()`. No per-page Person/Org
-   redefinition; the founder is referenced by canonical `@id`. `llms.txt` is served.
+4. **AEO entity doctrine (shape).** No `WebPage` node belongs in the shared `RootLayout`
+   (`layout.tsx`) — that would emit one duplicated node on every route. Each page that
+   warrants one carries its OWN per-route `WebPage`: the homepage via `page.tsx`
+   (`generateHomeWebPage`), and content pages (`/platform` + the pillar routes) via
+   `generateFeatureSchema`. "Homepage-only" means "not in `RootLayout`", **not** "only the
+   homepage may have a WebPage" — distinct per-route nodes are correct and retained. This
+   site's own entity `@id`s are env-derived from `siteConfig.origin` so they resolve on
+   preview deploys. Sitemap `lastModified` is a committed constant, never a build-time clock
+   read. No per-page Person/Org redefinition; the founder is referenced by canonical `@id`.
+   `llms.txt` is served.
 5. **Public-repo opsec.** No host paths, no personal email, no estate-tree paths, no
    secrets in committed files.
 
@@ -95,9 +100,30 @@ AEO doctrine names.
 
 ## Out of scope (explicitly deferred)
 
-- **Host-path leak scrub** of `AGENTS.md` / `docs/doctrine/COSMOCRAT_DOCTRINE_POINTER.md`
-  (pre-existing; tracked as a separate decision — not addressed here).
 - **identityGuard CI / vitest.** No test runner is introduced this round.
 - **Full rewrite** of the six pillar content pages (they already align with the
   capability model).
 - **Deeper legal-content review** beyond the date refresh.
+
+## Addressed in the followup PR (formerly deferred)
+
+The original refresh PR deferred the two items below; the followup PR
+(`/about` narrow-core prose + opsec scrub) now carries them, so they are in
+scope for this spec's acceptance:
+
+- **Host-path leak scrub** of `AGENTS.md`, `docs/doctrine/COSMOCRAT_DOCTRINE_POINTER.md`,
+  and `docs/seo-audit-2-17-26.md`. The followup PR converts the pre-existing workstation
+  host-prefix estate-tree absolute paths and the dev-workstation host reference to
+  repo-relative refs, and strips the dead local-IDE webview export URLs (which embedded a
+  Windows-style workstation user path) from the SEO audit doc, keeping the code references
+  as inline text. Acceptance: `git grep` over tracked files returns no match for any of the
+  workstation/host-path token classes — Linux home prefixes, Windows user paths (raw or
+  url-encoded), local-IDE webview export URLs, the dev-workstation host name, or the
+  personal email. (Whether to additionally strip the private-repo name and its internal
+  directory layout remains an open operator decision, not part of this PR.)
+- **`/about` narrow-core prose reconciliation.** The followup PR tightens the
+  "What Cosmocrat Is" copy so Cosmocrat **governs** execution (the runtime executes
+  it after governance is satisfied), resolving the soft over-claim against the
+  "How Cosmocrat Is Built Today" narrow-core section. Acceptance: the `/about`
+  execution/governance wording must keep Cosmocrat as the governor of execution,
+  never as the performer of execution, consistent with the narrow-Core boundary.
