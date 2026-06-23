@@ -111,11 +111,16 @@ The original refresh PR deferred the two items below; the followup PR
 (`/about` narrow-core prose + opsec scrub) now carries them, so they are in
 scope for this spec's acceptance:
 
-- **Host-path leak scrub** of `AGENTS.md` / `docs/doctrine/COSMOCRAT_DOCTRINE_POINTER.md`.
-  The followup PR converts the pre-existing workstation host-prefix estate-tree absolute
-  paths and the dev-workstation host reference to repo-relative refs; tracked files carry
-  no workstation host paths. (Whether to additionally strip the private-repo name and its
-  internal directory layout remains an open operator decision, not part of this PR.)
+- **Host-path leak scrub** of `AGENTS.md`, `docs/doctrine/COSMOCRAT_DOCTRINE_POINTER.md`,
+  and `docs/seo-audit-2-17-26.md`. The followup PR converts the pre-existing workstation
+  host-prefix estate-tree absolute paths and the dev-workstation host reference to
+  repo-relative refs, and strips the dead local-IDE webview export URLs (which embedded a
+  Windows-style workstation user path) from the SEO audit doc, keeping the code references
+  as inline text. Acceptance: `git grep` over tracked files returns no match for any of the
+  workstation/host-path token classes — Linux home prefixes, Windows user paths (raw or
+  url-encoded), local-IDE webview export URLs, the dev-workstation host name, or the
+  personal email. (Whether to additionally strip the private-repo name and its internal
+  directory layout remains an open operator decision, not part of this PR.)
 - **`/about` narrow-core prose reconciliation.** The followup PR tightens the
   "What Cosmocrat Is" copy so Cosmocrat **governs** execution (the runtime executes
   it after governance is satisfied), resolving the soft over-claim against the
