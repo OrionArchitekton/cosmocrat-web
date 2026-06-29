@@ -2,15 +2,22 @@ import { ImageResponse } from 'next/og';
 
 // On-brand OpenGraph / Twitter card rendered from the locked enterprise positioning
 // so the social card never drifts from product truth (it replaced a stale consumer-era
-// static og.png). Referenced via siteConfig.ogImage -> '/og'.
+// static og.png). Referenced via siteConfig.ogImage -> '/og?v=N' (bump N on content change).
 //
 // The card has no per-request input, so it is generated ONCE at build time
-// (force-static) — the Google Font fetches below run at build, not on every request.
+// (force-static) — the brand wordmark + Inter font fetches below run at build, not per request.
 export const dynamic = 'force-static';
 
 const SIZE = { width: 1200, height: 630 };
 const DESCRIPTOR = 'Enterprise AI Operating System & Control Plane';
 const TAGLINE = 'Governance at runtime, not in retrospect.';
+
+// The real brand wordmark asset (the same file the site header renders) — drawn as an
+// image so the card matches the locked logotype EXACTLY, instead of approximating it
+// with a lookalike font (the prior Orbitron text read as off-brand).
+const WORDMARK_SRC =
+  'https://storage.googleapis.com/cosmocrat/cosmocrat_logos_graphics/wordmark-logo_light.png';
+const WORDMARK = { width: 686, height: 84 }; // native 604x74, scaled ~1.14x preserving aspect
 
 // Load a Google font subset for exactly the glyphs we render (small + fast).
 async function loadGoogleFont(family: string, weight: number, text: string): Promise<ArrayBuffer> {
@@ -25,9 +32,7 @@ async function loadGoogleFont(family: string, weight: number, text: string): Pro
 }
 
 export async function GET(): Promise<ImageResponse> {
-  const wordmark = 'COSMOCRAT';
-  const [orbitron, interSemibold, interRegular] = await Promise.all([
-    loadGoogleFont('Orbitron', 700, wordmark),
+  const [interSemibold, interRegular] = await Promise.all([
     loadGoogleFont('Inter', 600, DESCRIPTOR),
     loadGoogleFont('Inter', 400, TAGLINE),
   ]);
@@ -48,18 +53,15 @@ export async function GET(): Promise<ImageResponse> {
           fontFamily: 'Inter',
         }}
       >
-        <div
-          style={{
-            display: 'flex',
-            fontFamily: 'Orbitron',
-            fontWeight: 700,
-            fontSize: '82px',
-            letterSpacing: '5px',
-            color: '#CC8B4F',
-          }}
-        >
-          {wordmark}
-        </div>
+        {/* Satori (next/og) renders a real <img>, not next/image — the lint rule does not apply here. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={WORDMARK_SRC}
+          width={WORDMARK.width}
+          height={WORDMARK.height}
+          alt="Cosmocrat"
+          style={{ display: 'flex' }}
+        />
 
         <div
           style={{
@@ -102,7 +104,6 @@ export async function GET(): Promise<ImageResponse> {
     {
       ...SIZE,
       fonts: [
-        { name: 'Orbitron', data: orbitron, weight: 700, style: 'normal' },
         { name: 'Inter', data: interSemibold, weight: 600, style: 'normal' },
         { name: 'Inter', data: interRegular, weight: 400, style: 'normal' },
       ],
