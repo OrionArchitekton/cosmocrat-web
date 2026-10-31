@@ -14,5 +14,10 @@ for (const route of routes) test(`the ${route} reference preserves its route and
   assert.match(text, /family membership does not establish kernel integration/);
   assert.match(html, /href="\/tools"/);
   assert.match(text, /enrolled|integration/);
+  if (route === 'decision-exhaust') {
+    assert.match(text, /Illustrative decision receipt/);
+    assert.match(text, /Separate provider response/);
+    assert.doesNotMatch(text, /execution receipt|Receipts establish intent, authority, and outcome|system.s legal record|links the intent to the outcome cryptographically/i);
+  }
   assert.doesNotMatch(text, /physically impossible to bypass|guarantees zero drift|perfect replay|sub-millisecond enforcement/i);
 });
