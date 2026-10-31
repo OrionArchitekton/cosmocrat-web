@@ -9,11 +9,21 @@ for (const route of routes) test(`the ${route} reference preserves its route and
   assert.equal(response.url, `${origin}/${route}`);
   const html = await response.text();
   const text = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '').replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
-  assert.match(html, new RegExp(`rel="canonical"[^>]*href="[^"]*/${route}"`));
+  const canonicalTags = [...html.matchAll(/<link\b[^>]*>/g)].map(match => match[0]).filter(tag => /\srel="canonical"/.test(tag));
+  assert.equal(canonicalTags.length, 1);
+  const canonical = new URL(canonicalTags[0].match(/\shref="([^"]*)"/)[1]);
+  assert.ok(!canonical.username && !canonical.password, 'Canonical identity contains no credentials');
+  const configuredOrigin = process.env.SITE_EXPECTED_CANONICAL_ORIGIN || process.env.NEXT_PUBLIC_SITE_URL;
+  if (configuredOrigin) assert.equal(canonical.origin, new URL(configuredOrigin).origin);
+  else assert.ok([new URL(origin).origin, 'https://www.cosmocrat.ai'].includes(canonical.origin));
+  assert.equal(canonical.pathname, `/${route}`);
+  assert.equal(canonical.search + canonical.hash, '');
   assert.match(html, /aria-label="Architecture scope"/);
   assert.match(text, /Architecture reference/);
   assert.match(text, /family membership does not establish kernel integration/);
-  assert.match(html, /href="\/tools"/);
+  const notices = html.match(/<aside\b[^>]*class="governance-context"[\s\S]*?<\/aside>/g) || [];
+  assert.equal(notices.length, 1);
+  assert.match(notices[0], /href="\/tools"/);
   assert.match(text, /enrolled|integration/);
   const body = html.replace(/<aside\b[\s\S]*?<\/aside>/g, '').replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '').replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
   const qualifications = {
@@ -25,11 +35,11 @@ for (const route of routes) test(`the ${route} reference preserves its route and
     'drift-guard': /explicitly enrolled retrieval paths/,
   };
   assert.match(body, qualifications[route]);
-  const entities = { '&amp;': '&', '&quot;': '"', '&#x27;': "'", '&#39;': "'", '&lt;': '<', '&gt;': '>' };
-  const description = html.match(/<meta[^>]*name="description"[^>]*content="([^"]*)"/)?.[1]?.replace(/&(amp|quot|#x27|#39|lt|gt);/g, value => entities[value]);
+  const entities = { '&amp;': '&', '&quot;': '"', '&apos;': "'", '&#x27;': "'", '&#39;': "'", '&lt;': '<', '&gt;': '>' };
+  const description = html.match(/<meta[^>]*name="description"[^>]*content="([^"]*)"/)?.[1]?.replace(/&(amp|quot|apos|#x27|#39|lt|gt);/g, value => entities[value]);
   assert.ok(description, 'The reference retains its page description');
   const documents = [...html.matchAll(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)].flatMap(match => { const item = JSON.parse(match[1]); return item['@graph'] || [item]; });
-  const page = documents.find(item => item['@type'] === 'WebPage' && item.url === `${origin}/${route}`);
+  const page = documents.find(item => item['@type'] === 'WebPage' && item.url === canonical.href);
   assert.ok(page, 'The reference retains its own structured page identity');
   assert.equal(page.description, description);
 
