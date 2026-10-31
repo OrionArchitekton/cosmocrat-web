@@ -373,7 +373,7 @@ export default function GateSystemContent() {
                 <BrainCircuit size={20} className="text-orange-400" /> G2: Decision Formation
               </h3>
               <p className="text-slate-400 text-sm">
-                Is the reasoning valid? Checks confidence, completeness, and logical soundness.
+                Configured criteria for a proposed decision; a confidence score does not establish truth or authority.
               </p>
             </div>
             <div className="bg-slate-900 p-6 rounded border-l-4 border-orange-500">
@@ -456,8 +456,8 @@ export default function GateSystemContent() {
               They authorize.
             </h2>
             <p className="text-lg text-slate-400 mb-6">
-              Monitoring is passive; by the time you see the log, the money is gone. Cosmocrat
-              inserts human authorization directly into the runtime loop (G4).
+              The conceptual G4 stage calls for human authority at configured checkpoints on an
+              enrolled execution path. A deployment selects checkpoints such as the examples below.
             </p>
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
