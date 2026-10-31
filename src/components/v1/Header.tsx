@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 
 const navLinks = [
+  { label: 'Tools', href: '/tools' },
   { label: 'Platform', href: '/platform' },
   { label: 'About', href: '/about' },
   { label: 'Docs', href: '/docs' },
@@ -39,7 +40,7 @@ export default function Header() {
           </div>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex space-x-8 items-center">
+          <nav className="hidden lg:flex space-x-8 items-center">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
               return (
@@ -67,7 +68,7 @@ export default function Header() {
           </nav>
 
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center">
+          <div className="lg:hidden flex items-center">
             <button
               onClick={toggleMenu}
               className="text-slate-300 hover:text-white focus:outline-none"
@@ -81,7 +82,7 @@ export default function Header() {
 
       {/* Mobile Nav */}
       {isMenuOpen && (
-        <div className="md:hidden bg-cosmo-card border-b border-slate-800">
+        <div className="lg:hidden bg-cosmo-card border-b border-slate-800">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
