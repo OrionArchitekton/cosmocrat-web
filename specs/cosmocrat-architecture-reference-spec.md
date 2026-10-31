@@ -6,6 +6,6 @@ A reader opens runtime governance, the gate system, memory infrastructure, decis
 
 The existing URLs return successful documents with their own canonical addresses. Navigation and the scope notice remain visible and readable on desktop and a 390px phone without horizontal overflow. Existing contact, legal and intake behavior remain separate.
 
-Test seams: GET-only built-site readback covers the six existing documents, scope notice, catalog links, self-canonicals and qualified copy. An anonymous browser checks a representative architecture page at desktop and mobile, including the fixed navigation and notice. Publication follows protected review and independent production readback.
+Test seams: GET-only built-site readback covers the six existing documents, scope notice, catalog links, self-canonicals and qualified copy. An anonymous browser checks a representative architecture page at desktop and mobile, including the fixed navigation and notice. Source acceptance requires the local checks plus protected current-head review and required checks. Release acceptance follows the approved merge and deployment: independently read the published routes and record the deployed revision before reporting the change live.
 
 The browser journey is a manual release check with separately installed anonymous browser tooling. CI checks the built initial documents. The required desktop/phone observations must be recorded before release; browser execution in CI is not claimed.
