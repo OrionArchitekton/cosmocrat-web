@@ -54,8 +54,7 @@ export default function DecisionExhaustContent() {
               </span>
             </h1>
             <p className="text-xl text-slate-400 mb-8 max-w-xl leading-relaxed">
-              The control plane that enforces, records, and replays every AI and human
-              decision—by policy, not convention.
+              Policy and authority records for governed decisions, with explicit integration and replay boundaries.
             </p>
             <div className="flex gap-4 mb-4">
               <Link
@@ -113,8 +112,9 @@ export default function DecisionExhaustContent() {
               evaluation, authority checks, and state transitions that led to an action.
             </p>
             <p className="text-slate-300 font-medium">
-              Decision exhaust is the audit-grade record of every AI and human decision — including
-              intent, policy evaluation, authority, execution, and outcome — produced at runtime.
+              Decision exhaust is the audit record of each enrolled governed decision, including
+              intent, policy evaluation and authority. Execution and external outcomes require
+              their own retained evidence.
             </p>
             <p>
               For deterministic software, logs are sufficient. For probabilistic AI agents that
@@ -408,7 +408,7 @@ export default function DecisionExhaustContent() {
           <Layers size={32} className="text-cosmo-accent" />
           <div>
             <h2 className="text-3xl font-bold text-white">The Governance Cycle</h2>
-            <p className="text-slate-400">A single runtime path for every action.</p>
+            <p className="text-slate-400">A conceptual cycle for an enrolled governed action.</p>
           </div>
         </div>
 
@@ -437,7 +437,7 @@ export default function DecisionExhaustContent() {
             <div className="flex items-start gap-2 mb-4">
               <Activity size={16} className="text-cosmo-accent mt-1 shrink-0" />
               <p className="text-sm text-slate-400">
-                Permit, block, retry, or escalate—across every tool and lane.
+                Permit, deny or defer the governed request at its explicit boundary.
               </p>
             </div>
             <div className="text-xs text-slate-600 mt-auto">No silent failures.</div>

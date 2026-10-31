@@ -48,7 +48,7 @@ export default function ToolCatalog({ tools }: { tools: readonly ToolDefinition[
   const matches = tools.filter(
     (tool) =>
       (category === 'all' || tool.category === category) &&
-      `${tool.name} ${tool.kind} ${tool.tagline} ${tool.description} ${tool.environment} ${tool.boundary}`
+      `${tool.id} ${tool.name} ${tool.kind} ${tool.version} ${tool.status} ${tool.tagline} ${tool.description} ${tool.environment} ${tool.boundary} ${tool.profiles?.map((profile) => profile.label).join(' ') ?? ''}`
         .toLowerCase()
         .includes(query.trim().toLowerCase())
   );

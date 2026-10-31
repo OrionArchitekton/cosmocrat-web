@@ -172,8 +172,8 @@ export default function DriftGuardContent() {
           {/* Canonical Definition Sentence */}
           <div className="max-w-3xl mx-auto">
             <p className="text-lg text-amber-500/90 font-medium">
-              Drift Guard continuously detects and halts divergence between authorized intent and
-              actual AI behavior over time.
+              Drift Guard describes checks for divergence between authorized intent and observed
+              AI behavior over time. Detection and response depend on the enrolled integration.
             </p>
           </div>
         </div>
@@ -195,20 +195,21 @@ export default function DriftGuardContent() {
               >
                 Gate System
               </Link>{' '}
-              authorizes individual actions at a point in time, Drift Guard ensures that system
-              behavior does not diverge from what was authorized, proved, or intended as the system
-              evolves.
+              evaluates enrolled actions at a point in time, Drift Guard proposes repeated checks
+              for behavior that diverges from what was authorized, observed, or intended as the
+              system evolves.
             </p>
             <p className="text-slate-300 font-medium">
               Drift emerges across time and state transitions — not within a single execution.
             </p>
             <p>
               It spans five critical domains: behavior, memory, policy, authority, and structure.
-              Unlike monitoring tools that look for crashes, Drift Guard detects divergence from
-              authorized behavior even when the system appears to be functioning normally.
+              Its design looks beyond crashes for divergence from authorized behavior. Actual
+              coverage depends on the signals, checks and boundaries configured in a deployment.
             </p>
             <p>
-              When divergence is detected, it enforces corrective action by default. This generates{' '}
+              A configured response can halt an enrolled action when divergence is detected.
+              The design retains{' '}
               <Link
                 href="/decision-exhaust"
                 className="text-slate-400 hover:text-amber-500 underline decoration-slate-700 underline-offset-4 transition-colors"
@@ -222,7 +223,7 @@ export default function DriftGuardContent() {
               >
                 Runtime Governance
               </Link>{' '}
-              kernel to tighten future enforcement.
+              integration so its operator can review future enforcement.
             </p>
           </div>
         </div>
@@ -328,7 +329,7 @@ export default function DriftGuardContent() {
             {/* Labels */}
             <div className="absolute left-4 top-4 bg-slate-900/80 backdrop-blur border border-slate-700 p-2 rounded text-xs text-slate-300 z-10 font-mono">
               <div className="text-[10px] text-slate-500 uppercase">Status</div>
-              <div>MONITORING ACTIVE</div>
+              <div>DESIGN MODEL</div>
             </div>
           </div>
         </div>
@@ -412,8 +413,8 @@ export default function DriftGuardContent() {
           </div>
 
           <p className="mt-12 text-slate-400 max-w-2xl mx-auto">
-            Drift Guard is not a single service. It is embedded into the core runtime to enforce
-            integrity across behavioral, policy, and structural domains simultaneously.
+            The design distributes checks across runtime integrations for behavioral, policy and
+            structural drift. This diagram does not establish that those checks are deployed.
           </p>
         </div>
       </section>
@@ -810,7 +811,7 @@ export default function DriftGuardContent() {
               <div className="absolute top-2/3 left-1/2 -translate-x-1/2 w-6 h-6 border border-amber-500 rounded-full opacity-0 animate-ping delay-4"></div>
 
               <div className="absolute bottom-4 left-0 right-0 text-center text-[10px] text-amber-500 font-mono">
-                BLOCKED: Non-admissible context detected
+                DESIGN EXAMPLE: Non-admissible context blocked
               </div>
             </div>
           </div>
@@ -862,8 +863,8 @@ export default function DriftGuardContent() {
                 Quarantine Lane
               </h3>
               <p className="text-slate-400 text-sm leading-relaxed">
-                Prevent contamination. The Lane is locked; no new memory can be written, no external
-                tools called.
+                Proposed response: deny new memory writes and external tool calls on enrolled
+                paths. Isolation requires an enforced boundary without bypass paths.
               </p>
             </div>
             <div className="bg-slate-900/50 p-4 border-t border-slate-800 flex justify-between items-center">
@@ -884,8 +885,8 @@ export default function DriftGuardContent() {
                 Halt &amp; Require G4
               </h3>
               <p className="text-slate-400 text-sm leading-relaxed">
-                Human re-authorization required. The system stops and demands explicit authority to
-                proceed.
+                Proposed response: stop the enrolled action and require explicit human authority
+                before proceeding.
               </p>
             </div>
             <div className="bg-slate-900/50 p-4 border-t border-slate-800 flex justify-between items-center relative z-10">
@@ -988,7 +989,7 @@ export default function DriftGuardContent() {
           <div className="space-y-2">
             <FaqItem
               question="How does Drift Guard differ from observability?"
-              answer="Observability shows you metrics (latency, errors). Drift Guard detects semantic divergence—when the AI starts doing things it wasn't authorized to do, even if it's not throwing errors."
+              answer="Observability records signals such as latency and errors. Drift Guard's design adds configured checks for divergence from authorized behavior, including cases without a software error. Detection coverage must be established in the deployed integration."
             />
             <FaqItem
               question="What is 'Behavioral Drift'?"
@@ -996,11 +997,11 @@ export default function DriftGuardContent() {
             />
             <FaqItem
               question="Can Drift Guard automatically fix the AI?"
-              answer="It defaults to 'Halt & Require G4' (Human Authorization). Auto-correction is risky; we prefer to stop the drift and let a human ratify the new behavior or roll back."
+              answer="The proposed response is 'Halt & Require G4' (Human Authorization). A deployment must explicitly configure and verify that response. Automatic correction requires its own authority and evidence."
             />
             <FaqItem
               question="Does it work on non-deterministic models?"
-              answer="Yes. Drift Guard governs the boundaries and outcomes (the 'what' and 'how'), not just the raw text output, ensuring safety regardless of model variance."
+              answer="The design checks configured boundaries and observed behavior across model types. Non-deterministic behavior still requires suitable detection signals and workload-specific validation; no universal safety guarantee follows."
             />
           </div>
         </div>

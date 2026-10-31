@@ -110,8 +110,8 @@ export default function ChronicleReceiptsContent() {
             The Canonical Rule
           </div>
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-10 leading-tight">
-            If it is not receipted in the Chronicle, <br />
-            <span className="bronze-text drop-shadow-sm">it did not happen.</span>
+            If a governed decision is not receipted, <br />
+            <span className="bronze-text drop-shadow-sm">its admission is not recorded.</span>
           </h1>
           <p className="text-xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
             The Chronicle Registry is an append-only, tamper-evident ledger. <br />
@@ -135,8 +135,8 @@ export default function ChronicleReceiptsContent() {
             <p>
               Chronicle Receipts form the append-only, tamper-evident authority ledger of the
               Cosmocrat OS. While logs track mutable system events, receipts are generated
-              specifically for decisions. They bind policy, authority, context, and outcome into a
-              single cryptographic proof.
+              specifically for governed decisions. They bind policy, authority, context, and the
+              decision outcome into a cryptographic record within the configured trust boundary.
             </p>
             <p>
               This establishes the admissible &quot;why&quot; behind an action. By anchoring into{' '}
@@ -279,8 +279,8 @@ export default function ChronicleReceiptsContent() {
 
         <div className="mt-16 text-center">
           <p className="text-slate-400 text-lg font-medium">
-            Receipts make AI actions non-repudiable — they cannot be denied, rewritten, or detached
-            from authority.
+            Receipts preserve attributable decision metadata within the configured trust boundary.
+            Separate evidence is still required to establish what actually happened after admission.
           </p>
         </div>
       </section>
@@ -522,8 +522,9 @@ export default function ChronicleReceiptsContent() {
                 <code className="text-amber-500">policy_hash</code> active at that moment.
                 <br />
                 <br />
-                <strong>Result:</strong> No retroactive rule changes. No silent amendments. Perfect
-                historical replayability.
+                <strong>Result:</strong> A decision can retain its original policy reference. Replay
+                depends on the versioned policy, required inputs and retained evidence; it does
+                not reproduce all model reasoning or prove the external outcome.
               </p>
             </div>
           </div>
@@ -715,15 +716,15 @@ export default function ChronicleReceiptsContent() {
           <div className="space-y-2">
             <FaqItem
               question="How is a receipt different from a system log?"
-              answer="A log records that something happened. A receipt records *why* it was allowed. Receipts bind the policy hash, authority context, and input state to the outcome, making the action non-repudiable."
+              answer="An authoritative governance receipt records the policy and authority behind a decision. Local task records, hashes and tool logs have distinct authority. Neither record alone proves an external outcome."
             />
             <FaqItem
               question="Are receipts stored on a blockchain?"
-              answer="No. They use cryptographic chaining (Merkle trees) for tamper-evidence but are stored in your own high-performance data infrastructure (e.g., S3, ClickHouse) for speed and privacy."
+              answer="A blockchain is not required. Storage and integrity mechanisms depend on the kernel version and deployment. Do not infer a Merkle tree or external anchoring from the existence of a receipt."
             />
             <FaqItem
               question="Can I replay a receipt?"
-              answer="Yes. Because the receipt captures the full state context (inputs + memory snapshot + policy), you can replay the decision path to debug or audit the AI's reasoning."
+              answer="A governed decision can be replayed when the necessary versioned inputs and policy are retained. A receipt is not a complete model reasoning trace or a guarantee that a real-world effect occurred."
             />
             <FaqItem
               question="What format are receipts in?"
