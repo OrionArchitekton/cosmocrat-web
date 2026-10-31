@@ -18,6 +18,7 @@ for width, height in [(1440, 1000), (390, 844)]:
     for route in ['about', 'docs', 'platform']:
         commands.extend([
             ['open', origin + '/' + route],
+            ['eval', f'(()=>{{if(location.origin !== {json.dumps(origin)} || location.pathname !== {json.dumps("/" + route)})throw Error("Reference route identity");return true}})()'],
             ['eval', 'document.fonts.ready.then(() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))))'],
             ['eval', 'window.scrollTo(0,0)'],
             ['eval', '(()=>{const h=document.querySelector("main h1").getBoundingClientRect(),header=document.querySelector("header").getBoundingClientRect();if(document.documentElement.scrollWidth>innerWidth||h.left<0||h.right>innerWidth||h.top<header.bottom-1)throw Error("Reference heading/navigation layout");return {route:location.pathname,width:innerWidth,heading:document.querySelector("main h1").textContent.trim(),headingTop:h.top,headerBottom:header.bottom,overflow:false}})()'],
@@ -44,7 +45,7 @@ try:
     assert result.returncode == 0, 'Reference browser command failed'
     records = json.loads(result.stdout)
     assert len(records) == len(commands) and all(item['success'] for item in records)
-    assert all(not item['result']['errors'] for item in records if item['command'][0] == 'errors')
+    assert all(item['result']['errors'] == [] for item in records if item['command'][0] == 'errors')
     print(f'PASS: {len(commands)} reference browser commands')
 finally:
     subprocess.run(base + ['close'], env=environment, capture_output=True, timeout=20)
