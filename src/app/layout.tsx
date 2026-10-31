@@ -5,6 +5,7 @@ import Header from '@/components/v1/Header';
 import Footer from '@/components/v1/Footer';
 import { siteConfig } from '@/lib/siteConfig';
 import '../styles/globals.css';
+import '../styles/os.css';
 
 const GTM_ID = 'GTM-K3RWK8SD';
 
