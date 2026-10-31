@@ -1,6 +1,6 @@
 # Cosmocrat OS motion welcome
 
-Motion welcome and website release requested and approved October 30, 2026. Preserve the accepted Cosmocrat branding, Orion names, static homepage and existing Starter tie-in. No paid provider use.
+Motion welcome and website release requested and approved October 30, 2026. Preserve the accepted Cosmocrat branding, Orion names, static homepage and existing Starter tie-in. No paid media-generation provider is used.
 
 The landing opens with a short silent motion introduction centered on Cosmocrat OS. The graphic groups the ten currently catalogued Orion tools by coordination, access, continuity and practices, with Starter previews and experimental Remote Hands clearly qualified. It does not promise a complete installer, universal enforcement or kernel integration.
 

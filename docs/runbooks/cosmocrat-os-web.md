@@ -14,7 +14,7 @@ references:
   - tests/site-pages.test.mjs
 ---
 
-# Cosmocrat OS website candidate
+# Cosmocrat OS website release
 
 The owner approved the Cosmocrat OS website release on October 30, 2026. Use the protected PR/review process and verify the deployed artifact and actual public behavior. Package, guide and video releases retain their separate authority.
 
@@ -35,7 +35,7 @@ Inspect `/` and `/tools` on desktop, 390-pixel and 320-pixel widths. Exercise ca
 
 Local/staging pages carry `noindex, nofollow` in metadata and response headers. Their robots policy disallows crawling. The local preview banner and analytics behavior are built with the selected environment; changing only the runtime environment does not convert a staging artifact into a production build.
 
-## Future public rollout and monitoring
+## Public rollout and monitoring
 
 Use the existing protected website release path under the recorded owner approval. Keep `next.config.js`'s production-origin guard: production requires `NEXT_PUBLIC_SITE_URL=https://www.cosmocrat.ai`. Never weaken it to run a preview. A production build is separate from merge and deployment authority.
 
@@ -47,4 +47,4 @@ Monitor broken destination links, catalog/guide version drift, resource errors a
 
 For a local preview, stop only the process started for this checkout; leave the branch and accepted static preview intact for review. Restore tracked generated build metadata before committing if typecheck changed it incidentally.
 
-If a later approved public rollout fails, use the existing hosting rollback to the last verified deployment, with operator authority for that public change. Prepare a normal source revert of this website change for review; do not reset history, delete intake records or alter package repositories. Verify the restored public routes and revision after rollback. Preserve the old positioning spec and this proposal as the decision record.
+If an approved public rollout fails, use the existing hosting rollback to the last verified deployment, with operator authority for that public change. Prepare a normal source revert of this website change for review; do not reset history, delete intake records or alter package repositories. Verify the restored public routes and revision after rollback. Preserve the historical positioning spec and this release’s source and verification records.
