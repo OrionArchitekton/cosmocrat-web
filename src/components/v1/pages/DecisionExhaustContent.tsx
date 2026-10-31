@@ -107,9 +107,9 @@ export default function DecisionExhaustContent() {
           </h2>
           <div className="prose prose-invert max-w-3xl mx-auto text-slate-500 text-base leading-relaxed space-y-4">
             <p>
-              Data exhaust captures <em>what</em> happened—logs, metrics, and traces of system
-              events. Decision exhaust captures <em>why</em> it happened—the reasoning, policy
-              evaluation, authority checks, and state transitions that led to an action.
+              Data exhaust captures observed system events through logs, metrics and traces.
+              Decision exhaust retains the stated intent, policy evaluation and authority basis
+              behind an enrolled governed decision.
             </p>
             <p className="text-slate-300 font-medium">
               Decision exhaust is the audit record of each enrolled governed decision, including
@@ -117,10 +117,9 @@ export default function DecisionExhaustContent() {
               their own retained evidence.
             </p>
             <p>
-              For deterministic software, logs are sufficient. For probabilistic AI agents that
-              reason and act autonomously, data exhaust is blind to intent. You cannot audit an
-              AI&apos;s decision to refund a customer by looking at a database transaction log
-              alone; you need the governance record of the decision itself.
+              An event log alone may omit the policy and authority behind a requested action.
+              Auditing a proposed customer refund also requires its admission decision and the
+              separate evidence of what the provider accepted or completed.
             </p>
           </div>
         </div>
@@ -467,7 +466,8 @@ export default function DecisionExhaustContent() {
             <div className="flex items-start gap-2 mb-4">
               <RotateCcw size={16} className="text-cosmo-accent mt-1 shrink-0" />
               <p className="text-sm text-slate-400">
-                Reconstruct the full decision path and tighten policy from outcomes.
+                Reconstruct a decision when its versioned inputs and policy are retained;
+                inspect external outcome evidence separately.
               </p>
             </div>
             <div className="text-xs text-slate-600 mt-auto">Continuous governance improvement.</div>
@@ -478,21 +478,21 @@ export default function DecisionExhaustContent() {
       {/* 5. Receipts Visualization */}
       <section className="py-24 bg-slate-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-white mb-4">Receipts you can audit (and replay)</h2>
+          <h2 className="text-3xl font-bold text-white mb-4">Decision receipts you can inspect</h2>
           <p className="text-slate-400 mb-12 max-w-2xl">
-            Every governed action produces an{' '}
+            An enrolled admission boundary is designed to retain a{' '}
             <Link href="/chronicle-receipts" className="text-cosmo-accent hover:underline">
-              execution receipt
+              decision receipt
             </Link>
-            : who/what/why, what policy evaluated, what state transitions occurred, and what
-            actually happened.
+            : the requested action, policy, authority and evaluation state. Execution and external
+            outcomes require separate retained evidence.
           </p>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 font-mono text-sm">
             {/* Left: Log Line */}
             <div className="bg-black border border-slate-800 p-6 rounded-lg h-full">
               <div className="text-xs text-slate-500 mb-4 uppercase tracking-wider">
-                Data Exhaust: A Log Line
+                Illustrative event log
               </div>
               <div className="text-slate-300 break-all mb-4">
                 <span className="text-slate-500">2026-01-18T05:12:44Z</span> tool_call=refund_user
@@ -507,14 +507,14 @@ export default function DecisionExhaustContent() {
             <div className="bg-[#1e1e1e] border border-cosmo-accent/30 p-6 rounded-lg shadow-lg relative">
               <div className="absolute top-0 right-0 w-2 h-full bg-cosmo-accent/10"></div>
               <div className="text-xs text-cosmo-accent mb-4 uppercase tracking-wider font-bold">
-                Decision Exhaust: An Execution Receipt
+                Illustrative decision receipt
               </div>
 
               <div className="space-y-3">
                 <div className="flex border-b border-slate-700 pb-2">
                   <span className="w-24 text-slate-500 shrink-0">Status</span>
                   <span className="text-white font-bold">
-                    APPROVED <span className="text-slate-500 font-normal">(fail-closed policy)</span>
+                    ALLOW <span className="text-slate-500 font-normal">(policy admission only)</span>
                   </span>
                 </div>
                 <div className="flex border-b border-slate-700 pb-2">
@@ -530,18 +530,22 @@ export default function DecisionExhaustContent() {
                   <span className="text-yellow-300">refund_user(user_id=U-1872, amount=$42)</span>
                 </div>
                 <div className="flex border-b border-slate-700 pb-2">
-                  <span className="w-24 text-slate-500 shrink-0">Outcome</span>
-                  <span className="text-white">stripe.refunds.create → ok (id=rf_9K2...)</span>
+                  <span className="w-24 text-slate-500 shrink-0">Provider</span>
+                  <span className="text-white">
+                    Separate provider response: request accepted (illustrative)
+                  </span>
                 </div>
                 <div className="flex pt-2">
                   <span className="w-24 text-slate-500 shrink-0">Receipt</span>
-                  <span className="text-slate-400">hash=9d7b... • replayable</span>
+                  <span className="text-slate-400">
+                    hash=9d7b... (illustrative); replay requires retained inputs
+                  </span>
                 </div>
               </div>
 
               <div className="text-xs text-slate-500 mt-6 pt-4 border-t border-slate-800">
-                Receipts make governance provable—not just observable. <br />
-                Receipts establish intent, authority, and outcome—independent of system state.
+                Decision receipts bind intent, policy and authority. <br />
+                Execution and outcomes require separate retained evidence.
               </div>
             </div>
           </div>
@@ -572,15 +576,15 @@ export default function DecisionExhaustContent() {
               />
               <FaqItem
                 question="Is decision exhaust the same as observability?"
-                answer="No. Observability watches the system. Decision exhaust is the system's legal record. It provides auditability and replayability, not just visibility."
+                answer="Observability records signals. Decision exhaust retains policy and authority information for an enrolled decision. Auditability depends on the actual retention and integrity controls."
               />
               <FaqItem
                 question="Why isn't logging enough for AI governance?"
-                answer="Logs are mutable, unstructured, and reactive. Decision exhaust is immutable, structured, and causal—it links the intent to the outcome cryptographically."
+                answer="An event log can omit the policy and authority behind an action. A decision receipt records that admission basis; it does not prove that execution or an external outcome occurred."
               />
               <FaqItem
                 question="Does decision exhaust increase latency or cost?"
-                answer="Cosmocrat is designed for high-throughput runtime environments. Decision exhaust is captured asynchronously where possible, adding minimal overhead to the execution path."
+                answer="Policy evaluation and durable receipt persistence add work. Measure the enrolled workload; this reference makes no universal overhead or latency guarantee."
               />
             </div>
           </div>

@@ -1,0 +1,159 @@
+{
+  "observed_utc": "2026-10-31T05:00:38.470109+00:00",
+  "kind": "manual local browser release check",
+  "commands_passed": 74,
+  "pages_and_widths": [
+    {
+      "interrupted": false
+    },
+    {
+      "catalogLink": true,
+      "headerBottom": 65,
+      "noticeTop": 64,
+      "noticeVisible": true,
+      "overflow": false,
+      "route": "/runtime-governance",
+      "width": 1440
+    },
+    {
+      "interrupted": false
+    },
+    {
+      "catalogLink": true,
+      "headerBottom": 65,
+      "noticeTop": 64,
+      "noticeVisible": true,
+      "overflow": false,
+      "route": "/gate-system",
+      "width": 1440
+    },
+    {
+      "interrupted": false
+    },
+    {
+      "catalogLink": true,
+      "headerBottom": 65,
+      "noticeTop": 64,
+      "noticeVisible": true,
+      "overflow": false,
+      "route": "/memory-infrastructure",
+      "width": 1440
+    },
+    {
+      "interrupted": false
+    },
+    {
+      "catalogLink": true,
+      "headerBottom": 65,
+      "noticeTop": 64,
+      "noticeVisible": true,
+      "overflow": false,
+      "route": "/decision-exhaust",
+      "width": 1440
+    },
+    {
+      "interrupted": false
+    },
+    {
+      "catalogLink": true,
+      "headerBottom": 65,
+      "noticeTop": 64,
+      "noticeVisible": true,
+      "overflow": false,
+      "route": "/chronicle-receipts",
+      "width": 1440
+    },
+    {
+      "interrupted": false
+    },
+    {
+      "catalogLink": true,
+      "headerBottom": 65,
+      "noticeTop": 64,
+      "noticeVisible": true,
+      "overflow": false,
+      "route": "/drift-guard",
+      "width": 1440
+    },
+    {
+      "interrupted": false
+    },
+    {
+      "catalogLink": true,
+      "headerBottom": 65,
+      "noticeTop": 64,
+      "noticeVisible": true,
+      "overflow": false,
+      "route": "/runtime-governance",
+      "width": 390
+    },
+    {
+      "interrupted": false
+    },
+    {
+      "catalogLink": true,
+      "headerBottom": 65,
+      "noticeTop": 64,
+      "noticeVisible": true,
+      "overflow": false,
+      "route": "/gate-system",
+      "width": 390
+    },
+    {
+      "interrupted": false
+    },
+    {
+      "catalogLink": true,
+      "headerBottom": 65,
+      "noticeTop": 64,
+      "noticeVisible": true,
+      "overflow": false,
+      "route": "/memory-infrastructure",
+      "width": 390
+    },
+    {
+      "interrupted": false
+    },
+    {
+      "catalogLink": true,
+      "headerBottom": 65,
+      "noticeTop": 64,
+      "noticeVisible": true,
+      "overflow": false,
+      "route": "/decision-exhaust",
+      "width": 390
+    },
+    {
+      "interrupted": false
+    },
+    {
+      "catalogLink": true,
+      "headerBottom": 65,
+      "noticeTop": 64,
+      "noticeVisible": true,
+      "overflow": false,
+      "route": "/chronicle-receipts",
+      "width": 390
+    },
+    {
+      "interrupted": false
+    },
+    {
+      "catalogLink": true,
+      "headerBottom": 65,
+      "noticeTop": 64,
+      "noticeVisible": true,
+      "overflow": false,
+      "route": "/drift-guard",
+      "width": 390
+    }
+  ],
+  "form_submissions": 0,
+  "browser_ci_claimed": false,
+  "source_sha256": {
+    "src/components/v1/pages/DecisionExhaustContent.tsx": "8670deada519ace43243587b4eb4cc624fde6ffd62311ef78575f3e58de94427",
+    "src/components/os/GovernanceContext.tsx": "05137d23c02e8b753ae5cad52eda6b2644a529c1bca94efb379e446a91b4ea4b",
+    "src/components/v1/Header.tsx": "53103062e5c12e61cb8ccf108925883a07bf3ea0fd5c256b332a2e4de4a18361",
+    "src/styles/os.css": "2deb337a2a8200502167f621927341a0b1085e803f2eadceec99bc2dcf803908"
+  }
+}
