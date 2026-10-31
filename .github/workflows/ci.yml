@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SITE_ENV: staging
+      NEXT_PUBLIC_SITE_URL: http://127.0.0.1:3000
     steps:
       - uses: actions/checkout@v4
 
@@ -33,3 +34,14 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Verify built catalog and reference documents
+        run: |
+          npm run start -- --hostname 127.0.0.1 --port 3000 > /tmp/cosmocrat-site.log 2>&1 &
+          SITE_PID=$!
+          trap 'kill "$SITE_PID" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:3000/tools > /dev/null; then break; fi
+            sleep 1
+          done
+          SITE_TEST_ORIGIN=http://127.0.0.1:3000 node --test tests/*http.test.mjs
