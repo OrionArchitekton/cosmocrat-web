@@ -38,7 +38,7 @@ export function generatePageMetadata({
       description,
       images: [siteConfig.ogImage],
     },
-    robots: noIndex
+    robots: noIndex || process.env.SITE_ENV !== 'production'
       ? { index: false, follow: false }
       : { index: true, follow: true },
   };

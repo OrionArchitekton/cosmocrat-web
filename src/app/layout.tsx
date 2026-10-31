@@ -1,27 +1,31 @@
 import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
-import { Inter, Orbitron, JetBrains_Mono } from 'next/font/google';
+import localFont from 'next/font/local';
 import Header from '@/components/v1/Header';
 import Footer from '@/components/v1/Footer';
 import { siteConfig } from '@/lib/siteConfig';
 import '../styles/globals.css';
+import '../styles/os.css';
 
 const GTM_ID = 'GTM-K3RWK8SD';
 
-const inter = Inter({
-  subsets: ['latin'],
+const inter = localFont({
+  src: '../styles/fonts/inter-latin.woff2',
+  weight: '100 900',
   variable: '--font-inter',
   display: 'swap',
 });
 
-const orbitron = Orbitron({
-  subsets: ['latin'],
+const orbitron = localFont({
+  src: '../styles/fonts/orbitron-latin.woff2',
+  weight: '400 900',
   variable: '--font-orbitron',
   display: 'swap',
 });
 
-const jetbrains = JetBrains_Mono({
-  subsets: ['latin'],
+const jetbrains = localFont({
+  src: '../styles/fonts/jetbrains-mono-latin.woff2',
+  weight: '100 800',
   variable: '--font-jetbrains',
   display: 'swap',
 });
@@ -71,7 +75,7 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     images: [siteConfig.ogImage],
   },
-  robots: { index: true, follow: true },
+  robots: { index: process.env.SITE_ENV === 'production', follow: process.env.SITE_ENV === 'production' },
 };
 
 const siteJsonLd = JSON.stringify({
@@ -101,7 +105,7 @@ const siteJsonLd = JSON.stringify({
       '@type': 'WebSite',
       '@id': `${siteConfig.origin}/#website`,
       url: siteConfig.origin,
-      name: `${siteConfig.name} | Enterprise AI Operating System & Control Plane`,
+      name: 'Cosmocrat OS',
       publisher: {
         '@id': `${siteConfig.origin}/#organization`,
       },
@@ -109,11 +113,10 @@ const siteJsonLd = JSON.stringify({
     {
       '@type': 'SoftwareApplication',
       '@id': `${siteConfig.origin}/#software`,
-      name: siteConfig.name,
-      applicationCategory: 'EnterpriseSoftware',
-      operatingSystem: 'Cloud',
-      description: siteConfig.description,
-      url: siteConfig.origin,
+      name: 'Cosmocrat governance technology',
+      applicationCategory: 'DeveloperApplication',
+      description: 'Governance technology for policy, authority and authoritative decision receipts. Separate from the independently released Orion tool collection.',
+      url: `${siteConfig.origin}/platform`,
       creator: { '@id': `${siteConfig.origin}/#organization` },
     },
   ],
@@ -131,22 +134,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="min-h-screen flex flex-col font-sans text-cosmo-text selection:bg-cosmo-accent selection:text-white bg-cosmo-dark">
         {/* GTM noscript - immediately after body open */}
-        <noscript>
+        {process.env.SITE_ENV === 'production' && <noscript>
           <iframe
             src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
             height="0"
             width="0"
             style={{ display: 'none', visibility: 'hidden' }}
           />
-        </noscript>
+        </noscript>}
 
-        <Header />
-        <main className="flex-grow pt-16">{children}</main>
+        <Header preview={process.env.SITE_ENV !== 'production'} />
+        <main id="main" className="flex-grow">{children}</main>
         <Footer />
 
         {/* GTM script - afterInteractive to avoid blocking render */}
         {/* GA4 (G-RPJ9C1KYMF) is injected via GTM, not hard-coded */}
-        <Script
+        {process.env.SITE_ENV === 'production' && <Script
           id="gtm"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
@@ -156,7 +159,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
             })(window,document,'script','dataLayer','${GTM_ID}');`,
           }}
-        />
+        />}
       </body>
     </html>
   );

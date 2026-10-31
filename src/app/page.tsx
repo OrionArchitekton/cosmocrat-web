@@ -1,12 +1,11 @@
-import Hero from '@/components/v1/Hero';
-import Narrative from '@/components/v1/Narrative';
-import SeoSpine from '@/components/v1/SeoSpine';
+import MotionWelcome from '@/components/os/MotionWelcome';
+import HomeSections from '@/components/os/HomeSections';
 import { generatePageMetadata } from '@/lib/metadata';
 import { generateHomeWebPage } from '@/lib/schemas';
 
-const HOME_TITLE = 'Enterprise AI Operating System & Control Plane for Governed AI';
+const HOME_TITLE = 'Cosmocrat OS | Tools for human-directed AI work';
 const HOME_DESCRIPTION =
-  'Cosmocrat is the enterprise AI operating system that governs what AI is allowed to do, when it must stop, and who authorized it — turning AI execution into an auditable, accountable, and fail-closed asset.';
+  'Coordinate agents, carry task context between sessions, and recover the results of their work. Explore independent Orion tools, guides, and Starter previews.';
 
 export const metadata = generatePageMetadata({
   title: HOME_TITLE,
@@ -15,7 +14,7 @@ export const metadata = generatePageMetadata({
 });
 
 const homeWebPageJson = JSON.stringify(
-  generateHomeWebPage({ name: HOME_TITLE, description: HOME_DESCRIPTION }),
+  generateHomeWebPage({ name: HOME_TITLE, description: HOME_DESCRIPTION })
 ).replace(/</g, '\\u003c');
 
 export default function HomePage() {
@@ -27,9 +26,10 @@ export default function HomePage() {
         suppressHydrationWarning
         dangerouslySetInnerHTML={{ __html: homeWebPageJson }}
       />
-      <Hero />
-      <Narrative />
-      <SeoSpine />
+      <MotionWelcome />
+      <div id="static-site" tabIndex={-1}>
+        <HomeSections />
+      </div>
     </>
   );
 }

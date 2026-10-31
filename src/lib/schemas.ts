@@ -2,6 +2,7 @@
  * JSON-LD schema generators for SEO.
  */
 import { siteConfig } from './siteConfig';
+import { tools } from './toolCatalog';
 
 interface FeatureSchemaOptions {
   name: string;
@@ -44,7 +45,28 @@ export function generateHomeWebPage({ name, description }: { name: string; descr
     name,
     description,
     isPartOf: { '@id': `${base}/#website` },
-    about: { '@id': `${base}/#software` },
+    about: { '@id': `${base}/#organization` },
     publisher: { '@id': `${base}/#organization` },
   };
+}
+
+export function generateToolCatalogSchema() {
+  const base = siteConfig.origin;
+  return [
+    {
+      '@context': 'https://schema.org', '@type': 'WebPage',
+      '@id': `${base}/tools#webpage`, url: `${base}/tools`, name: 'The Orion tools',
+      isPartOf: { '@id': `${base}/#website` }, about: { '@id': `${base}/#organization` },
+      publisher: { '@id': `${base}/#organization` },
+    },
+    {
+      '@context': 'https://schema.org', '@type': 'ItemList',
+      '@id': `${base}/tools#collection`, name: 'Independent Orion tools and profiles',
+      numberOfItems: tools.length,
+      itemListElement: tools.map((tool, index) => ({
+        '@type': 'ListItem', position: index + 1, name: tool.name,
+        url: `${base}/tools#${tool.id}`,
+      })),
+    },
+  ];
 }

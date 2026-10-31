@@ -1,8 +1,8 @@
 # cosmocrat-web
 
-Marketing and authority surface for Cosmocrat ([cosmocrat.ai](https://www.cosmocrat.ai)) — landing, pillar pages, and early-access intake.
+Public website for Cosmocrat OS ([cosmocrat.ai](https://www.cosmocrat.ai)): a motion welcome, independent Orion tool catalog, guides and governance architecture references.
 
-This repository does not contain the Cosmocrat kernel or execution engine. It exists to communicate, define, and qualify access to the system.
+This repository does not contain the Cosmocrat kernel or execution engine. It explains the public project and the independently versioned tools. Kernel governance and runtime execution remain separate responsibilities.
 
 **Live:** https://www.cosmocrat.ai
 
@@ -10,13 +10,9 @@ This repository does not contain the Cosmocrat kernel or execution engine. It ex
 
 ## Purpose of this repository
 
-This repo serves three roles:
+This repo explains the Cosmocrat OS project and its original human-sovereignty and continuity philosophy. It connects the independently released Orion tools to their exact release instructions and canonical guides. Existing governance URLs remain architecture references with explicit integration boundaries; legal and intake behavior are preserved.
 
-1. **Category definition** — establishes *Governed AI Operating Systems* as a first-class category and publishes canonical explanations (Runtime Governance, Gate System, Decision Exhaust, Drift Guard, Chronicle Receipts, Memory as Infrastructure).
-2. **Authority surface** — teaches search engines, operators, and buyers what Cosmocrat is and is not, reinforcing runtime governance, authority, receipts, and fail-closed semantics.
-3. **Early-access intake** — collects and qualifies requests for pilot deployments at `/waitlist` and routes serious teams into manual onboarding.
-
-This repo is intentionally content-forward, stable, and slow-changing.
+See [public positioning](docs/cosmocrat-os-positioning.md), [website spec](specs/cosmocrat-os-web-spec.md) and [motion-welcome spec](specs/cosmocrat-motion-welcome-spec.md). The site does not distribute a complete OS installer or imply universal kernel enforcement across the tool family.
 
 ---
 

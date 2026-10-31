@@ -1,221 +1,114 @@
 import Link from 'next/link';
-import { Database, FileText, Terminal, Lock, FileCode, ShieldAlert } from 'lucide-react';
+import GovernanceContext from '@/components/os/GovernanceContext';
 import { generatePageMetadata } from '@/lib/metadata';
 import { generateFeatureSchema } from '@/lib/schemas';
 
+const description =
+  'Cosmocrat governance architecture: policy, authority and decision receipts, with explicit separation from execution and independently released Orion tools.';
 export const metadata = generatePageMetadata({
-    title: 'Platform',
-    description:
-        'Cosmocrat is the enterprise AI operating system and control plane for governed AI execution. It governs what AI is allowed to do, when it must stop, and who authorized it — enforcing authorization, auditability, and fail-closed execution at the operating-system layer.',
-    path: '/platform',
+  title: 'Governance architecture',
+  description,
+  path: '/platform',
 });
-
-const schema = generateFeatureSchema({
-    name: 'Cosmocrat Platform',
-    description:
-        'Cosmocrat is the enterprise AI operating system and control plane for governed AI execution. It governs what AI is allowed to do, when it must stop, and who authorized it — enforcing authorization, auditability, and fail-closed execution at the operating-system layer.',
-    path: '/platform',
-});
-const schemaJson = JSON.stringify(schema).replace(/</g, '\\u003c');
+const topics = [
+  [
+    'Memory as infrastructure',
+    '/memory-infrastructure',
+    'What context may influence a decision, within an explicitly governed boundary.',
+  ],
+  [
+    'Decision exhaust',
+    '/decision-exhaust',
+    'The policy, authority and state references behind a governed decision.',
+  ],
+  [
+    'Runtime governance',
+    '/runtime-governance',
+    'Admission before a governed mutation, with the integration boundary made explicit.',
+  ],
+  [
+    'Gate system',
+    '/gate-system',
+    'A conceptual model separating intent, decision, authority, execution and outcome.',
+  ],
+  [
+    'Chronicle receipts',
+    '/chronicle-receipts',
+    'Authoritative decision records and their integrity and replay boundaries.',
+  ],
+  [
+    'Drift guard',
+    '/drift-guard',
+    'Specified checks for divergence, with their scope and limitations.',
+  ],
+];
 
 export default function PlatformPage() {
-    return (
-        <>
-            <script
-                id="ldjson-platform"
-                type="application/ld+json"
-                suppressHydrationWarning
-                dangerouslySetInnerHTML={{ __html: schemaJson }}
-            />
-            <div className="bg-cosmo-dark min-h-screen">
-            {/* Hero Section */}
-            <section className="pt-32 pb-16 border-b border-slate-900">
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <h1 className="text-4xl md:text-5xl font-bold text-white mb-8 tracking-tight leading-tight">
-                        Cosmocrat is the enterprise AI operating system and control plane for governed AI execution.
-                    </h1>
-
-                    <div className="prose prose-invert max-w-3xl mx-auto text-slate-400 text-lg leading-relaxed mb-12">
-                        <p>
-                            It governs what AI is allowed to do, when it must stop, and who authorized it — enforcing authorization, auditability, and fail-closed execution at the operating-system layer. It is designed for organizations that need durable AI memory, human-in-the-loop control, and provable run records across workflows and tools.
-                        </p>
-                    </div>
-
-                    <div className="text-left max-w-2xl mx-auto bg-slate-900/40 p-8 rounded-xl border border-slate-800">
-                        <ul className="space-y-4 text-slate-300">
-                            <li className="flex items-start gap-3">
-                                <span className="text-cosmo-accent mt-1">•</span>
-                                <span>AI execution governance (fail-closed by default)</span>
-                            </li>
-                            <li className="flex items-start gap-3">
-                                <span className="text-cosmo-accent mt-1">•</span>
-                                <span>Governed memory with audit-grade records</span>
-                            </li>
-                            <li className="flex items-start gap-3">
-                                <span className="text-cosmo-accent mt-1">•</span>
-                                <span>Human authorization and authority boundaries</span>
-                            </li>
-                            <li className="flex items-start gap-3">
-                                <span className="text-cosmo-accent mt-1">•</span>
-                                <span>Designed for enterprise and regulated environments</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
-
-            {/* Platform Link Boxes */}
-            <section className="py-24">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 text-center">
-                        Governed AI OS Platform
-                    </h2>
-                    <p className="text-xl text-cosmo-accent text-center mb-16 uppercase tracking-widest text-sm font-bold">
-                        The Authority Plane
-                    </p>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <Link
-                            href="/memory-infrastructure"
-                            className="group bg-slate-900/40 p-8 rounded-xl border border-slate-800 hover:border-cosmo-accent/50 transition-all duration-300 hover:bg-slate-900/60 hover:-translate-y-1 hover:shadow-lg"
-                        >
-                            <div className="w-12 h-12 rounded-lg bg-slate-800 flex items-center justify-center mb-6 text-slate-400 group-hover:text-white transition-colors group-hover:bg-slate-700">
-                                <Database size={24} />
-                            </div>
-                            <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cosmo-accent transition-colors">
-                                Memory as Infrastructure
-                            </h3>
-                            <p className="text-slate-400 text-sm leading-relaxed">
-                                Persistent AI memory that survives sessions, tools, and time. Managed as a governed
-                                resource, not a chat cache.
-                            </p>
-                        </Link>
-
-                        <Link
-                            href="/decision-exhaust"
-                            className="group bg-slate-900/40 p-8 rounded-xl border border-slate-800 hover:border-cosmo-accent/50 transition-all duration-300 hover:bg-slate-900/60 hover:-translate-y-1 hover:shadow-lg"
-                        >
-                            <div className="w-12 h-12 rounded-lg bg-slate-800 flex items-center justify-center mb-6 text-slate-400 group-hover:text-white transition-colors group-hover:bg-slate-700">
-                                <FileText size={24} />
-                            </div>
-                            <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cosmo-accent transition-colors">
-                                Decision Exhaust
-                            </h3>
-                            <p className="text-slate-400 text-sm leading-relaxed">
-                                Reasoning steps are a primary data asset. Capture governed run records for every
-                                action.
-                            </p>
-                        </Link>
-
-                        <Link
-                            href="/runtime-governance"
-                            className="group bg-slate-900/40 p-8 rounded-xl border border-slate-800 hover:border-cosmo-accent/50 transition-all duration-300 hover:bg-slate-900/60 hover:-translate-y-1 hover:shadow-lg"
-                        >
-                            <div className="w-12 h-12 rounded-lg bg-slate-800 flex items-center justify-center mb-6 text-slate-400 group-hover:text-white transition-colors group-hover:bg-slate-700">
-                                <Terminal size={24} />
-                            </div>
-                            <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cosmo-accent transition-colors">
-                                Runtime Governance
-                            </h3>
-                            <p className="text-slate-400 text-sm leading-relaxed">
-                                Execution cannot outrun governance. The OS kernel enforces policy at the runtime
-                                layer.
-                            </p>
-                        </Link>
-
-                        <Link
-                            href="/gate-system"
-                            className="group bg-slate-900/40 p-8 rounded-xl border border-slate-800 hover:border-cosmo-accent/50 transition-all duration-300 hover:bg-slate-900/60 hover:-translate-y-1 hover:shadow-lg"
-                        >
-                            <div className="w-12 h-12 rounded-lg bg-slate-800 flex items-center justify-center mb-6 text-slate-400 group-hover:text-white transition-colors group-hover:bg-slate-700">
-                                <Lock size={24} />
-                            </div>
-                            <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cosmo-accent transition-colors">
-                                Gate System
-                            </h3>
-                            <p className="text-slate-400 text-sm leading-relaxed">
-                                The 7-stage pipeline. Validate inputs, form decisions, check authority, and verify
-                                truth.
-                            </p>
-                        </Link>
-
-                        <Link
-                            href="/chronicle-receipts"
-                            className="group bg-slate-900/40 p-8 rounded-xl border border-slate-800 hover:border-cosmo-accent/50 transition-all duration-300 hover:bg-slate-900/60 hover:-translate-y-1 hover:shadow-lg"
-                        >
-                            <div className="w-12 h-12 rounded-lg bg-slate-800 flex items-center justify-center mb-6 text-slate-400 group-hover:text-white transition-colors group-hover:bg-slate-700">
-                                <FileCode size={24} />
-                            </div>
-                            <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cosmo-accent transition-colors">
-                                Chronicle Receipts
-                            </h3>
-                            <p className="text-slate-400 text-sm leading-relaxed">
-                                If it&apos;s not receipted, it didn&apos;t happen. Immutable, tamper-evident audit
-                                logs.
-                            </p>
-                        </Link>
-
-                        <Link
-                            href="/drift-guard"
-                            className="group bg-slate-900/40 p-8 rounded-xl border border-slate-800 hover:border-cosmo-accent/50 transition-all duration-300 hover:bg-slate-900/60 hover:-translate-y-1 hover:shadow-lg"
-                        >
-                            <div className="w-12 h-12 rounded-lg bg-slate-800 flex items-center justify-center mb-6 text-slate-400 group-hover:text-white transition-colors group-hover:bg-slate-700">
-                                <ShieldAlert size={24} />
-                            </div>
-                            <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cosmo-accent transition-colors">
-                                Drift Guard
-                            </h3>
-                            <p className="text-slate-400 text-sm leading-relaxed">
-                                Detect and halt behavioral drift, policy drift, and authority decay before failure.
-                            </p>
-                        </Link>
-                    </div>
-                </div>
-            </section>
-
-            <section className="pb-24">
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="bg-slate-900/40 border border-slate-800 rounded-xl p-8 md:p-10">
-                        <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-                            Deployment &amp; Commercial Model
-                        </h2>
-                        <p className="text-slate-300 leading-relaxed mb-8">
-                            Cosmocrat is delivered as enterprise software infrastructure.
-                        </p>
-                        <p className="text-slate-400 leading-relaxed mb-10">
-                            Organizations deploy Cosmocrat inside their own cloud environment (AWS, GCP, or hybrid)
-                            as a governed AI runtime layer that enforces memory, authority, and execution controls
-                            before AI actions occur.
-                        </p>
-
-                        <h3 className="text-xl font-bold text-white mb-5">Commercial Model</h3>
-                        <ul className="space-y-3 text-slate-300 mb-8">
-                            <li className="flex items-start gap-3">
-                                <span className="text-cosmo-accent mt-1">•</span>
-                                <span>Annual enterprise platform subscription</span>
-                            </li>
-                            <li className="flex items-start gap-3">
-                                <span className="text-cosmo-accent mt-1">•</span>
-                                <span>
-                                    Usage priced in Verified &amp; Governed Actions (base fee + committed usage +
-                                    premium overage)
-                                </span>
-                            </li>
-                            <li className="flex items-start gap-3">
-                                <span className="text-cosmo-accent mt-1">•</span>
-                                <span>Optional governance modules for regulated environments</span>
-                            </li>
-                            <li className="flex items-start gap-3">
-                                <span className="text-cosmo-accent mt-1">•</span>
-                                <span>No services-heavy delivery; configuration-driven deployment</span>
-                            </li>
-                        </ul>
-
-                        <p className="text-cosmo-accent font-medium">Currently in private early access.</p>
-                    </div>
-                </div>
-            </section>
-        </div>
-        </>
-    );
+  return (
+    <>
+      <GovernanceContext />
+      <div className="wrap">
+        <article className="origin-page">
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(
+                generateFeatureSchema({
+                  name: 'Governance architecture',
+                  description,
+                  path: '/platform',
+                })
+              ).replace(/</g, '\\u003c'),
+            }}
+          />
+          <div className="eyebrow">Cosmocrat / Governance</div>
+          <h1>
+            Authority before
+            <br />a governed action.
+          </h1>
+          <p>
+            The governance kernel answers whether a proposed mutation is permitted under the
+            applicable policy and authority, and records its decision. It does not perform the
+            business work.
+          </p>
+          <h2>Trust is earned at a named boundary</h2>
+          <p>
+            <strong>Provable Trust.</strong> Bind the decision to policy, authority and evidence
+            that can be inspected.
+          </p>
+          <p>
+            <strong>Fail-Closed Control.</strong> Refuse a governed request when required authority
+            or evidence cannot be resolved.
+          </p>
+          <p>
+            <strong>Structural Accountability.</strong> Make scope and ownership explicit, and
+            verify the controls at the actual integration boundary.
+          </p>
+          <p>
+            These principles do not establish universal coverage across the Orion tools. Cooperative
+            leases, procedure skills and local records retain their documented limitations. A
+            permitted decision still needs separate outcome evidence.
+          </p>
+          <h2>Explore the architecture</h2>
+          <div className="tools-overview">
+            {topics.map(([name, href, summary]) => (
+              <Link className="tool-teaser" href={href} key={href}>
+                <h3>{name}</h3>
+                <p>{summary}</p>
+              </Link>
+            ))}
+          </div>
+          <h2>Availability and scope</h2>
+          <p>
+            The public catalog lists the independently released components. The private estate,
+            governance kernel and enterprise deployment work are separate surfaces. This project
+            home does not announce an enterprise service or a complete distribution.
+          </p>
+          <Link className="text-link" href="/tools">
+            See the available tools →
+          </Link>
+        </article>
+      </div>
+    </>
+  );
 }

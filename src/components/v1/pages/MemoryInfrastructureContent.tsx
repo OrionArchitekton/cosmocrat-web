@@ -605,8 +605,9 @@ export default function MemoryInfrastructureContent() {
               accidentally inform unrelated decisions (Personal).
             </p>
             <p>
-              Cosmocrat enforces strict Lane Isolation at the infrastructure level. A lane is a
-              cryptographically isolated memory space with its own policies and authority roots.
+              The design uses explicit memory lanes with policy and authority boundaries. A namespace
+              or retrieval filter alone is not cryptographic isolation; actual enforcement must
+              be established for the selected deployment.
             </p>
             <p>
               Crossing lanes (e.g., using Health data in a Work context) requires an explicit,
@@ -614,7 +615,7 @@ export default function MemoryInfrastructureContent() {
               <Link href="/gate-system" className="text-amber-500 hover:underline">
                 Gate System
               </Link>
-              . Without it, cross-lane retrieval is mathematically impossible.
+              . Cross-lane denial depends on the actual access boundary and the absence of bypass paths. This architectural reference does not establish that guarantee for the public tool collection.
             </p>
           </>
         }
@@ -893,7 +894,7 @@ export default function MemoryInfrastructureContent() {
             />
             <FaqItem
               question="Does memory governance slow down retrieval?"
-              answer="Governance checks add microseconds to retrieval latency—negligible compared to vector search or LLM inference. The trade-off is provability: you can now prove what context informed every decision."
+              answer="Measure retrieval and governance overhead in the actual deployment. Context provenance depends on the enrolled retrieval path and retained evidence; this reference establishes no universal latency or coverage guarantee."
             />
           </div>
         </div>

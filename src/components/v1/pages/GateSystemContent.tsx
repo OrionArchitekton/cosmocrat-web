@@ -183,7 +183,7 @@ export default function GateSystemContent() {
           </h1>
           <p className="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto leading-relaxed mb-6">
             Power comes from delegation. Safety comes from restraint. <br />
-            Cosmocrat forces every AI action through a 7-stage governance pipeline.
+            The conceptual seven-stage model separates intent, decision, authority, execution and outcome. Actual governed coverage depends on the enrolled integration.
           </p>
           <p className="text-lg text-amber-500 font-medium mb-10">
             Every AI decision must earn the right to become an action.

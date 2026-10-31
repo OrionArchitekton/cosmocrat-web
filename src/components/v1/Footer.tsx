@@ -1,114 +1,54 @@
-import Link from 'next/link';
 import Image from 'next/image';
-import { Linkedin } from 'lucide-react';
+import Link from 'next/link';
 
-const platformLinks = [
-  { label: 'Memory as Infrastructure', href: '/memory-infrastructure' },
-  { label: 'Decision Exhaust', href: '/decision-exhaust' },
-  { label: 'Runtime Governance', href: '/runtime-governance' },
-  { label: 'Gate System', href: '/gate-system' },
-  { label: 'Chronicle Receipts', href: '/chronicle-receipts' },
-  { label: 'Drift Guard', href: '/drift-guard' },
-];
-
-const supportLinks = [
-  { label: 'About Cosmocrat', href: '/about' },
-  { label: 'Documentation', href: '/docs' },
-  { label: 'Contact', href: '/contact' },
-  { label: 'Privacy Policy', href: '/privacy' },
-  { label: 'Terms of Service', href: '/terms' },
+const links = [
+  ['Tools', '/tools'],
+  ['Our story', '/about'],
+  ['Governance', '/platform'],
+  ['Memory', '/memory-infrastructure'],
+  ['Decision exhaust', '/decision-exhaust'],
+  ['Runtime governance', '/runtime-governance'],
+  ['Gates', '/gate-system'],
+  ['Chronicle', '/chronicle-receipts'],
+  ['Drift', '/drift-guard'],
+  ['Documentation', '/docs'],
+  ['Contact', '/contact'],
+  ['Privacy', '/privacy'],
+  ['Terms', '/terms'],
 ];
 
 export default function Footer() {
   return (
-    <footer className="bg-cosmo-card border-t border-slate-800 pt-16 pb-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-          {/* Brand Column */}
-          <div className="col-span-1 md:col-span-2">
-            <Link href="/" className="flex items-center gap-3 mb-6 group w-fit">
-              <Image
-                src="https://storage.googleapis.com/cosmocrat/cosmocrat_logos_graphics/cosmocrat-.png"
-                alt="Cosmocrat Sigil"
-                width={40}
-                height={40}
-                className="w-10 h-10 transition-transform group-hover:scale-105"
-              />
-              <span className="text-2xl font-bold text-cosmo-text group-hover:text-white transition-colors">
-                Cosmocrat
-              </span>
+    <footer className="site-footer">
+      <div className="wrap">
+        <div className="footer-inner">
+          <Link href="/" aria-label="Cosmocrat home">
+            <Image
+              className="footer-logo"
+              src="/brand/cosmocrat-wordmark.svg"
+              alt="Cosmocrat"
+              width={1753}
+              height={241}
+              unoptimized
+            />
+          </Link>
+          <div className="footer-right">
+            Live and Lead with Clarity.
+            <br />
+            Built by{' '}
+            <a href="https://www.danmercede.com" rel="noreferrer">
+              Dan Mercede
+            </a>
+            .
+          </div>
+        </div>
+        <nav className="footer-links" aria-label="Further reading">
+          {links.map(([label, href]) => (
+            <Link key={href} href={href}>
+              {label}
             </Link>
-            <p className="text-slate-400 max-w-sm mb-4">
-              Live and Lead with Clarity.
-              <br />
-              The Governed AI Operating System.
-            </p>
-            <a
-              href="https://www.linkedin.com/company/cosmocrat/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-slate-500 hover:text-white transition-colors inline-block mb-6"
-              aria-label="Cosmocrat on LinkedIn"
-            >
-              <Linkedin size={16} />
-            </a>
-          </div>
-
-          {/* Platform Links */}
-          <div>
-            <h3 className="text-sm font-semibold text-slate-200 tracking-wider uppercase mb-4">
-              Platform
-            </h3>
-            <ul className="space-y-3">
-              {platformLinks.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-slate-400 hover:text-cosmo-accent transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Support Links */}
-          <div>
-            <h3 className="text-sm font-semibold text-slate-200 tracking-wider uppercase mb-4">
-              Support
-            </h3>
-            <ul className="space-y-3">
-              {supportLinks.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-slate-400 hover:text-cosmo-accent transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        {/* Bottom Bar */}
-        <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-slate-500">
-          <p>&copy; {new Date().getFullYear()} Cosmocrat. All rights reserved.</p>
-          <div className="flex items-center gap-2 mt-4 md:mt-0 text-slate-500">
-            <span>Dan Mercede &mdash; Founder &amp; Systems Architect</span>
-            <a
-              href="https://www.linkedin.com/in/danmercede/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-white transition-colors"
-              aria-label="Dan Mercede on LinkedIn"
-            >
-              <Linkedin size={14} />
-            </a>
-          </div>
-        </div>
+          ))}
+        </nav>
       </div>
     </footer>
   );

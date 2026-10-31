@@ -499,10 +499,9 @@ export default function RuntimeGovernanceContent() {
             <div>
               <h3 className="text-xl font-bold text-white mb-2">Lane Isolation</h3>
               <p className="text-slate-400 leading-relaxed">
-                Standard AI systems share a flat context window. Cosmocrat enforces
-                &quot;Lanes&quot;—isolated execution environments. Memory from a legal workflow
-                cannot bleed into an engineering workflow. Data leakage is prevented at the
-                architecture level.
+                Standard AI systems share a flat context window. The governed-memory design uses explicit lanes and permissions. Isolation depends on
+                the actual retrieval and execution boundaries; it is not guaranteed by a tool’s
+                affiliation with Cosmocrat.
               </p>
             </div>
           </div>
@@ -516,8 +515,8 @@ export default function RuntimeGovernanceContent() {
               <p className="text-slate-400 leading-relaxed">
                 The Operating Context Fabric (OCF) manages the state of the world as the AI sees
                 it. Unlike a simple vector store, the OCF allows the kernel to inject mandatory
-                context (policies, active alerts) into every prompt, ensuring the model never acts
-                without the full picture.
+                context (policies and active alerts) into enrolled calls. Coverage and admissible
+                context must be verified for the specific integration.
               </p>
             </div>
           </div>
@@ -552,15 +551,15 @@ export default function RuntimeGovernanceContent() {
             <div className="space-y-2">
               <FaqItem
                 question="Is the kernel a proxy or a sidecar?"
-                answer="It is an architectural wrapper that sits between the model and the world. It is not just a network proxy; it manages memory state, tool execution, and authority context."
+                answer="The narrow kernel evaluates proposed mutations and issues decision receipts. Memory retrieval, orchestration and execution remain outside that kernel and need their own governed integration."
               />
               <FaqItem
                 question="Does runtime governance increase latency?"
-                answer="Cosmocrat is optimized for high-throughput. Policy checks occur in microseconds. The latency introduced is negligible compared to the inference time of the model itself."
+                answer="Policy, transport and receipt persistence add work to the decision path. Measure the actual deployment and workload; this reference establishes no universal latency benchmark."
               />
               <FaqItem
                 question="Can the AI bypass the kernel?"
-                answer="No. In a standard deployment, the AI has no direct access to network or tools. It must request actions through the kernel, which enforces policy before execution."
+                answer="A non-bypassable boundary requires removing alternative tool, credential and network paths. Current tool-family membership does not establish that property. Verify actual enrollment and capability boundaries; application-layer admission alone is insufficient."
               />
               <FaqItem
                 question="How does it handle different models?"

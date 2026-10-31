@@ -1,114 +1,100 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Menu, X } from 'lucide-react';
+import { ArrowRight, Menu } from 'lucide-react';
 
-const navLinks = [
-  { label: 'Platform', href: '/platform' },
-  { label: 'About', href: '/about' },
-  { label: 'Docs', href: '/docs' },
-  { label: 'Contact', href: '/contact' },
+const links = [
+  { label: 'Home', href: '/' },
+  { label: 'Tools', href: '/tools' },
+  { label: 'Principles', href: '/#principles' },
+  { label: 'Our story', href: '/about' },
 ];
+const firstGuide = 'https://www.danmercede.com/guides/coordinate-local-agents-with-orion-pm';
 
-
-export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+export default function Header({ preview = false }: { preview?: boolean }) {
   const pathname = usePathname();
+  const menu = useRef<HTMLDetailsElement>(null);
+  const summary = useRef<HTMLElement>(null);
+  const close = useCallback(() => {
+    if (menu.current) menu.current.open = false;
+  }, []);
 
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  useEffect(() => {
+    const outside = (event: PointerEvent) => {
+      if (event.target instanceof Node && !menu.current?.contains(event.target)) close();
+    };
+    document.addEventListener('pointerdown', outside);
+    return () => document.removeEventListener('pointerdown', outside);
+  }, [close]);
+
+  const navigation = links.map((link) => (
+    <Link
+      key={link.href}
+      href={link.href}
+      onClick={close}
+      aria-current={pathname === link.href ? 'page' : undefined}
+    >
+      {link.label}
+    </Link>
+  ));
 
   return (
-    <header className="fixed top-0 w-full z-50 bg-cosmo-dark/80 backdrop-blur-md border-b border-slate-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <div className="flex-shrink-0 flex items-center">
-            <Link href="/" className="flex items-center gap-2 group">
-              <Image
-                src="https://storage.googleapis.com/cosmocrat/cosmocrat_logos_graphics/wordmark-logo_light.png"
-                alt="Cosmocrat"
-                width={420}
-                height={56}
-                priority
-                className="h-8 w-auto opacity-90 group-hover:opacity-100 transition-opacity"
-              />
-            </Link>
-          </div>
-
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex space-x-8 items-center">
-            {navLinks.map((link) => {
-              const isActive = pathname === link.href;
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`text-sm font-medium transition-colors ${isActive
-                      ? 'text-cosmo-accent'
-                      : 'text-slate-300 hover:text-cosmo-accent'
-                    }`}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
-            <Link
-              href="/waitlist"
-              className={`px-4 py-2 rounded text-sm font-medium transition-all duration-300 ${pathname === '/waitlist'
-                  ? 'bg-cosmo-accent text-white'
-                  : 'bg-cosmo-accent/10 border border-cosmo-accent/50 text-cosmo-accent hover:bg-cosmo-accent hover:text-white'
-                }`}
-            >
-              Request Early Access
-            </Link>
-          </nav>
-
-          {/* Mobile menu button */}
-          <div className="md:hidden flex items-center">
-            <button
-              onClick={toggleMenu}
-              className="text-slate-300 hover:text-white focus:outline-none"
-              aria-label="Toggle menu"
-            >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Nav */}
-      {isMenuOpen && (
-        <div className="md:hidden bg-cosmo-card border-b border-slate-800">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            {navLinks.map((link) => {
-              const isActive = pathname === link.href;
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setIsMenuOpen(false)}
-                  className={`block px-3 py-2 rounded-md text-base font-medium ${isActive
-                      ? 'text-cosmo-accent bg-slate-800'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-800'
-                    }`}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
-            <Link
-              href="/waitlist"
-              onClick={() => setIsMenuOpen(false)}
-              className="block mt-4 px-3 py-2 text-center rounded-md text-base font-medium bg-cosmo-accent text-white"
-            >
-              Request Early Access
-            </Link>
+    <>
+      <a className="skip" href="#main">
+        Skip to content
+      </a>
+      {preview && (
+        <div className="preview-bar">
+          <div className="wrap">
+            <span className="preview-label">LOCAL PREVIEW</span>
+            <span>Accepted visual direction · Publication on hold</span>
           </div>
         </div>
       )}
-    </header>
+      <header className="site-header">
+        <div className="wrap header-inner">
+          <Link className="brand-link" href="/" aria-label="Cosmocrat home">
+            <Image
+              className="wordmark"
+              src="/brand/cosmocrat-wordmark.svg"
+              alt="Cosmocrat"
+              width={1753}
+              height={241}
+              priority
+              unoptimized
+            />
+          </Link>
+          <nav className="desktop-nav" aria-label="Main navigation">
+            {navigation}
+            <a className="nav-cta" href={firstGuide} rel="noreferrer">
+              Start with one task <ArrowRight aria-hidden="true" />
+            </a>
+          </nav>
+          <details
+            className="mobile-nav"
+            ref={menu}
+            onKeyDown={(event) => {
+              if (event.key === 'Escape' && menu.current?.open) {
+                close();
+                summary.current?.focus();
+              }
+            }}
+          >
+            <summary ref={summary}>
+              Menu <Menu aria-hidden="true" />
+            </summary>
+            <nav aria-label="Mobile navigation">
+              {navigation}
+              <a href={firstGuide} rel="noreferrer" onClick={close}>
+                Start with one task ↗
+              </a>
+            </nav>
+          </details>
+        </div>
+      </header>
+    </>
   );
 }

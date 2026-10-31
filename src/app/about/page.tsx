@@ -1,183 +1,76 @@
 import Link from 'next/link';
-import Image from 'next/image';
-import { Linkedin } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { generatePageMetadata } from '@/lib/metadata';
 
 export const metadata = generatePageMetadata({
-  title: 'About',
+  title: 'Our story',
   description:
-    'Cosmocrat is the enterprise AI operating system and control plane that governs what AI is allowed to do, when it must stop, and who authorized it — with auditability, authority, and fail-closed enforcement at the runtime level.',
+    'Cosmocrat began with cognitive continuity and human sovereignty. The Orion Estate put that philosophy to work; independent tools, guides and previews carry the lessons forward.',
   path: '/about',
 });
 
 export default function AboutPage() {
   return (
-    <div className="bg-cosmo-dark min-h-screen pb-24">
-      <div className="pt-24 pb-12 bg-cosmo-card border-b border-slate-800">
-        <div className="max-w-3xl mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">About Cosmocrat</h1>
-          <p className="text-xl text-slate-400 leading-relaxed">
-            Cosmocrat is the enterprise AI operating system that governs what AI is allowed to do,
-            when it must stop, and who authorized it — turning AI execution into an auditable,
-            accountable, and fail-closed asset.
-          </p>
+    <div className="wrap">
+      <article className="origin-page">
+        <div className="eyebrow">Cosmocrat / Our story</div>
+        <h1>
+          From an idea to
+          <br />
+          the way we work.
+        </h1>
+        <p>
+          Cosmocrat began with a question: how can intelligence preserve a person’s intent over time
+          while remaining under that person’s authority?
+        </p>
+        <p>
+          The original ambition was a user-owned cognitive continuity layer: memory and context that
+          could connect the tools a person already uses. Human sovereignty, governed memory and
+          trust supported by evidence remain the foundation.
+        </p>
+        <h2>Putting the philosophy to work</h2>
+        <p>
+          The Orion Estate is Dan Mercede’s private operating environment for software, agents,
+          media and business workflows. Running it turned the ambition into practical questions: who
+          owns this task, which browser belongs to this account, what does the next session need,
+          and what evidence establishes that the work actually happened?
+        </p>
+        <p>
+          The Orion tools are independently released pieces shaped by those questions. Guides and
+          demonstrations make their behavior and limits inspectable. The tools keep their own names,
+          versions, licenses and support boundaries.
+        </p>
+        <h2>Governance retains its own responsibility</h2>
+        <p>
+          The enterprise work developed a narrower governance boundary: evaluate policy and
+          authority, return an explicit decision, and preserve its authoritative receipt. Execution
+          remains with the runtime and the business workflow.
+        </p>
+        <p>
+          Cosmocrat OS is the broader project identity. Membership in that family does not establish
+          kernel integration, universal memory isolation or enforcement that cannot be bypassed.
+          Local observations, task records and authoritative governance receipts retain their
+          distinct roles.
+        </p>
+        <h2>The part available today</h2>
+        <p>
+          You can use independent components and try selected Starter profiles. The full environment
+          is still taking shape; there is no complete OS installer or universal platform support
+          promise. Each selected workflow names its versions, environment and observed scope.
+        </p>
+        <p>
+          Cosmocrat is architected and maintained by Dan Mercede. The project is unrelated to
+          historical or theological uses of the word “cosmocrat.”
+        </p>
+        <div className="button-row">
+          <Link className="button button-primary" href="/tools">
+            Explore the tools <ArrowRight aria-hidden="true" />
+          </Link>
+          <Link className="text-link" href="/platform">
+            Read the governance principles <ArrowRight aria-hidden="true" />
+          </Link>
         </div>
-      </div>
-
-      <div className="max-w-3xl mx-auto px-4 mt-16 space-y-16">
-        <section>
-          <h2 className="text-2xl font-bold text-white mb-6">What Cosmocrat Is</h2>
-          <article className="prose prose-invert prose-lg text-slate-400">
-            <p>
-              An <strong>AI Operating System</strong> is the governance layer that decides what AI
-              is allowed to do — how memory is retained, how decisions are formed, and whether an
-              action may touch the real world — across tools and workflows. Much like an operating
-              system coordinates resources and enforces rules for software on a computer, it sets and
-              enforces the rules of the runtime for AI. Cosmocrat provides that governance layer for
-              organizations that need durable, governed AI memory and controlled execution across
-              systems, not just isolated tasks.
-            </p>
-            <p>
-              Cosmocrat extends the AI Operating System concept with governance at the OS layer.
-              That means the operating system itself is responsible for control, not an external
-              policy wrapper. Governance includes auditability, authority boundaries, and{' '}
-              <Link
-                href="/runtime-governance"
-                className="text-cosmo-accent hover:underline"
-              >
-                runtime governance
-              </Link>{' '}
-              so that actions are accountable and bounded by policy.
-            </p>
-            <p>
-              <strong>Governed memory</strong> is central to that design. Rather than treating
-              memory as a loose cache or a simple vector store, Cosmocrat treats memory as a
-              controlled resource with policy-defined access and retention. This allows
-              organizations to preserve continuity and context while ensuring that memory usage
-              remains aligned with authority and compliance requirements.
-            </p>
-            <p>
-              <strong>Controlled execution</strong> is the counterpart to governed memory. Cosmocrat
-              defines how and when AI can act, what it is allowed to do, and which resources it can
-              access — then the action runs in your own runtime, only after governance is satisfied.
-              By governing the execution path alongside memory and decisioning, Cosmocrat defines a
-              complete governance boundary for AI rather than a set of isolated tools.
-            </p>
-          </article>
-        </section>
-
-        <section>
-          <h2 className="text-2xl font-bold text-white mb-6">Governed Execution by Design</h2>
-          <article className="prose prose-invert prose-lg text-slate-400">
-            <p>
-              In Cosmocrat, execution cannot outrun governance. Every action is evaluated against
-              authority constraints before it runs, and the system is designed to fail closed when
-              requirements are not met. This creates a predictable boundary for AI behavior and
-              prevents silent escalation or unauthorized execution.
-            </p>
-            <p>
-              Governed execution includes run records and auditability at the operating system
-              level. The system preserves traceable run records, also known as{' '}
-              <Link
-                href="/decision-exhaust"
-                className="text-cosmo-accent hover:underline"
-              >
-                decision exhaust
-              </Link>
-              , so operators can review what happened and why, without relying on ad-hoc logging.
-              Details of specific implementation are documented elsewhere, but the top-level
-              principle is consistent: execution is always within verifiable governance.
-            </p>
-            <p>
-              This approach emphasizes human oversight without requiring constant manual
-              intervention. Governance is designed into the system so that approvals, authority
-              checks, and execution boundaries are enforced as part of the runtime. When a task
-              falls outside permitted authority, the system stops and records the reason rather than
-              attempting to continue or improvise.
-            </p>
-            <p>
-              The result is a governed operating environment where the provenance of AI actions can
-              be inspected and audited. Organizations can evaluate behavior at the level of runs and
-              decisions rather than reconstructing activity from scattered logs. Cosmocrat is
-              intended for environments where accountability and traceability are baseline
-              requirements, not optional additions.
-            </p>
-          </article>
-        </section>
-
-        <section>
-          <h2 className="text-2xl font-bold text-white mb-6">How Cosmocrat Is Built Today</h2>
-          <article className="prose prose-invert prose-lg text-slate-400">
-            <p>
-              Cosmocrat began as a single bundled system. As the product matured, its boundaries
-              became part of the design. Today Cosmocrat is a narrow{' '}
-              <em>governor of record</em> — a deterministic kernel that decides whether an action is
-              permitted, under what policy, and with what receipt-backed proof — surrounded by a
-              family of governed surfaces: versioned policy packs, client SDKs and contracts,
-              reference deployment architectures, and fail-closed admission gates that place the
-              kernel&apos;s enforcement in front of new action surfaces.
-            </p>
-            <p>
-              Execution itself — pipelines, integrations, and orchestration — lives in a separate
-              runtime that calls Cosmocrat before any governed action occurs. The kernel does not
-              perform the work; it governs it. Intelligence may propose, but the world changes only
-              after authority and policy are satisfied, and the decision becomes durable evidence. If
-              evidence or authorization cannot be produced, execution halts.
-            </p>
-            <p>
-              That separation is deliberate. Keeping governance, execution, and the enterprise proof
-              surface in distinct boundaries is what makes each provable on its own.{' '}
-              <strong>Cosmocrat governs AI; it is not the AI.</strong>
-            </p>
-          </article>
-        </section>
-
-        <section>
-          <h2 className="text-2xl font-bold text-white mb-6">Architect &amp; Steward</h2>
-          <div className="bg-slate-900/40 border border-slate-800 rounded-xl p-6">
-            <div className="flex items-center gap-4 mb-5">
-              <Image
-                src="/dan-mercede-executive-authority-sm.webp"
-                alt="Dan Mercede"
-                width={64}
-                height={64}
-                className="w-16 h-16 rounded-full object-cover"
-              />
-              <div>
-                <p className="text-white font-semibold">Dan Mercede</p>
-                <p className="text-slate-400 text-sm">Founder &amp; Systems Architect</p>
-                <a
-                  href="https://www.linkedin.com/in/danmercede/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-slate-500 hover:text-white transition-colors mt-1 inline-block"
-                  aria-label="Dan Mercede on LinkedIn"
-                >
-                  <Linkedin size={16} />
-                </a>
-              </div>
-            </div>
-            <p className="text-slate-400 leading-relaxed">
-              Cosmocrat is architected and maintained by Dan Mercede, Founder &amp; Systems
-              Architect. Cosmocrat enforces deterministic runtime governance across agent
-              workflows: authority is evaluated before state mutation, every decision produces an
-              immutable receipt, drift is constrained over time, and execution is physically gated
-              at the substrate. If policy cannot be verified, execution halts.
-            </p>
-          </div>
-        </section>
-
-        <section>
-          <h2 className="text-2xl font-bold text-white mb-6">Name Disambiguation</h2>
-          <article className="prose prose-invert prose-lg text-slate-400">
-            <p>
-              Cosmocrat, as used here, is a product name and technical system. It is unrelated to
-              historical or theological uses of the term &quot;cosmocrat,&quot; and the organization
-              does not claim affiliation with those meanings.
-            </p>
-          </article>
-        </section>
-      </div>
+      </article>
     </div>
   );
 }

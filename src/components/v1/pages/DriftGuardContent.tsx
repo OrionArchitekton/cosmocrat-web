@@ -328,7 +328,7 @@ export default function DriftGuardContent() {
             {/* Labels */}
             <div className="absolute left-4 top-4 bg-slate-900/80 backdrop-blur border border-slate-700 p-2 rounded text-xs text-slate-300 z-10 font-mono">
               <div className="text-[10px] text-slate-500 uppercase">Status</div>
-              <div>MONITORING ACTIVE</div>
+              <div>DESIGN MODEL</div>
             </div>
           </div>
         </div>

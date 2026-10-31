@@ -1,18 +1,17 @@
+import GovernanceContext from '@/components/os/GovernanceContext';
 import DriftGuardContent from '@/components/v1/pages/DriftGuardContent';
 import { generatePageMetadata } from '@/lib/metadata';
 import { generateFeatureSchema } from '@/lib/schemas';
 
 export const metadata = generatePageMetadata({
   title: 'Drift Guard',
-  description:
-    'Detect behavioral and policy divergence in real-time. Identify when authorized intent decouples from actual system execution.',
+  description: 'Cosmocrat integrity and drift architecture: specified divergence checks and their limits, without a universal behavioral-drift prevention guarantee.',
   path: '/drift-guard',
 });
 
 const schema = generateFeatureSchema({
   name: 'Drift Guard',
-  description:
-    'Detect behavioral and policy divergence in real-time. Identify when authorized intent decouples from actual system execution.',
+  description: 'Cosmocrat integrity and drift architecture: specified divergence checks and their limits, without a universal behavioral-drift prevention guarantee.',
   path: '/drift-guard',
 });
 const schemaJson = JSON.stringify(schema);
@@ -20,6 +19,7 @@ const schemaJson = JSON.stringify(schema);
 export default function DriftGuardPage() {
   return (
     <>
+      <GovernanceContext />
       <script
         id="ldjson-drift-guard"
         type="application/ld+json"
