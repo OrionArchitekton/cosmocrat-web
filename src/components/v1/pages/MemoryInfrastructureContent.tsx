@@ -286,12 +286,12 @@ export default function MemoryInfrastructureContent() {
           <div className="prose prose-invert max-w-3xl mx-auto text-slate-500 text-base leading-relaxed space-y-4">
             <p>
               Memory in Cosmocrat is an{' '}
-              <span className="text-white font-medium">enforceable state, not stored text</span>.
+              <span className="text-white font-medium">enforceable policy-scoped state within an integrated boundary</span>.
             </p>
             <p>
-              It governs what may influence decisions, not just what is stored. Memory is scoped by
-              lane, phase, authority, and policy, and every change is recorded with cryptographic
-              receipts. It is the connective tissue between the{' '}
+              The design scopes decision context by lane, phase, authority and policy. An enrolled
+              memory change can retain an attributable decision receipt; coverage depends on the
+              actual retrieval, storage and mutation boundaries. It connects the{' '}
               <Link href="/gate-system" className="text-amber-500 hover:underline">
                 Gate System
               </Link>{' '}
@@ -485,10 +485,10 @@ export default function MemoryInfrastructureContent() {
               <h3 className="text-xl font-bold text-white mb-2">Governed Infrastructure</h3>
               <p className="text-slate-400 text-sm mb-4">
                 Defines allowed usage, not just storage. <br />
-                Infrastructure enforces &quot;Permission-First&quot; access.
+                An enrolled boundary checks permission before access.
               </p>
               <div className="flex items-center gap-2 text-xs text-amber-500 font-mono uppercase tracking-wider">
-                <ShieldCheck size={14} /> Security: Fail-Closed
+                <ShieldCheck size={14} /> Design goal: fail-closed
               </div>
             </div>
           </div>

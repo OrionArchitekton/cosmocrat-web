@@ -755,18 +755,18 @@ export default function DriftGuardContent() {
               </p>
               <div className="prose prose-invert text-slate-400">
                 <p>
-                  Standard RAG dumps context into a blender. Cosmocrat treats memory as a governed
-                  resource with &quot;Lane&quot; boundaries. The Side-Brain acts as a governed memory
-                  interface—non-admissible memory is invisible to the model.
+                  The Side-Brain is a conceptual governed retrieval interface. On explicitly enrolled
+                  retrieval paths, configured lane policy can filter the context provided to a
+                  model. Other retrieval routes and preloaded context need separate controls.
                 </p>
                 <ul className="list-none space-y-2 pl-0 mt-4">
                   <li className="flex gap-2 items-center text-sm">
-                    <CheckCircle2 size={14} className="text-green-500" /> Context never bleeds across
-                    lanes.
+                    <CheckCircle2 size={14} className="text-green-500" /> Context access follows the
+                    enrolled lane policy.
                   </li>
                   <li className="flex gap-2 items-center text-sm">
-                    <CheckCircle2 size={14} className="text-green-500" /> Explicit permission required
-                    for memory cross-over.
+                    <CheckCircle2 size={14} className="text-green-500" /> Cross-lane access requires
+                    configured permission.
                   </li>
                 </ul>
               </div>
@@ -902,11 +902,12 @@ export default function DriftGuardContent() {
         <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div>
             <h2 className="text-3xl font-bold text-white mb-6">
-              Compliance is Evidence, Not Narrative
+              Evidence for a defined boundary
             </h2>
             <p className="text-lg text-slate-400 mb-8">
-              Trust is the product. Receipts are the proof. Drift Guard provides the artifacts that
-              prove control was maintained.
+              On an enrolled path, retained receipts and drift observations can support review of
+              configured controls. Their integrity, coverage and external outcomes require
+              separate verification.
             </p>
             <div className="flex gap-4">
               <div className="px-4 py-2 bg-slate-900 border border-slate-700 rounded text-slate-300 font-mono text-sm flex items-center gap-2">
