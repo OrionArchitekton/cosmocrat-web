@@ -21,6 +21,7 @@ commands = [
     ['fill', 'input[type="search"]', 'Android'],
     ['wait', '--fn', 'document.querySelectorAll("[data-tool]:not([hidden])").length === 1'],
     check('!document.querySelector("#orion-phone").hidden && document.querySelector("[data-result-count]").textContent.startsWith("1 of")', 'Category, search and count compose'),
+    check('[...document.querySelectorAll("[data-tool][hidden]")].every(e=>getComputedStyle(e).display === "none") && getComputedStyle(document.querySelector("[data-empty-state]")).display === "none"', 'Filtered cards and the empty state are visually hidden'),
     ['fill', 'input[type="search"]', 'no-matching-tool-712'],
     ['wait', '--fn', '!document.querySelector("[data-empty-state]").hidden'],
     ['click', '[data-reset-filters]'],
