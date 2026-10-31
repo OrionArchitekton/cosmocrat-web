@@ -27,9 +27,7 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: homeWebPageJson }}
       />
       <MotionWelcome />
-      <div id="static-site" tabIndex={-1}>
-        <HomeSections />
-      </div>
+      <HomeSections />
     </>
   );
 }

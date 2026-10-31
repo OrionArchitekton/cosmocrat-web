@@ -33,6 +33,9 @@ test('homepage offers the independent tools under human direction with an honest
   assert.match(text, /An AI operating system you remain in charge of\./);
   assert.match(text, /Independent tools are available today/);
   assert.match(text, /Starter combinations are previews/);
+  const resultsTeaser = html.match(/<a\b[^>]*href="\/tools#orion-results"[^>]*>([\s\S]*?)<\/a>/);
+  assert.ok(resultsTeaser, 'Homepage retains the Orion Results teaser');
+  assert.match(visibleText(resultsTeaser[1]), /PREVIEW/);
   assert.match(html, /href="\/tools"/);
   assert.match(html, /coordinate-local-agents-with-orion-pm/);
   assert.doesNotMatch(html, /googletagmanager\.com/);
@@ -144,7 +147,7 @@ test('motion welcome keeps the static homepage and offers native media and a dir
   assert.match(html, /cosmocrat-welcome-desktop\.mp4/);
   assert.match(html, /cosmocrat-welcome-mobile\.mp4/);
   assert.match(html, /href="#static-site"/);
-  assert.match(html, /id="static-site"/);
+  assert.equal((html.match(/id="static-site"/g) || []).length, 1);
   assert.match(visibleText(html), /An AI operating system you remain in charge of\./);
   assert.doesNotMatch(html, /googletagmanager\.com/);
 });

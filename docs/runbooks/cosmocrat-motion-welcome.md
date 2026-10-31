@@ -26,6 +26,8 @@ Use Node 20 and the existing lint/typecheck/build. Run the local HTTP tests agai
 
 With the separately installed `agent-browser` and Chrome available, `SITE_TEST_ORIGIN=http://127.0.0.1:4181 python3 tests/site-browser.test.py` repeats the player, catalog, keyboard and responsive checks against the built site. It uses a GET-only loopback fixture to set initial document visibility before hydration, then proves first visibility starts playback without scrolling. The fixture also verifies reduced-motion suppression. It refuses production origins and submits no forms. Inspect no-JavaScript and media-failure behavior separately as described above.
 
+`SITE_TEST_ORIGIN=http://127.0.0.1:4181 python3 tests/player-recovery-browser.test.py` exercises actual source-request failure, successful recovery, position/play-state preservation across the composition breakpoint, and fallback when only the portrait file fails. It requires the integrated welcome homepage and refuses production origins. Its deliberate local request faults are distinct from positive production playback verification.
+
 For a public release, retain the production-origin guard and use the protected PR workflow. Verify required checks and current-head automated review before the owner-approved merge. After the hosting deployment is READY, bind its source revision/alias to the merged source, compare served media hashes and inspect the real public homepage/catalog on desktop/mobile. Local tests or a source merge alone do not establish deployment.
 
 ## Recovery
