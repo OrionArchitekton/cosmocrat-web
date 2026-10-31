@@ -81,12 +81,12 @@ export default function RuntimeGovernanceContent() {
             <span className="bronze-text drop-shadow-sm">Kernel Governance</span>
           </h1>
           <p className="text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed">
-            Cosmocrat is not a wrapper. It is the kernel that sits between inputs and execution,
-            enforcing policy pre-execution with cryptographic proof at the operating system level.
+            Cosmocrat&apos;s governance design evaluates proposed mutations before execution on
+            enrolled paths, with policy decisions retained as attributable receipts.
           </p>
           <p className="mt-6 text-lg text-slate-500 font-medium">
-            Runtime governance enforces policy, authority, and safety before AI actions execute —
-            not after they fail.
+            Runtime governance checks policy and authority before an enrolled action executes.
+            Coverage depends on the deployed integration and its actual capability boundaries.
           </p>
         </div>
       </div>
@@ -100,9 +100,9 @@ export default function RuntimeGovernanceContent() {
           <div className="prose prose-invert max-w-3xl mx-auto text-slate-500 text-base leading-relaxed space-y-4">
             <p>
               Runtime governance is the architectural enforcement of policy at the moment of
-              decision. Unlike post-hoc auditing or reactive guardrails, it acts as a preemptive
-              control plane that mediates every input, memory access, and tool call before execution
-              is permitted.
+              decision. An enrolled integration submits a proposed mutation for evaluation before
+              execution. Memory retrieval, orchestration and tool execution retain their own
+              implementation and enforcement boundaries outside the narrow kernel.
             </p>
             <p>
               In the Cosmocrat architecture, this means the kernel evaluates authority against the{' '}
@@ -112,8 +112,9 @@ export default function RuntimeGovernanceContent() {
               >
                 Gate System
               </Link>{' '}
-              prior to any action. It ensures that memory retrieval respects lane isolation and that
-              execution privileges match the agent&apos;s clearance level.
+              for that enrolled request. Retrieval permissions and execution privileges must also
+              be enforced by the surrounding integration; alternative credential, tool and network
+              paths can bypass an application-layer admission check.
             </p>
             <p>
               This process generates{' '}
@@ -123,26 +124,21 @@ export default function RuntimeGovernanceContent() {
               >
                 Decision Exhaust
               </Link>
-              —a complete record of reasoning and policy checks. Because enforcement happens in the
-              kernel, it produces{' '}
+              , retaining the policy evaluation and decision evidence supplied on that path.
+              The governed decision produces{' '}
               <Link
                 href="/chronicle-receipts"
                 className="text-slate-400 hover:text-amber-500 underline decoration-slate-700 underline-offset-4 transition-colors"
               >
                 Chronicle Receipts
               </Link>
-              , which are cryptographic proofs that document exactly why an action was authorized.
+              , which document admission under the configured trust boundary. Actual execution and
+              external outcomes need separate evidence.
             </p>
             <p>
-              As defined in{' '}
-              <Link
-                href="/about"
-                className="text-slate-400 hover:text-amber-500 underline decoration-slate-700 underline-offset-4 transition-colors"
-              >
-                About Cosmocrat
-              </Link>
-              , this creates a fail-closed environment where safety is a property of the operating
-              system, not a suggestion to the model.
+              Fail-closed behavior must be verified at the deployed admission boundary, including
+              missing evidence, persistence failures and bypass paths. Membership in the Cosmocrat
+              OS tool family does not establish that integration or guarantee.
             </p>
           </div>
         </div>
@@ -299,20 +295,20 @@ export default function RuntimeGovernanceContent() {
                 <li className="flex items-start gap-3">
                   <CheckCircle className="text-amber-500 shrink-0 mt-0.5" size={16} />
                   <span>
-                    <strong>Preemptive:</strong> Policy checks happen <em>before</em> execution.
+                    <strong>Preemptive:</strong> Enrolled requests are evaluated <em>before</em> execution.
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle className="text-amber-500 shrink-0 mt-0.5" size={16} />
                   <span>
-                    <strong>Cryptographic Proof:</strong> Every decision leaves an immutable
-                    receipt.
+                    <strong>Decision Evidence:</strong> Retain an attributable receipt for the
+                    enrolled decision.
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle className="text-amber-500 shrink-0 mt-0.5" size={16} />
                   <span>
-                    <strong>Fail-Closed:</strong> Default deny. Safety is structural, not optional.
+                    <strong>Fail-Closed Design:</strong> Verify default denial at the deployed boundary.
                   </span>
                 </li>
               </ul>
@@ -528,8 +524,8 @@ export default function RuntimeGovernanceContent() {
             <div>
               <h3 className="text-xl font-bold text-white mb-2">The Gate System</h3>
               <p className="text-slate-400 leading-relaxed">
-                The enforcement engine. A 7-stage pipeline that validates inputs, decisions, and
-                authority before any action is taken.
+                A conceptual seven-stage model for an enrolled integration. Validate admission,
+                execution and outcome evidence at their respective boundaries.
                 <br />
                 <Link
                   href="/gate-system"
@@ -563,7 +559,7 @@ export default function RuntimeGovernanceContent() {
               />
               <FaqItem
                 question="How does it handle different models?"
-                answer="Cosmocrat is model-agnostic. The kernel wraps the execution environment regardless of whether you are using OpenAI, Anthropic, or open-source models."
+                answer="The admission design can evaluate proposed mutations from different model providers. Each model, tool and runtime path still needs an explicit integration and verified enforcement boundary."
               />
             </div>
           </div>

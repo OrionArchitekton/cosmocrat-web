@@ -26,6 +26,8 @@ Encode the retained WebM to H.264 MP4 with FFmpeg, 30 fps, yuv420p, 22 seconds, 
 
 Use Node 20 and the existing lint/typecheck/build. Run the local HTTP tests against a loopback server. In an anonymous browser, observe the selected video's dimensions, advancing playback, pause, replay, skip, portrait selection, reduced-motion suppression, no-JavaScript access and fallback behavior. Read back media status and range delivery. Do not infer playback from a 200 response.
 
+With the separately installed `agent-browser` and Chrome available, `SITE_TEST_ORIGIN=http://127.0.0.1:4181 python3 tests/site-browser.test.py` repeats the player, catalog, keyboard and responsive checks against the built site. It uses a GET-only loopback fixture to set initial document visibility before hydration, then proves first visibility starts playback without scrolling. The fixture also verifies reduced-motion suppression. It refuses production origins and submits no forms. Inspect no-JavaScript and media-failure behavior separately as described above.
+
 For a public release, retain the production-origin guard and use the protected PR workflow. Verify required checks and current-head automated review before the owner-approved merge. After the hosting deployment is READY, bind its source revision/alias to the merged source, compare served media hashes and inspect the real public homepage/catalog on desktop/mobile. Local tests or a source merge alone do not establish deployment.
 
 ## Recovery

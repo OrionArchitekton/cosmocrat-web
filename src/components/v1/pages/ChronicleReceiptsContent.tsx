@@ -110,8 +110,8 @@ export default function ChronicleReceiptsContent() {
             The Canonical Rule
           </div>
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-10 leading-tight">
-            If it is not receipted in the Chronicle, <br />
-            <span className="bronze-text drop-shadow-sm">it did not happen.</span>
+            If a governed decision is not receipted, <br />
+            <span className="bronze-text drop-shadow-sm">its admission is not recorded.</span>
           </h1>
           <p className="text-xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
             The Chronicle Registry is an append-only, tamper-evident ledger. <br />
@@ -135,8 +135,8 @@ export default function ChronicleReceiptsContent() {
             <p>
               Chronicle Receipts form the append-only, tamper-evident authority ledger of the
               Cosmocrat OS. While logs track mutable system events, receipts are generated
-              specifically for decisions. They bind policy, authority, context, and outcome into a
-              single cryptographic proof.
+              specifically for governed decisions. They bind policy, authority, context, and the
+              decision outcome into a cryptographic record within the configured trust boundary.
             </p>
             <p>
               This establishes the admissible &quot;why&quot; behind an action. By anchoring into{' '}

@@ -6,7 +6,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / 'public/media/cosmocrat'
 class Handler(BaseHTTPRequestHandler):
+    def local_host(self):
+        return self.headers.get('Host') == f'127.0.0.1:{self.server.server_port}'
     def do_GET(self):
+        if not self.local_host(): self.send_error(403); return
         route = self.path.split('?', 1)[0]
         paths = {'/': (ROOT/'tools/cosmocrat-intro/renderer.html','text/html'),
                  '/brand/cosmocrat-wordmark.png': (ROOT/'public/brand/cosmocrat-wordmark.png','image/png'),
@@ -16,6 +19,9 @@ class Handler(BaseHTTPRequestHandler):
         path, kind = paths[route]; data = path.read_bytes()
         self.send_response(200); self.send_header('Content-Type',kind); self.send_header('Content-Length',str(len(data))); self.end_headers(); self.wfile.write(data)
     def do_POST(self):
+        origin = f'http://127.0.0.1:{self.server.server_port}'
+        if not self.local_host() or self.headers.get('Origin') != origin:
+            self.send_error(403); return
         if self.path not in ['/save/desktop.webm','/save/mobile.webm']: self.send_error(404); return
         try: size = int(self.headers.get('Content-Length','0'))
         except ValueError: self.send_error(400); return
@@ -24,7 +30,10 @@ class Handler(BaseHTTPRequestHandler):
         if target.exists(): self.send_error(409,'Preserve the existing render'); return
         body=self.rfile.read(size)
         if len(body)!=size or body[:4]!=bytes.fromhex('1a45dfa3'): self.send_error(400); return
-        with target.open('xb') as f: f.write(body)
+        try:
+            with target.open('xb') as f: f.write(body)
+        except FileExistsError:
+            self.send_error(409,'Preserve the existing render'); return
         self.send_response(201); self.end_headers()
     def log_message(self,*args): pass
 if __name__=='__main__':

@@ -31,9 +31,6 @@ export default function MotionWelcome() {
       setEnded(false);
       player.load();
     };
-    const visibility = () => {
-      if (document.hidden) stop();
-    };
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) stop();
@@ -44,6 +41,13 @@ export default function MotionWelcome() {
       },
       { threshold: 0.2 }
     );
+    const visibility = () => {
+      if (document.hidden) stop();
+      else {
+        observer.unobserve(host);
+        observer.observe(host);
+      }
+    };
     observer.observe(host);
     motion.addEventListener('change', preference);
     narrow.addEventListener('change', viewport);

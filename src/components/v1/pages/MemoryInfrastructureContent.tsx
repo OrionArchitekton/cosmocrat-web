@@ -788,12 +788,12 @@ export default function MemoryInfrastructureContent() {
               into &quot;Admissible Context&quot; (safe, relevant, authorized).
             </p>
             <p>
-              This prevents{' '}
+              This interface is designed to limit{' '}
               <Link href="/drift-guard" className="text-amber-500 hover:underline">
                 Context Drift
               </Link>{' '}
-              and ensures that even if the AI <em>asks</em> for forbidden data, the interface returns
-              only what it is allowed to see.
+              . Returning only permitted data requires the deployed access boundary to enforce
+              those permissions without alternative retrieval or credential paths.
             </p>
           </>
         }

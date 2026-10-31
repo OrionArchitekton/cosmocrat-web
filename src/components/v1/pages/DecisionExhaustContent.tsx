@@ -112,8 +112,9 @@ export default function DecisionExhaustContent() {
               evaluation, authority checks, and state transitions that led to an action.
             </p>
             <p className="text-slate-300 font-medium">
-              Decision exhaust is the audit-grade record of every AI and human decision — including
-              intent, policy evaluation, authority, execution, and outcome — produced at runtime.
+              Decision exhaust is the audit record of each enrolled governed decision, including
+              intent, policy evaluation and authority. Execution and external outcomes require
+              their own retained evidence.
             </p>
             <p>
               For deterministic software, logs are sufficient. For probabilistic AI agents that

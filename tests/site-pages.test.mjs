@@ -99,7 +99,9 @@ test('origin and machine-readable identity agree about the umbrella without losi
   assert.match(llms, /Cosmocrat OS/);
   assert.match(llms, /kernel integration/);
   assert.ok(llms.includes(`${origin}/tools`));
-  const docs = await fetch(`${origin}/docs`).then((response) => response.text());
+  const docsResponse = await fetch(`${origin}/docs`);
+  assert.equal(docsResponse.status, 200);
+  const docs = await docsResponse.text();
   assert.match(docs, /href="\/tools"/);
 });
 
@@ -120,6 +122,11 @@ test('governance URLs remain architectural references and legal and intake pages
     assert.doesNotMatch(
       text,
       /mathematically impossible|Perfect historical replayability|Policy checks occur in microseconds/i,
+      path
+    );
+    assert.doesNotMatch(
+      text,
+      /mediates every input|ensuring safety regardless of model variance|record of every AI and human decision|continuously detects and halts divergence|it did not happen\.|G0-G3 are structural and always active|interface returns only what it is allowed to see/i,
       path
     );
   }

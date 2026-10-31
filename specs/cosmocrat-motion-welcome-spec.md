@@ -9,3 +9,5 @@ The static homepage follows immediately and stays available in initial HTML. Vis
 Use self-hosted desktop and mobile compositions with legible labels. Preserve the original wordmark/sigil and palette. Provide a concise text alternative for the visual story. No new runtime dependency, analytics surface, service, tracking or account integration.
 
 Acceptance: actual local HTTP and anonymous browser checks prove the media loads, playback advances, pause/replay/skip work, reduced-motion suppression works, and desktop/mobile layouts retain the static content without overflow. Inspect the rendered video and contact frames; file existence or a 200 response alone is insufficient. Local proof is followed by current-head review, required checks and independent production playback verification.
+
+Test seams: built-site HTTP contracts protect the initial document; the anonymous browser seam exercises native media events and hydrated controls. A visibility fixture supplies an initially hidden document before hydration, then a visibility change without scrolling. The intro must start once on that first visible view while preserving reduced-motion and manual pause behavior.
