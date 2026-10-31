@@ -24,3 +24,21 @@ for (const route of ['about', 'docs', 'platform']) test(`the ${route} document e
     assert.match(text(html), /independent|independently/);
   }
 });
+
+test('machine-readable identity and the versioned social card describe the same umbrella', async () => {
+  const llms = await fetch(`${origin}/llms.txt`);
+  assert.equal(llms.status, 200);
+  assert.match(await llms.text(), /Cosmocrat OS/);
+  const map = await fetch(`${origin}/sitemap.xml`).then(r => r.text());
+  assert.ok(map.includes(`${origin}/tools`));
+  const page = await fetch(`${origin}/about`).then(r => r.text());
+  assert.match(page, /name="robots" content="noindex, nofollow"/);
+  assert.match(page, /og\?v=4/);
+  const image = await fetch(`${origin}/og?v=4`);
+  assert.equal(image.status, 200);
+  assert.match(image.headers.get('content-type'), /image\/png/);
+  const data = Buffer.from(await image.arrayBuffer());
+  assert.equal(data.subarray(1,4).toString(), 'PNG');
+  assert.equal(data.readUInt32BE(16), 1200);
+  assert.equal(data.readUInt32BE(20), 630);
+});
