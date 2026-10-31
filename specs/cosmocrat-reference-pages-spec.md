@@ -8,6 +8,6 @@ A reader opens Start here and can begin with the public Orion PM guide, open the
 
 A reader opens Governance architecture and sees the architecture-reference notice and links to the six qualified reference topics. Decision authority and receipt persistence remain separate from runtime execution and business outcomes.
 
-All three existing URLs return successful initial documents, self-canonical metadata, readable desktop and mobile layouts and working public destinations. Legal and intake flows retain their separate behavior.
+All three existing URLs return successful initial documents, self-canonical metadata, readable desktop and mobile layouts and working public destinations. Machine-readable identity, the versioned social card and the tools sitemap entry describe the same human-directed Cosmocrat OS umbrella. The card uses the original wordmark and bundled licensed fonts; generating it requires no third-party font or image request. Non-production page metadata remains non-indexable. Legal and intake flows retain their separate behavior.
 
 Test seams: GET-only built-site readback checks the three documents, canonical metadata, guide and catalog destinations, version pins and scope language. Anonymous browser inspection covers their actual 1440px and 390px layouts, navigation, readable headings and no horizontal overflow. Protected review and public readback gate publication.
