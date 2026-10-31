@@ -20,9 +20,10 @@ for width, height in [(1440, 1000), (390, 844)]:
     for route in routes:
         commands.extend([
             ['open', origin + '/' + route],
+            ['eval', f'(()=>{{if(location.origin !== {json.dumps(origin)} || location.pathname !== {json.dumps("/" + route)})throw Error("Architecture route identity");return true}})()'],
             ['eval', 'document.fonts.ready.then(() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))))'],
             ['eval', 'window.scrollTo(0,0)'],
-            ['eval', '(()=>{const h=document.querySelector("header"),s=document.querySelector(".governance-context");const hb=h.getBoundingClientRect(),sb=s.getBoundingClientRect();const a=[...s.querySelectorAll("a")].find(a=>a.pathname==="/tools");if(document.documentElement.scrollWidth>innerWidth||sb.top+1<hb.bottom||!a||!h.contains(document.elementFromPoint(40,20)))throw Error("Architecture notice/navigation visibility or overflow");return {route:location.pathname,width:innerWidth,headerBottom:hb.bottom,noticeTop:sb.top,noticeVisible:sb.height>0,catalogLink:!!a,overflow:false}})()'],
+            ['eval', '(()=>{const h=document.querySelector("header"),s=document.querySelector(".governance-context");const hb=h.getBoundingClientRect(),sb=s.getBoundingClientRect();const a=[...s.querySelectorAll("a")].find(a=>a.pathname==="/tools");if(innerWidth<=390 && ![...h.querySelectorAll("button,summary")].some(e=>e.getBoundingClientRect().height>0))throw Error("Mobile menu missing");if(document.documentElement.scrollWidth>innerWidth||sb.top+1<hb.bottom||!a||!h.contains(document.elementFromPoint(40,20)))throw Error("Architecture notice/navigation visibility or overflow");return {route:location.pathname,width:innerWidth,headerBottom:hb.bottom,noticeTop:sb.top,noticeVisible:sb.height>0,catalogLink:!!a,overflow:false}})()'],
         ])
         if artifacts:
             commands.append(['screenshot', str(Path(artifacts) / f'architecture-{route}-{width}.png')])
@@ -39,7 +40,7 @@ try:
     assert result.returncode == 0, 'Architecture browser command failed'
     records = json.loads(result.stdout)
     assert len(records) == len(commands) and all(item['success'] for item in records)
-    assert all(not item['result']['errors'] for item in records if item['command'][0] == 'errors')
+    assert all(item['result']['errors'] == [] for item in records if item['command'][0] == 'errors')
     print(f'PASS: {len(commands)} architecture browser commands')
 finally:
     subprocess.run(base + ['close'], env=environment, capture_output=True, timeout=20)

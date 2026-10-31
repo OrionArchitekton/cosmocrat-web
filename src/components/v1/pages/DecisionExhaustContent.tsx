@@ -424,7 +424,7 @@ export default function DecisionExhaustContent() {
                 Evaluate authority, limits, and context before execution.
               </p>
             </div>
-            <div className="text-xs text-slate-600 mt-auto">Fail-closed by default.</div>
+            <div className="text-xs text-slate-600 mt-auto">Design goal: fail-closed.</div>
           </div>
 
           {/* Step 2 */}
@@ -439,7 +439,7 @@ export default function DecisionExhaustContent() {
                 Permit, deny or defer the governed request at its explicit boundary.
               </p>
             </div>
-            <div className="text-xs text-slate-600 mt-auto">No silent failures.</div>
+            <div className="text-xs text-slate-600 mt-auto">Verify denial and error paths.</div>
           </div>
 
           {/* Step 3 */}
@@ -451,10 +451,10 @@ export default function DecisionExhaustContent() {
             <div className="flex items-start gap-2 mb-4">
               <FileJson size={16} className="text-cosmo-accent mt-1 shrink-0" />
               <p className="text-sm text-slate-400">
-                Produce an audit-grade record bound to inputs, policy, and outputs.
+                Retain inputs, policy and the admission decision at a verified receipt boundary.
               </p>
             </div>
-            <div className="text-xs text-slate-600 mt-auto">Cryptographically attributable.</div>
+            <div className="text-xs text-slate-600 mt-auto">Verify integrity and retention controls.</div>
           </div>
 
           {/* Step 4 */}
