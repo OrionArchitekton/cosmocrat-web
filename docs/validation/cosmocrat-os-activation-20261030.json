@@ -1,0 +1,34 @@
+{
+  "observed_utc": "2026-10-31T06:17:17.908987+00:00",
+  "kind": "manual local built-site acceptance before protected release",
+  "app_source_revision": "5588650a41a0f9a98464bbaf8f37c74b145a75a0",
+  "toolchain": "Node 20.20.2",
+  "build_lint_typecheck": "pass",
+  "presentation_asset_checks_passed": 3,
+  "built_http_checks_passed": 17,
+  "manual_anonymous_browser_commands": {
+    "main_journey": 54,
+    "catalog": 40,
+    "media_failure_recovery_and_resize": 33,
+    "architecture": 74,
+    "reference_pages": 43
+  },
+  "browser_ci_claimed": false,
+  "form_submissions": 0,
+  "source_sha256": {
+    "src/app/layout.tsx": "bf87b91165e8c1afdd340b812e82460fd61342a007553468b09389b6a0c49218",
+    "src/app/page.tsx": "e311c33613a78dcf1896e648ca8c357f72c8ddfb97aa604c0183345ee57d3e63",
+    "src/components/v1/Header.tsx": "5c5b441662c3f3f95a9a9bd818d7da699e234d03670b0bc5417761bcea63317b",
+    "src/components/v1/Footer.tsx": "a8748b3377549227f3ee09c71f28d5ca9ff1bb8721a62d270db82d7e048cb7d0",
+    "src/components/os/MotionWelcome.tsx": "e15d2ac1226611d26f946a7818b15831bb8592b7aca0a6700c9d49a994c654d1",
+    "src/components/os/HomeSections.tsx": "deb813e9ca6ae4c2e7021a7e10ec6dd93f62a13148e1bcaaca9442e946e05d1c",
+    "src/lib/toolCatalog.ts": "f1911809ad964d46801907ba7358275d596fc378d243bf21971b53255967560a",
+    "src/styles/os.css": "2deb337a2a8200502167f621927341a0b1085e803f2eadceec99bc2dcf803908",
+    "public/media/cosmocrat/cosmocrat-welcome-desktop.mp4": "3eeaebce7958531a74f86692f64590763fa73263d44ad8bffcb7b3899c0e1bd7",
+    "public/media/cosmocrat/cosmocrat-welcome-mobile.mp4": "1147a7ea015e518b664ec53f2ed5a16e6dcf3fc68e7d0891af81a437c308f0aa"
+  },
+  "limitations": [
+    "Manual local browser observations do not establish production playback.",
+    "Current-head native checks/review and independently source-bound public readback remain release gates."
+  ]
+}

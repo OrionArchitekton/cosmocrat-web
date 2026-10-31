@@ -1,6 +1,8 @@
-# Cosmocrat Web Refresh — Spec
+# Cosmocrat Web Refresh — Historical Spec
 
-**Status:** Implemented in this PR · **Scope:** marketing copy refresh to current product truth + a bounded AEO/SEO/GEO gap-fill · **Surface:** `src/app/`, `src/lib/`, `src/components/v1/`
+**Status:** Historical presentation baseline. The October 30, 2026 owner-approved Cosmocrat OS website direction supersedes its enterprise-only presentation and positioning embargo; see `cosmocrat-os-web-spec.md`, `cosmocrat-motion-welcome-spec.md` and `docs/cosmocrat-os-positioning.md`. Prior text remains below for traceability.
+
+**Original status:** Implemented in its original PR · **Scope:** marketing copy refresh to current product truth + a bounded AEO/SEO/GEO gap-fill · **Surface:** `src/app/`, `src/lib/`, `src/components/v1/`
 
 ## Why
 

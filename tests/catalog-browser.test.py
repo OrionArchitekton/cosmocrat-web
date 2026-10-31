@@ -21,6 +21,7 @@ commands = [
     ['fill', 'input[type="search"]', 'Android'],
     ['wait', '--fn', 'document.querySelectorAll("[data-tool]:not([hidden])").length === 1'],
     check('!document.querySelector("#orion-phone").hidden && document.querySelector("[data-result-count]").textContent.startsWith("1 of")', 'Category, search and count compose'),
+    check('[...document.querySelectorAll("[data-tool][hidden]")].every(e=>getComputedStyle(e).display === "none") && getComputedStyle(document.querySelector("[data-empty-state]")).display === "none"', 'Filtered cards and the empty state are visually hidden'),
     ['fill', 'input[type="search"]', 'no-matching-tool-712'],
     ['wait', '--fn', '!document.querySelector("[data-empty-state]").hidden'],
     ['click', '[data-reset-filters]'],
@@ -44,11 +45,11 @@ commands = [
     ['fill', 'input[type="search"]', 'v0.1.1'],
     check('!document.querySelector("#orion-pm").hidden', 'Search includes visible release versions'),
     ['set', 'viewport', '768', '1000'],
-    check('getComputedStyle(document.querySelector("header nav")).display === "none" && document.querySelector("header button").getBoundingClientRect().height > 0', 'Tablet navigation uses the readable mobile menu'),
+    check('(()=>{const h=document.querySelector("header").getBoundingClientRect();return [...document.querySelectorAll("header a,header button,header summary")].every(e=>{const b=e.getBoundingClientRect();return !b.height || (b.top>=h.top && b.bottom<=h.bottom && b.right<=innerWidth)}) && document.documentElement.scrollWidth<=innerWidth})()', 'Tablet navigation stays inside the header'),
     ['set', 'viewport', '900', '1000'],
-    check('getComputedStyle(document.querySelector("header nav")).display === "none"', 'Intermediate widths keep the mobile menu'),
+    check('(()=>{const h=document.querySelector("header").getBoundingClientRect();return [...document.querySelectorAll("header a,header button,header summary")].every(e=>{const b=e.getBoundingClientRect();return !b.height || (b.top>=h.top && b.bottom<=h.bottom && b.right<=innerWidth)}) && document.documentElement.scrollWidth<=innerWidth})()', 'Intermediate navigation stays inside the header'),
     ['set', 'viewport', '1024', '1000'],
-    check('(()=>{const h=document.querySelector("header").getBoundingClientRect();const a=[...document.querySelectorAll("header nav a")].find(a=>a.pathname==="/waitlist").getBoundingClientRect();return a.top>=h.top && a.bottom<=h.bottom && document.documentElement.scrollWidth<=innerWidth})()', 'Desktop CTA fits inside the header'),
+    check('(()=>{const h=document.querySelector("header").getBoundingClientRect();return [...document.querySelectorAll("header a,header button,header summary")].every(e=>{const b=e.getBoundingClientRect();return !b.height || (b.top>=h.top && b.bottom<=h.bottom && b.right<=innerWidth)}) && document.documentElement.scrollWidth<=innerWidth})()', 'Desktop navigation stays inside the header'),
     ['errors'],
 ]
 environment = os.environ.copy()
