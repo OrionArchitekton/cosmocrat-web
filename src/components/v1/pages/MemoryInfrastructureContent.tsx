@@ -286,12 +286,12 @@ export default function MemoryInfrastructureContent() {
           <div className="prose prose-invert max-w-3xl mx-auto text-slate-500 text-base leading-relaxed space-y-4">
             <p>
               Memory in Cosmocrat is an{' '}
-              <span className="text-white font-medium">enforceable state, not stored text</span>.
+              <span className="text-white font-medium">enforceable policy-scoped state within an integrated boundary</span>.
             </p>
             <p>
-              It governs what may influence decisions, not just what is stored. Memory is scoped by
-              lane, phase, authority, and policy, and every change is recorded with cryptographic
-              receipts. It is the connective tissue between the{' '}
+              The design scopes decision context by lane, phase, authority and policy. An enrolled
+              memory change can retain an attributable decision receipt; coverage depends on the
+              actual retrieval, storage and mutation boundaries. It connects the{' '}
               <Link href="/gate-system" className="text-amber-500 hover:underline">
                 Gate System
               </Link>{' '}
@@ -314,7 +314,7 @@ export default function MemoryInfrastructureContent() {
             </div>
             <h3 className="text-lg font-bold text-white">Authority-Bound</h3>
             <p className="text-sm text-slate-400">
-              Memory exists within explicit lanes and permissions. Access is denied by default.
+              For an explicitly enrolled memory boundary, configure lane permissions and verify that unauthorized access is denied.
             </p>
           </div>
           <div className="flex flex-col gap-3">
@@ -332,7 +332,7 @@ export default function MemoryInfrastructureContent() {
             </div>
             <h3 className="text-lg font-bold text-white">Receipt-Backed</h3>
             <p className="text-sm text-slate-400">
-              Memory changes are provable, replayable, and bound to policy hash.
+              An enrolled change can retain its policy hash and decision receipt. Replay depends on retained inputs and the recorded environment.
             </p>
           </div>
         </div>
@@ -485,10 +485,10 @@ export default function MemoryInfrastructureContent() {
               <h3 className="text-xl font-bold text-white mb-2">Governed Infrastructure</h3>
               <p className="text-slate-400 text-sm mb-4">
                 Defines allowed usage, not just storage. <br />
-                Infrastructure enforces &quot;Permission-First&quot; access.
+                An enrolled boundary checks permission before access.
               </p>
               <div className="flex items-center gap-2 text-xs text-amber-500 font-mono uppercase tracking-wider">
-                <ShieldCheck size={14} /> Security: Fail-Closed
+                <ShieldCheck size={14} /> Design goal: fail-closed
               </div>
             </div>
           </div>
@@ -605,8 +605,9 @@ export default function MemoryInfrastructureContent() {
               accidentally inform unrelated decisions (Personal).
             </p>
             <p>
-              Cosmocrat enforces strict Lane Isolation at the infrastructure level. A lane is a
-              cryptographically isolated memory space with its own policies and authority roots.
+              The design uses explicit memory lanes with policy and authority boundaries. A namespace
+              or retrieval filter alone is not cryptographic isolation; actual enforcement must
+              be established for the selected deployment.
             </p>
             <p>
               Crossing lanes (e.g., using Health data in a Work context) requires an explicit,
@@ -614,7 +615,7 @@ export default function MemoryInfrastructureContent() {
               <Link href="/gate-system" className="text-amber-500 hover:underline">
                 Gate System
               </Link>
-              . Without it, cross-lane retrieval is mathematically impossible.
+              . Cross-lane denial depends on the actual access boundary and the absence of bypass paths. This architectural reference does not establish that guarantee for the public tool collection.
             </p>
           </>
         }
@@ -787,12 +788,12 @@ export default function MemoryInfrastructureContent() {
               into &quot;Admissible Context&quot; (safe, relevant, authorized).
             </p>
             <p>
-              This prevents{' '}
+              This interface is designed to limit{' '}
               <Link href="/drift-guard" className="text-amber-500 hover:underline">
                 Context Drift
               </Link>{' '}
-              and ensures that even if the AI <em>asks</em> for forbidden data, the interface returns
-              only what it is allowed to see.
+              . Returning only permitted data requires the deployed access boundary to enforce
+              those permissions without alternative retrieval or credential paths.
             </p>
           </>
         }
@@ -881,19 +882,19 @@ export default function MemoryInfrastructureContent() {
           <div className="space-y-2">
             <FaqItem
               question="Is this different from a vector database?"
-              answer="Yes. Vector databases optimize for retrieval relevance. Cosmocrat memory adds governance: lane isolation, authority checks, and provenance tracking. You can use a vector database as the underlying store, but access is mediated by the kernel."
+              answer="Yes. A vector database optimizes retrieval relevance. This design adds authority checks and provenance to an explicitly enrolled retrieval path. The underlying store remains external; verify that its actual access boundary applies the required decision before relying on isolation."
             />
             <FaqItem
               question="How does lane isolation work technically?"
-              answer="Each lane is a logical partition with its own namespace. Memory writes are tagged with lane ID. Retrieval queries are filtered by lane membership. Cross-lane access requires explicit policy grants."
+              answer="In this design, lanes identify policy scopes for enrolled memory writes and retrieval. An integration can tag records and apply lane filters, but labels alone do not enforce isolation. Verify enforcement and durable receipt persistence at the actual access boundary, including bypass and denial paths."
             />
             <FaqItem
               question="What happens if an agent needs cross-lane context?"
-              answer="The agent requests cross-lane access through the Gate System. If policy permits (e.g., 'SupportBot may read Finance/refund_policy'), the memory is retrieved with a cross-lane receipt. If denied, the request fails and is logged."
+              answer="On an explicitly enrolled retrieval path, a cross-lane request can be evaluated against policy before access. The integration must verify that denial prevents retrieval and that the decision receipt is durably retained. An admission receipt alone does not prove what the external store returned."
             />
             <FaqItem
               question="Does memory governance slow down retrieval?"
-              answer="Governance checks add microseconds to retrieval latency—negligible compared to vector search or LLM inference. The trade-off is provability: you can now prove what context informed every decision."
+              answer="Measure retrieval and governance overhead in the actual deployment. Context provenance depends on the enrolled retrieval path and retained evidence; this reference establishes no universal latency or coverage guarantee."
             />
           </div>
         </div>

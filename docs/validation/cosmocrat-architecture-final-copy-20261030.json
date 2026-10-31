@@ -1,0 +1,103 @@
+{
+  "observed_utc": "2026-10-31T06:11:11.962169+00:00",
+  "kind": "manual local browser release check",
+  "app_source_revision": "dc60257a893776e1594fa9d467a6083855e87586",
+  "commands_passed": 86,
+  "columns": [
+    "route",
+    "viewport_width",
+    "header_bottom",
+    "notice_top"
+  ],
+  "positions": [
+    [
+      "/runtime-governance",
+      1440,
+      65,
+      64
+    ],
+    [
+      "/gate-system",
+      1440,
+      65,
+      64
+    ],
+    [
+      "/memory-infrastructure",
+      1440,
+      65,
+      64
+    ],
+    [
+      "/decision-exhaust",
+      1440,
+      65,
+      64
+    ],
+    [
+      "/chronicle-receipts",
+      1440,
+      65,
+      64
+    ],
+    [
+      "/drift-guard",
+      1440,
+      65,
+      64
+    ],
+    [
+      "/runtime-governance",
+      390,
+      65,
+      64
+    ],
+    [
+      "/gate-system",
+      390,
+      65,
+      64
+    ],
+    [
+      "/memory-infrastructure",
+      390,
+      65,
+      64
+    ],
+    [
+      "/decision-exhaust",
+      390,
+      65,
+      64
+    ],
+    [
+      "/chronicle-receipts",
+      390,
+      65,
+      64
+    ],
+    [
+      "/drift-guard",
+      390,
+      65,
+      64
+    ]
+  ],
+  "all_notices_visible": true,
+  "all_catalog_links_present": true,
+  "overflow_cases": 0,
+  "runtime_errors": 0,
+  "form_submissions": 0,
+  "browser_ci_claimed": false,
+  "source_sha256": {
+    "src/components/v1/pages/RuntimeGovernanceContent.tsx": "692cf165d04df7535c0fdf1f27158db0b77f53e81aa2e030d7f5d7a55a75c5a2",
+    "src/components/v1/pages/GateSystemContent.tsx": "8a3cb2af7eb8db55a290d00464f37b3ec2ae88ce0444473286850ab33a7f0b97",
+    "src/components/v1/pages/MemoryInfrastructureContent.tsx": "ed874aee8532941932f1d397463fb42f5ce6d0f10731174079a492cf6e973062",
+    "src/components/v1/pages/DecisionExhaustContent.tsx": "bfd6076a7242428cbfbd51152943996c0f63eb40e0af4fa6cd0266af7ea4c7c6",
+    "src/components/v1/pages/ChronicleReceiptsContent.tsx": "eeefd39ab1ae7c72eede882dddcabb740efa33fcdd42ec100b2b2d7019c47d87",
+    "src/components/v1/pages/DriftGuardContent.tsx": "ee11e766f724b5785856ccb58c8fe0c4895329d4c33699ee5626f79a5386c231",
+    "src/components/os/GovernanceContext.tsx": "5803279ab9a8dccde643904367bf7f07bb0587fe07dfa1503228f904448ee8c7",
+    "src/components/v1/Header.tsx": "53103062e5c12e61cb8ccf108925883a07bf3ea0fd5c256b332a2e4de4a18361",
+    "src/styles/os.css": "2deb337a2a8200502167f621927341a0b1085e803f2eadceec99bc2dcf803908"
+  }
+}

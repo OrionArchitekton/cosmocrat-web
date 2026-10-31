@@ -183,10 +183,10 @@ export default function GateSystemContent() {
           </h1>
           <p className="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto leading-relaxed mb-6">
             Power comes from delegation. Safety comes from restraint. <br />
-            Cosmocrat forces every AI action through a 7-stage governance pipeline.
+            The conceptual seven-stage model separates intent, decision, authority, execution and outcome. Actual governed coverage depends on the enrolled integration.
           </p>
           <p className="text-lg text-amber-500 font-medium mb-10">
-            Every AI decision must earn the right to become an action.
+            In the governed model, an enrolled decision must earn the right to become an action.
           </p>
         </div>
       </section>
@@ -199,9 +199,9 @@ export default function GateSystemContent() {
           </h2>
           <div className="prose prose-invert max-w-3xl mx-auto text-slate-500 text-base leading-relaxed space-y-4">
             <p>
-              The Gate System is Cosmocrat&apos;s runtime enforcement pipeline. It creates a
-              deterministic boundary between reasoning and action, ensuring that no AI capability
-              executes without explicit permission.
+              The Gate System describes Cosmocrat&apos;s conceptual admission pipeline. An enrolled
+              integration can place a policy boundary between a proposed mutation and execution.
+              Coverage depends on routing the action through that boundary without bypass paths.
             </p>
             <p>
               Operating within{' '}
@@ -211,21 +211,21 @@ export default function GateSystemContent() {
               >
                 Runtime Governance
               </Link>
-              , the system enforces a 7-stage sequence spanning input, memory, decisioning,
-              authorization, execution, and outcome. It evaluates authority, risk, intent, and
-              eligibility in real-time.
+              , the seven-stage model separates input, memory, decisioning, authorization,
+              execution and outcome. The narrow kernel evaluates proposed mutations; surrounding
+              runtime integrations own retrieval, execution and external outcome evidence.
             </p>
             <p>
-              Unlike monitoring tools that alert after failure, the Gate System halts by default.
-              Every check produces{' '}
+              An enrolled admission boundary is designed to deny a request when required evidence
+              or authority is absent. Retained decisions contribute to{' '}
               <Link
                 href="/decision-exhaust"
                 className="text-slate-400 hover:text-amber-500 underline decoration-slate-700 underline-offset-4 transition-colors"
               >
                 Decision Exhaust
               </Link>
-              , providing cryptographic proof of why an action was allowed or blocked. For long-term
-              alignment, this data feeds into{' '}
+              , documenting why the governed request was admitted, denied or deferred. These
+              records do not establish an external outcome. The design uses this evidence for{' '}
               <Link
                 href="/drift-guard"
                 className="text-slate-400 hover:text-amber-500 underline decoration-slate-700 underline-offset-4 transition-colors"
@@ -373,7 +373,7 @@ export default function GateSystemContent() {
                 <BrainCircuit size={20} className="text-orange-400" /> G2: Decision Formation
               </h3>
               <p className="text-slate-400 text-sm">
-                Is the reasoning valid? Checks confidence, completeness, and logical soundness.
+                Configured criteria for a proposed decision; a confidence score does not establish truth or authority.
               </p>
             </div>
             <div className="bg-slate-900 p-6 rounded border-l-4 border-orange-500">
@@ -456,8 +456,8 @@ export default function GateSystemContent() {
               They authorize.
             </h2>
             <p className="text-lg text-slate-400 mb-6">
-              Monitoring is passive; by the time you see the log, the money is gone. Cosmocrat
-              inserts human authorization directly into the runtime loop (G4).
+              The conceptual G4 stage calls for human authority at configured checkpoints on an
+              enrolled execution path. A deployment selects checkpoints such as the examples below.
             </p>
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
@@ -477,8 +477,9 @@ export default function GateSystemContent() {
             </ul>
             <div className="mt-8 p-4 border border-slate-700 rounded bg-slate-800/50">
               <p className="text-sm text-slate-300">
-                <strong>Crucial Distinction:</strong> If authorization is missing, the system halts.
-                It does not default to &quot;allow&quot; or &quot;warn&quot;. It fails closed.
+                <strong>Crucial Distinction:</strong> At an enrolled, enforced admission boundary,
+                missing required authorization must deny the request. Alternative execution paths
+                must be removed before claiming non-bypassable enforcement.
               </p>
             </div>
           </div>
@@ -548,19 +549,19 @@ export default function GateSystemContent() {
             <div className="space-y-2">
               <FaqItem
                 question="Why are there 7 gates?"
-                answer="The 7-stage pipeline (Input, Memory, Formation, Eligibility, Auth, Execution, Truth) ensures that every aspect of an action—from its context to its outcome—is validated separately. This prevents 'bundled' failures where a bad decision slips through because the syntax was correct."
+                answer="The conceptual stages separate context, formation, eligibility, authority, execution and outcome evidence. This separation guides integration design; it does not establish that every stage is implemented or that all failures are prevented."
               />
               <FaqItem
                 question="What happens if a gate fails?"
-                answer="The system fails closed. The action is blocked, a receipt is generated explaining the failure (e.g., 'Policy Violation: Limit Exceeded'), and the event is recorded in Decision Exhaust."
+                answer="An enrolled boundary should deny or defer a request that fails a required check and retain the decision receipt. Verify fail-closed behavior, persistence failures and bypass paths in the actual integration."
               />
               <FaqItem
                 question="Can I customize the gates?"
-                answer="Yes, via policy configuration. For low-risk dev environments, you might relax G4 (Human Auth) or G6 (Truth), but G0-G3 are structural and always active."
+                answer="G0-G3 are structural stages in this conceptual model. Actual stages and policy settings depend on the enrolled integration. Changing a required authority or evidence check needs its own explicit authorization."
               />
               <FaqItem
                 question="Does this replace my existing evals?"
-                answer="Cosmocrat complements offline evaluations. Evals test model capability before deployment; the Gate System enforces safety during runtime execution."
+                answer="Offline evaluations test model behavior before deployment. Enrolled runtime admission checks address proposed actions at their configured boundary. Both require validation; neither establishes universal safety."
               />
             </div>
           </div>

@@ -110,8 +110,8 @@ export default function ChronicleReceiptsContent() {
             The Canonical Rule
           </div>
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-10 leading-tight">
-            If it is not receipted in the Chronicle, <br />
-            <span className="bronze-text drop-shadow-sm">it did not happen.</span>
+            If a governed decision is not receipted, <br />
+            <span className="bronze-text drop-shadow-sm">its admission is not recorded.</span>
           </h1>
           <p className="text-xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
             The Chronicle Registry is an append-only, tamper-evident ledger. <br />
@@ -119,8 +119,8 @@ export default function ChronicleReceiptsContent() {
           </p>
 
           <p className="mt-8 text-lg text-amber-500 font-medium max-w-4xl mx-auto">
-            Chronicle Receipts are cryptographically bound records that prove who authorized an
-            action, under which policy, and why it was allowed to occur.
+            Chronicle receipts record the policy and authority basis for an enrolled admission
+            decision. Verification depends on retained evidence and the configured integrity controls.
           </p>
         </div>
       </div>
@@ -133,10 +133,10 @@ export default function ChronicleReceiptsContent() {
           </h2>
           <div className="prose prose-invert max-w-3xl mx-auto text-slate-500 text-base leading-relaxed space-y-4">
             <p>
-              Chronicle Receipts form the append-only, tamper-evident authority ledger of the
-              Cosmocrat OS. While logs track mutable system events, receipts are generated
-              specifically for decisions. They bind policy, authority, context, and outcome into a
-              single cryptographic proof.
+              Within an enrolled governance integration, Chronicle receipts are designed as
+              append-only, tamper-evident decision records. They bind policy, authority, context
+              and the admission result within the configured trust boundary. Retention and
+              integrity controls must be established in the actual deployment.
             </p>
             <p>
               This establishes the admissible &quot;why&quot; behind an action. By anchoring into{' '}
@@ -146,31 +146,31 @@ export default function ChronicleReceiptsContent() {
               >
                 Runtime Governance
               </Link>
-              , receipts prove that the{' '}
+              , receipts record the{' '}
               <Link
                 href="/gate-system"
                 className="text-slate-400 hover:text-amber-500 underline decoration-slate-700 underline-offset-4 transition-colors"
               >
                 Gate System
               </Link>{' '}
-              explicitly authorized the state transition.
+              admission decision for an enrolled request, not its external completion.
             </p>
             <p>
-              It serves as the immutable truth for{' '}
+              It supplies retained admission evidence for{' '}
               <Link
                 href="/decision-exhaust"
                 className="text-slate-400 hover:text-amber-500 underline decoration-slate-700 underline-offset-4 transition-colors"
               >
                 Decision Exhaust
               </Link>
-              , providing the foundational evidence that{' '}
+              , supporting the evidence that enrolled{' '}
               <Link
                 href="/drift-guard"
                 className="text-slate-400 hover:text-amber-500 underline decoration-slate-700 underline-offset-4 transition-colors"
               >
                 Drift Guard
               </Link>{' '}
-              relies on to detect divergence over time.
+              checks can use to detect divergence over time.
             </p>
           </div>
         </div>
@@ -239,7 +239,7 @@ export default function ChronicleReceiptsContent() {
                 <div className="font-mono text-xs text-slate-300">
                   <div>TX_ID: tx-c8d7e6f5</div>
                   <div>POLICY: finance_l1_v2 (hash: 0x9c88)</div>
-                  <div className="text-green-400">STATE_TRANSITION: Approved</div>
+                  <div className="text-green-400">ADMISSION: ALLOW (illustrative)</div>
                 </div>
               </div>
 
@@ -254,21 +254,21 @@ export default function ChronicleReceiptsContent() {
                   <div>TX_ID: tx-b9a0f1e2</div>
                   <div>ACTOR: authorized_agent_01</div>
                   <div>PROOF: &apos;signature&apos;: &apos;0x1F2E...&apos;</div>
-                  <div className="text-green-400">STATE_TRANSITION: Verified</div>
+                  <div className="text-green-400">ADMISSION: ALLOW (illustrative)</div>
                 </div>
               </div>
             </div>
 
             <ul className="mt-8 space-y-4 text-slate-300">
               <li className="flex items-center gap-3">
-                <Lock size={16} className="text-amber-500" /> Immutable & Append-Only
+                <Lock size={16} className="text-amber-500" /> Tamper-evident design
               </li>
               <li className="flex items-center gap-3">
-                <Shield size={16} className="text-amber-500" /> Proactive (Required for state
-                change)
+                <Shield size={16} className="text-amber-500" /> Required at an enrolled
+                admission boundary
               </li>
               <li className="flex items-center gap-3">
-                <Fingerprint size={16} className="text-amber-500" /> Cryptographic Proof
+                <Fingerprint size={16} className="text-amber-500" /> Cryptographic decision record
               </li>
               <li className="mt-4 pt-4 border-t border-slate-800 font-bold text-white">
                 Answers: &quot;Why was it authorized?&quot;
@@ -279,8 +279,8 @@ export default function ChronicleReceiptsContent() {
 
         <div className="mt-16 text-center">
           <p className="text-slate-400 text-lg font-medium">
-            Receipts make AI actions non-repudiable — they cannot be denied, rewritten, or detached
-            from authority.
+            Receipts preserve attributable decision metadata within the configured trust boundary.
+            Separate evidence is still required to establish what actually happened after admission.
           </p>
         </div>
       </section>
@@ -507,7 +507,7 @@ export default function ChronicleReceiptsContent() {
             <div className="text-amber-500 font-bold text-sm mb-2 uppercase tracking-wider">
               Policy Binding
             </div>
-            <h2 className="text-3xl font-bold text-white mb-6">The Immutable &quot;Why&quot;</h2>
+            <h2 className="text-3xl font-bold text-white mb-6">The Policy-Bound &quot;Why&quot;</h2>
             <p className="text-lg text-slate-400 mb-6">
               In standard systems, policies change, but old logs don&apos;t update. This creates
               &quot;Policy Drift&quot;—you can&apos;t prove <em>why</em> an action was allowed last
@@ -518,12 +518,13 @@ export default function ChronicleReceiptsContent() {
                 <History size={18} className="text-amber-500" /> Key Insight
               </h4>
               <p className="text-sm text-slate-400">
-                Cosmocrat receipts stamp every action with the{' '}
+                Cosmocrat receipts bind an enrolled governed decision to the{' '}
                 <code className="text-amber-500">policy_hash</code> active at that moment.
                 <br />
                 <br />
-                <strong>Result:</strong> No retroactive rule changes. No silent amendments. Perfect
-                historical replayability.
+                <strong>Result:</strong> A decision can retain its original policy reference. Replay
+                depends on the versioned policy, required inputs and retained evidence; it does
+                not reproduce all model reasoning or prove the external outcome.
               </p>
             </div>
           </div>
@@ -715,15 +716,15 @@ export default function ChronicleReceiptsContent() {
           <div className="space-y-2">
             <FaqItem
               question="How is a receipt different from a system log?"
-              answer="A log records that something happened. A receipt records *why* it was allowed. Receipts bind the policy hash, authority context, and input state to the outcome, making the action non-repudiable."
+              answer="An authoritative governance receipt records the policy and authority behind a decision. Local task records, hashes and tool logs have distinct authority. Neither record alone proves an external outcome."
             />
             <FaqItem
               question="Are receipts stored on a blockchain?"
-              answer="No. They use cryptographic chaining (Merkle trees) for tamper-evidence but are stored in your own high-performance data infrastructure (e.g., S3, ClickHouse) for speed and privacy."
+              answer="A blockchain is not required. Storage and integrity mechanisms depend on the kernel version and deployment. Do not infer a Merkle tree or external anchoring from the existence of a receipt."
             />
             <FaqItem
               question="Can I replay a receipt?"
-              answer="Yes. Because the receipt captures the full state context (inputs + memory snapshot + policy), you can replay the decision path to debug or audit the AI's reasoning."
+              answer="A governed decision can be replayed when the necessary versioned inputs and policy are retained. A receipt is not a complete model reasoning trace or a guarantee that a real-world effect occurred."
             />
             <FaqItem
               question="What format are receipts in?"
