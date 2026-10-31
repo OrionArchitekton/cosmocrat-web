@@ -93,7 +93,7 @@ export default function ToolCatalog({ tools }: { tools: readonly ToolDefinition[
           aria-live="polite"
           aria-atomic="true"
         >
-          {matches.length} of {tools.length} tools &amp; profiles
+          {matches.length} of {tools.length} tools
         </span>
         <p>
           Video companions may show earlier versions. Use the named release instructions for setup,
