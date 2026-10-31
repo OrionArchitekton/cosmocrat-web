@@ -44,4 +44,4 @@ jobs:
             if curl --fail --silent http://127.0.0.1:3000/tools > /dev/null; then break; fi
             sleep 1
           done
-          SITE_TEST_ORIGIN=http://127.0.0.1:3000 node --test tests/*http.test.mjs
+          SITE_TEST_ORIGIN=http://127.0.0.1:3000 node --test tests/*http.test.mjs tests/site-pages.test.mjs

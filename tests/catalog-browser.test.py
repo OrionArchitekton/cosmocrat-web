@@ -43,6 +43,12 @@ commands = [
     check('!document.querySelector("#orion-starter").hidden && !document.querySelector("#orion-results").hidden', 'Search includes visible readiness badges'),
     ['fill', 'input[type="search"]', 'v0.1.1'],
     check('!document.querySelector("#orion-pm").hidden', 'Search includes visible release versions'),
+    ['set', 'viewport', '768', '1000'],
+    check('(()=>{const h=document.querySelector("header").getBoundingClientRect();return [...document.querySelectorAll("header a,header button,header summary")].every(e=>{const b=e.getBoundingClientRect();return !b.height || (b.top>=h.top && b.bottom<=h.bottom && b.right<=innerWidth)}) && document.documentElement.scrollWidth<=innerWidth})()', 'Tablet navigation stays inside the header'),
+    ['set', 'viewport', '900', '1000'],
+    check('(()=>{const h=document.querySelector("header").getBoundingClientRect();return [...document.querySelectorAll("header a,header button,header summary")].every(e=>{const b=e.getBoundingClientRect();return !b.height || (b.top>=h.top && b.bottom<=h.bottom && b.right<=innerWidth)}) && document.documentElement.scrollWidth<=innerWidth})()', 'Intermediate navigation stays inside the header'),
+    ['set', 'viewport', '1024', '1000'],
+    check('(()=>{const h=document.querySelector("header").getBoundingClientRect();return [...document.querySelectorAll("header a,header button,header summary")].every(e=>{const b=e.getBoundingClientRect();return !b.height || (b.top>=h.top && b.bottom<=h.bottom && b.right<=innerWidth)}) && document.documentElement.scrollWidth<=innerWidth})()', 'Desktop navigation stays inside the header'),
     ['errors'],
 ]
 environment = os.environ.copy()
