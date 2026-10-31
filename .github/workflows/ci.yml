@@ -28,5 +28,8 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Verify presentation assets
+        run: node --test tests/presentation-assets.test.mjs
+
       - name: Build
         run: npm run build
