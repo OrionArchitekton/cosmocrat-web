@@ -1,0 +1,17 @@
+{
+  "observed_utc": "2026-10-31T05:55:45.246392+00:00",
+  "repository": "OrionArchitekton/cosmocrat-web",
+  "branch": "main",
+  "api": "https://api.github.com/repos/OrionArchitekton/cosmocrat-web/branches/main/protection",
+  "strict_status_checks": true,
+  "required_contexts": [
+    "build",
+    "GitGuardian Security Checks",
+    "gitleaks",
+    "required-checks-fail-closed"
+  ],
+  "conversation_resolution": true,
+  "required_approving_reviews": 0,
+  "policy_changed_by_this_task": false,
+  "deployment_readback_stage": "after the approved source merge and production deployment"
+}
