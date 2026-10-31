@@ -5,8 +5,6 @@ topics: [cosmocrat-os, motion, website, release]
 references:
   - specs/cosmocrat-motion-welcome-spec.md
   - src/components/os/MotionWelcome.tsx
-  - tools/cosmocrat-intro/renderer.html
-  - tools/cosmocrat-intro/serve.py
   - public/media/cosmocrat/cosmocrat-welcome-desktop.mp4
   - public/media/cosmocrat/cosmocrat-welcome-mobile.mp4
 ---
@@ -18,7 +16,7 @@ The player offers pause, replay and a direct continue link. Reduced-motion users
 
 ## Regenerate privately
 
-Run `python3 tools/cosmocrat-intro/serve.py` from the repo. The renderer listens only on loopback port 4190 and serves a fixed allowlist of original assets. Open `/` for desktop or `/?mobile=1` for portrait in an isolated browser. Wait for `window.ready`, invoke `window.record()` and wait for `window.captureDone`. Its two fixed WebM outputs refuse overwrites. Preserve a prior render before creating another version. No credentials or paid provider are needed.
+Source renders and the generation workspace are retained separately from the public website release. The website consumes the exported clips and posters. Preserve those originals before preparing a replacement, and retain the existing wordmark, sigil, palette and legible Orion names. No credentials or paid provider are required for the retained code-rendered composition.
 
 Encode the retained WebM to H.264 MP4 with FFmpeg, 30 fps, yuv420p, 22 seconds, no audio and `+faststart`; create a still from the closing brand frame. Update both source assets and this version's media identities. Inspect actual contact frames and full playback on desktop/mobile before replacing shipped clips. A render is a creative candidate until reviewed.
 
