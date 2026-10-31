@@ -213,9 +213,9 @@ export default function DecisionExhaustContent() {
                 They execute.
               </h2>
               <p className="text-slate-400 text-lg mb-6">
-                Decision exhaust exists whenever an agent reasons, calls tools, touches data, or
-                executes actions. Without a control plane, these distinct events are ungoverned,
-                unrecorded, and risky.
+                For enrolled governed decisions, decision exhaust records the evaluated request,
+                authority and policy result. Reasoning, tool calls and external actions outside
+                that integration require their own evidence; this reference does not establish their coverage.
               </p>
               <div className="p-6 bg-slate-900 rounded border-l-4 border-red-500">
                 <p className="text-slate-300 italic">

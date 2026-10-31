@@ -1,6 +1,6 @@
 # Website release observations
 
-These files are dated observations, not continuing guarantees or grants of authority. Earlier snapshots remain as history when a later source revision changes the observed bytes. The initial architecture-browser snapshot covers the earlier copy; the architecture-scope snapshot binds the consolidated copy to its app source revision and file hashes. A later snapshot does not invalidate the earlier observation of its own source.
+These files are dated observations, not continuing guarantees or grants of authority. Earlier snapshots remain as history when a later source revision changes the observed bytes. The initial architecture-browser snapshot covers the earlier copy; the architecture-scope snapshot records the preceding scope audit. The architecture-final-copy snapshot binds the final conditional memory and decision copy to its app source revision and file hashes. A later snapshot does not invalidate the earlier observation of its own source.
 
 The browser journeys are manual release checks with separately installed anonymous browser tooling. CI checks built HTTP documents. Actual viewport, route, visibility and error observations are required before release; browser CI is not claimed. The one-pixel notice/header border tolerance in the original shell covers their adjoining borders, with the notice text below the header. The notice occurs once per page.
 
