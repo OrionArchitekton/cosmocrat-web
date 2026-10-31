@@ -60,8 +60,8 @@ export default function HomeSections() {
                 className="hero-emblem"
                 src="/brand/cosmocrat-sigil.svg"
                 alt=""
-                width="885"
-                height="952"
+                width={885}
+                height={952}
                 unoptimized
               />
               <span className="orbit-label orbit-right">EXPLICIT AUTHORITY</span>
