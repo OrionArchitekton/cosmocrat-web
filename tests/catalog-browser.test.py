@@ -43,6 +43,12 @@ commands = [
     check('!document.querySelector("#orion-starter").hidden && !document.querySelector("#orion-results").hidden', 'Search includes visible readiness badges'),
     ['fill', 'input[type="search"]', 'v0.1.1'],
     check('!document.querySelector("#orion-pm").hidden', 'Search includes visible release versions'),
+    ['set', 'viewport', '768', '1000'],
+    check('getComputedStyle(document.querySelector("header nav")).display === "none" && document.querySelector("header button").getBoundingClientRect().height > 0', 'Tablet navigation uses the readable mobile menu'),
+    ['set', 'viewport', '900', '1000'],
+    check('getComputedStyle(document.querySelector("header nav")).display === "none"', 'Intermediate widths keep the mobile menu'),
+    ['set', 'viewport', '1024', '1000'],
+    check('(()=>{const h=document.querySelector("header").getBoundingClientRect();const a=[...document.querySelectorAll("header nav a")].find(a=>a.pathname==="/waitlist").getBoundingClientRect();return a.top>=h.top && a.bottom<=h.bottom && document.documentElement.scrollWidth<=innerWidth})()', 'Desktop CTA fits inside the header'),
     ['errors'],
 ]
 environment = os.environ.copy()
