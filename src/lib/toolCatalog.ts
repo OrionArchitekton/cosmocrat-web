@@ -115,7 +115,7 @@ export const tools: readonly ToolDefinition[] = [
     category: 'continuity',
     kind: 'Recoverable results',
     version: 'v0.1.0',
-    status: 'RELEASE AVAILABLE',
+    status: 'PREVIEW',
     tagline: 'Keep the complete result. Pass a bounded view.',
     description:
       'Capture full text in an explicitly selected local session. Share a small snapshot and recover the exact original text by reference when you need it.',
