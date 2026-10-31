@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { tools } from '@/lib/toolCatalog';
 
 const resultsTool = tools.find((tool) => tool.id === 'orion-results');
+const starterTool = tools.find((tool) => tool.id === 'orion-starter');
 
 export default function HomeSections() {
   return (
@@ -348,7 +349,7 @@ export default function HomeSections() {
               makes a fresh check before deciding whether this demonstration can finish.
             </p>
             <p>
-              <span className="tag tag-preview">0.3.0-rc.1 · PREVIEW</span>
+              <span className="tag tag-preview">{starterTool?.version} · {starterTool?.status}</span>
               <br />A manually invoked local example. The written guide is available; its video
               companion is in preparation.
             </p>
