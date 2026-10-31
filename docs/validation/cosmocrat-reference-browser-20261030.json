@@ -1,0 +1,86 @@
+{
+  "observed_utc": "2026-10-31T05:08:12.380897+00:00",
+  "kind": "manual local browser release check",
+  "app_source_revision": "7f448c467cf7907abdf42e965b7bf5d3aa4f2c69",
+  "commands_passed": 43,
+  "pages_and_widths": [
+    {
+      "interrupted": false
+    },
+    {
+      "headerBottom": 65,
+      "heading": "From an idea tothe way we work.",
+      "headingTop": 168.59375,
+      "overflow": false,
+      "route": "/about",
+      "width": 1440
+    },
+    {
+      "interrupted": false
+    },
+    {
+      "headerBottom": 65,
+      "heading": "Begin withone useful task.",
+      "headingTop": 168.59375,
+      "overflow": false,
+      "route": "/docs",
+      "width": 1440
+    },
+    {
+      "interrupted": false
+    },
+    {
+      "headerBottom": 65,
+      "heading": "Authority beforea governed action.",
+      "headingTop": 291.171875,
+      "overflow": false,
+      "route": "/platform",
+      "width": 1440
+    },
+    {
+      "interrupted": false
+    },
+    {
+      "headerBottom": 65,
+      "heading": "From an idea tothe way we work.",
+      "headingTop": 168.59375,
+      "overflow": false,
+      "route": "/about",
+      "width": 390
+    },
+    {
+      "interrupted": false
+    },
+    {
+      "headerBottom": 65,
+      "heading": "Begin withone useful task.",
+      "headingTop": 168.59375,
+      "overflow": false,
+      "route": "/docs",
+      "width": 390
+    },
+    {
+      "interrupted": false
+    },
+    {
+      "headerBottom": 65,
+      "heading": "Authority beforea governed action.",
+      "headingTop": 377.546875,
+      "overflow": false,
+      "route": "/platform",
+      "width": 390
+    }
+  ],
+  "catalog_navigation_verified": true,
+  "form_submissions": 0,
+  "browser_ci_claimed": false,
+  "source_sha256": {
+    "src/app/about/page.tsx": "dffbb9d5aaa460d459f6c0d819121fb9ed13fb43413ae6526e43f3fd4c1226d7",
+    "src/app/docs/page.tsx": "e6775ed7703341b7acadb1c845dec8f7ff75f5a5be313e72b8795d8ed40453dc",
+    "src/app/platform/page.tsx": "4e9d7bf55e11154073b4a5080988955817532fa93c8002fb0c19b5fb40afb165",
+    "src/app/og/route.tsx": "762adc2c978cc3190340f617cc085c526b32cd975c0e5fccc886d8d898f65658",
+    "src/app/llms.txt/route.ts": "d3293669d7207eda43b543fb2a0039701c234460bbdd31d7a0932f9b72396c57",
+    "src/lib/siteConfig.ts": "b3c38eb922dbdf07f2cf39421432fb130075ee196455a37774b96b2a489a2f2b",
+    "src/lib/metadata.ts": "d132d9cf9fb948f73c523342475e0eb69a5cf0e8cfdf98099e8cd0ab5052827f"
+  }
+}
