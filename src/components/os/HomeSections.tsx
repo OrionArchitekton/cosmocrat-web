@@ -1,9 +1,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { tools } from '@/lib/toolCatalog';
+
+const resultsTool = tools.find((tool) => tool.id === 'orion-results');
 
 export default function HomeSections() {
   return (
-    <div className="os-page">
+    <div className="os-page" id="static-site" tabIndex={-1}>
       <section className="hero">
         <div className="wrap">
           <div className="hero-grid">
@@ -267,7 +270,12 @@ export default function HomeSections() {
                 </span>
                 <span className="teaser-number">05</span>
               </div>
-              <h3>Orion Results</h3>
+              <h3>
+                Orion Results{' '}
+                {resultsTool?.status === 'PREVIEW' && (
+                  <span className="tag tag-preview">{resultsTool.status}</span>
+                )}
+              </h3>
               <p>Store the complete result. Pass a bounded view. Recover the original.</p>
               <span className="teaser-bottom">
                 Keep the full result{' '}
