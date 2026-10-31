@@ -47,11 +47,18 @@ for (const route of routes) test(`the ${route} reference preserves its route and
     assert.doesNotMatch(text, /stamp every action|immutable truth|STATE_TRANSITION: Verified/i);
     assert.match(text, /enrolled governed decision/);
   }
-  if (route === 'memory-infrastructure') assert.doesNotMatch(text, /every change is recorded/i);
+  if (route === 'memory-infrastructure') {
+    assert.doesNotMatch(text, /every change is recorded|Memory changes are provable, replayable|access is mediated by the kernel|Retrieval queries are filtered by lane membership|If denied, the request fails and is logged/i);
+    assert.match(text, /For an explicitly enrolled memory boundary/);
+    assert.match(text, /Replay depends on retained inputs/);
+    assert.match(text, /Verify enforcement and durable receipt persistence/);
+  }
   if (route === 'drift-guard') assert.doesNotMatch(text, /Context never bleeds|non-admissible memory is invisible/i);
   if (route === 'gate-system') assert.doesNotMatch(text, /Is the reasoning valid\?/);
 
   if (route === 'decision-exhaust') {
+    assert.doesNotMatch(text, /Decision exhaust exists whenever an agent reasons/);
+    assert.match(text, /For enrolled governed decisions/);
     assert.match(text, /Illustrative decision receipt/);
     assert.match(text, /Separate provider response/);
     assert.doesNotMatch(text, /execution receipt|Receipts establish intent, authority, and outcome|system.s legal record|links the intent to the outcome cryptographically/i);
