@@ -8,7 +8,7 @@ import {
 } from '@/lib/waitlist';
 import { resendClient, resendFrom, resendReplyTo } from '@/lib/resendClient';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
-import { waitlistConfirmationEmail } from '@/lib/waitlistEmail';
+import { escapeHtml, waitlistConfirmationEmail } from '@/lib/waitlistEmail';
 
 export async function POST(req: Request) {
   let payload: unknown;
@@ -124,14 +124,14 @@ export async function POST(req: Request) {
     if (resend) {
       try {
         const { subject, html } = waitlistConfirmationEmail({ name });
-        await resend.emails.send({
+        const { data, error: sendError } = await resend.emails.send({
           from: resendFrom(),
           to: email,
           subject,
           html,
-          reply_to: resendReplyTo()
+          replyTo: resendReplyTo()
         });
-        emailSent = true;
+        emailSent = !sendError && Boolean(data?.id);
       } catch {
         // Do not fail the signup if email fails.
         emailSent = false;
@@ -144,7 +144,7 @@ export async function POST(req: Request) {
             from: resendFrom(),
             to: notify,
             subject: 'New Cosmocrat early access request',
-            html: `<div><b>Email:</b> ${email}<br/><b>Name:</b> ${name || ''}<br/><b>Company:</b> ${company}<br/><b>Role:</b> ${role}<br/><b>AI System:</b> ${ai_system || ''}<br/><b>Goal:</b> ${first_run || ''}<br/><b>utm_campaign:</b> ${row.utm_campaign || ''}</div>`
+            html: `<div><b>Email:</b> ${escapeHtml(email)}<br/><b>Name:</b> ${escapeHtml(name || '')}<br/><b>Company:</b> ${escapeHtml(company)}<br/><b>Role:</b> ${escapeHtml(role)}<br/><b>AI System:</b> ${escapeHtml(ai_system || '')}<br/><b>Goal:</b> ${escapeHtml(first_run || '')}<br/><b>utm_campaign:</b> ${escapeHtml(row.utm_campaign || '')}</div>`
           });
         } catch {
           // ignore

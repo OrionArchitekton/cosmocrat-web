@@ -1,6 +1,6 @@
 ---
-verified: 2026-10-30
-review_after: 2026-11-30
+verified: 2026-10-31
+review_after: 2026-11-07
 topics:
   - cosmocrat-os
   - website-preview
@@ -12,15 +12,20 @@ references:
   - src/app/layout.tsx
   - src/lib/toolCatalog.ts
   - tests/site-pages.test.mjs
+  - package.json
+  - package-lock.json
+  - src/app/api/waitlist/route.ts
+  - tests/waitlist-http.test.mjs
+  - tests/fixtures/intake-network.cjs
 ---
 
 # Cosmocrat OS website release
 
-The owner approved the Cosmocrat OS website release on October 30, 2026. Use the protected PR/review process and verify the deployed artifact and actual public behavior. Package, guide and video releases retain their separate authority.
+The October 30, 2026 website release is historical. Its approval does not authorize later dependency, intake or navigation changes. Obtain scoped approval for the exact new source and deployment before release, complete the protected PR/review process, and verify the deployed artifact and actual public behavior. Package, guide and video releases retain their separate authority.
 
 ## Local validation
 
-Use Node 20 from `.nvmrc`. Install the existing lock with `npm ci`. Do not load production credentials or submit intake forms. Keep the preview bound to loopback.
+Use Node 20 from `.nvmrc`. Install the existing lock with `npm ci`. Do not load production credentials or submit real intake forms. Keep the preview bound to loopback.
 
 ```bash
 SITE_ENV=staging NEXT_TELEMETRY_DISABLED=1 npm run lint
@@ -29,15 +34,25 @@ SITE_ENV=staging NEXT_PUBLIC_SITE_URL=http://127.0.0.1:4181 NEXT_TELEMETRY_DISAB
 SITE_ENV=staging NEXT_PUBLIC_SITE_URL=http://127.0.0.1:4181 NEXT_TELEMETRY_DISABLED=1 npm run start -- --hostname 127.0.0.1 --port 4181
 ```
 
-In another terminal, `SITE_TEST_ORIGIN=http://127.0.0.1:4181 node --test tests/site-pages.test.mjs` exercises the built site. The suite refuses a non-loopback target. Stop a dev process before building in the same checkout; both use the same generated output directory. Do not run dev and production builds concurrently there.
+In another terminal, `SITE_TEST_ORIGIN=http://127.0.0.1:4181 node --test tests/*http.test.mjs tests/site-pages.test.mjs` exercises the built site. The site suites refuse a non-loopback target. The intake regression starts its own loopback server with an explicit synthetic environment and fake database/mail endpoints. Its test-only preload refuses external fetches; no production credential or real account is needed. It verifies invalid input, honeypot refusal, normalized storage, duplicate behavior, reply-address serialization, escaped notification text and honest mail acknowledgement. An accepted provider ID means API acceptance, not delivery to an inbox.
+
+Stop a dev process before building in the same checkout; both use the same generated output directory. Do not run dev and production builds concurrently there.
 
 Inspect `/` and `/tools` on desktop, 390-pixel and 320-pixel widths. Exercise category plus search, empty-state reset, keyboard activation, mobile menu and native scope disclosures. Confirm all ten catalog entries and exact guide/release links remain available with scripts disabled. Verify images/fonts load, no horizontal overflow occurs, and local/staging pages load no Google Tag Manager script. Inspect `/og?v=4` as an image, including the original wordmark. A 200 response alone does not prove its visible contents.
 
 Local/staging pages carry `noindex, nofollow` in metadata and response headers. Their robots policy disallows crawling. The local preview banner and analytics behavior are built with the selected environment; changing only the runtime environment does not convert a staging artifact into a production build.
 
+## Dependency maintenance
+
+The selected source uses Next 15.5.28 and React 19.2.9, with sharp 0.35.5 in the lock, patched validation/mail clients and a Node-20-compatible Supabase client series. Next 14 is outside the [supported releases](https://nextjs.org/support-policy); the [SVG optimizer advisory](https://github.com/vercel/next.js/security/advisories/GHSA-2464-fhr4-w9xw) names Next 15.5.28 and sharp 0.35.5 as patched choices. Recheck the support window before a future upgrade.
+
+`postcss` and `postcss-selector-parser` overrides select patched versions within their existing major versions. Retain and recheck them when updating the framework or typography plugin; do not force a minimatch major upgrade into tools that expect its older API.
+
+Run both `npm audit --audit-level=high` and `npm audit --omit=dev`. The selected graph has no high/critical findings and no production findings. A full audit still reports the moderate [minimatch pattern-amplification advisory](https://github.com/advisories/GHSA-g3hv-75wg-m249) through development-only tools. Keep that finding visible. Its affected preprocessing code exists in the installed v9 slot; this site does not request optimization level 2 or expose caller-supplied glob patterns. This assessment does not waive an independently required zero-findings gate or certify future configurations. Do not expose development tooling as a public service.
+
 ## Public rollout and monitoring
 
-Use the existing protected website release path under the recorded owner approval. Keep `next.config.js`'s production-origin guard: production requires `NEXT_PUBLIC_SITE_URL=https://www.cosmocrat.ai`. Never weaken it to run a preview. A production build is separate from merge and deployment authority.
+Use the existing protected website release path after the owner approves the exact candidate and outward actions. Keep `next.config.js`'s production-origin guard: production requires `NEXT_PUBLIC_SITE_URL=https://www.cosmocrat.ai`. Never weaken it to run a preview. A production build is separate from merge and deployment authority.
 
 Re-verify release versions, guide pins and video relationships in `src/lib/toolCatalog.ts` before release. Compare the deployed source revision with the approved revision. Read back the public homepage, tools, origin, documentation, existing architecture, legal and intake GET routes. Verify the social card visually, production canonical URLs, JSON-LD identities, sitemap, `llms.txt`, robots/indexing and the configured production analytics behavior. Do not submit a real intake record as a health check.
 

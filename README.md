@@ -37,10 +37,10 @@ This repo is the public web surface only.
 
 ## Stack
 
-- **Framework:** Next.js 14 (App Router)
-- **Language:** TypeScript 5.6, React 18.2
+- **Framework:** Next.js 15.5 (App Router)
+- **Language:** TypeScript 5, React 19.2
 - **Styling:** Tailwind CSS 3.4 + `@tailwindcss/typography`
-- **Validation:** Zod 3
+- **Validation:** Zod 4
 - **Database:** Supabase (early-access intake only)
 - **Email:** Resend (confirmation + internal notification)
 - **Icons:** lucide-react

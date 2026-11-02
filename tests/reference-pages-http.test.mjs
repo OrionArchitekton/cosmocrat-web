@@ -42,3 +42,15 @@ test('machine-readable identity and the versioned social card describe the same 
   assert.equal(data.readUInt32BE(16), 1200);
   assert.equal(data.readUInt32BE(20), 630);
 });
+
+test('the installed image optimizer serves the first-party wordmark', async () => {
+  const image = await fetch(`${origin}/_next/image?url=%2Fbrand%2Fcosmocrat-wordmark.png&w=640&q=75`);
+  assert.equal(image.status, 200);
+  assert.match(image.headers.get('content-type'), /^image\/(?:png|webp|avif)$/);
+  const data = Buffer.from(await image.arrayBuffer());
+  assert.ok(data.length > 100, 'The optimizer must return actual image bytes');
+  const png = data.subarray(0, 8).toString('hex') === '89504e470d0a1a0a';
+  const webp = data.toString('ascii', 0, 4) === 'RIFF' && data.toString('ascii', 8, 12) === 'WEBP';
+  const avif = data.toString('ascii', 4, 8) === 'ftyp' && data.toString('ascii', 8, 12).startsWith('avi');
+  assert.ok(png || webp || avif, 'The image response must have a supported binary signature');
+});
