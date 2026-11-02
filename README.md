@@ -53,7 +53,7 @@ This repo is the public web surface only.
 
 ### Requirements
 
-- Node.js 20 (18+ works; CI runs on 20)
+- Node.js 20.9 or later within the Node 20 release line (selected by `.nvmrc` for CI parity)
 - npm
 - Doppler CLI (or a local `.env` for the fallback path)
 - Supabase project + Resend API key for the waitlist flow

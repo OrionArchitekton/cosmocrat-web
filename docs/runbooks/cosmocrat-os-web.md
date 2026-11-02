@@ -25,7 +25,7 @@ The October 30, 2026 website release is historical. Its approval does not author
 
 ## Local validation
 
-Use Node 20 from `.nvmrc`. Install the existing lock with `npm ci`. Do not load production credentials or submit real intake forms. Keep the preview bound to loopback.
+Use Node 20 from `.nvmrc`, at least 20.9 to satisfy the image library's runtime requirement. Install the existing lock with `npm ci`. Do not load production credentials or submit real intake forms. Keep the preview bound to loopback.
 
 ```bash
 SITE_ENV=staging NEXT_TELEMETRY_DISABLED=1 npm run lint
@@ -35,6 +35,8 @@ SITE_ENV=staging NEXT_PUBLIC_SITE_URL=http://127.0.0.1:4181 NEXT_TELEMETRY_DISAB
 ```
 
 In another terminal, `SITE_TEST_ORIGIN=http://127.0.0.1:4181 node --test tests/*http.test.mjs tests/site-pages.test.mjs` exercises the built site. The site suites refuse a non-loopback target. The intake regression starts its own loopback server with an explicit synthetic environment and fake database/mail endpoints. Its test-only preload refuses external fetches; no production credential or real account is needed. It verifies invalid input, honeypot refusal, normalized storage, duplicate behavior, reply-address serialization, escaped notification text and honest mail acknowledgement. An accepted provider ID means API acceptance, not delivery to an inbox.
+
+The intake test passes its preload as a decoded filesystem argv value, including in checkouts with spaces. Next binds an OS-assigned port and the test reads that owned server's actual loopback address; it does not release a reserved port before startup.
 
 Stop a dev process before building in the same checkout; both use the same generated output directory. Do not run dev and production builds concurrently there.
 
@@ -47,6 +49,8 @@ Local/staging pages carry `noindex, nofollow` in metadata and response headers. 
 The selected source uses Next 15.5.28 and React 19.2.9, with sharp 0.35.5 in the lock, patched validation/mail clients and a Node-20-compatible Supabase client series. Next 14 is outside the [supported releases](https://nextjs.org/support-policy); the [SVG optimizer advisory](https://github.com/vercel/next.js/security/advisories/GHSA-2464-fhr4-w9xw) names Next 15.5.28 and sharp 0.35.5 as patched choices. Recheck the support window before a future upgrade.
 
 `postcss` and `postcss-selector-parser` overrides select patched versions within their existing major versions. Retain and recheck them when updating the framework or typography plugin; do not force a minimatch major upgrade into tools that expect its older API.
+
+Sharp is Apache-2.0 licensed; its platform libvips packages carry LGPL-3.0-or-later and other dependency notices recorded by the lock and installed package README. [Upstream packaging documentation](https://github.com/lovell/sharp-libvips#licences) describes the shared libraries and their license compatibility. Preserve those notices and review the upstream terms for any redistribution of native artifacts. This website release adds no public native-binary download and does not change the application's license.
 
 Run both `npm audit --audit-level=high` and `npm audit --omit=dev`. The selected graph has no high/critical findings and no production findings. A full audit still reports the moderate [minimatch pattern-amplification advisory](https://github.com/advisories/GHSA-g3hv-75wg-m249) through development-only tools. Keep that finding visible. Its affected preprocessing code exists in the installed v9 slot; this site does not request optimization level 2 or expose caller-supplied glob patterns. This assessment does not waive an independently required zero-findings gate or certify future configurations. Do not expose development tooling as a public service.
 

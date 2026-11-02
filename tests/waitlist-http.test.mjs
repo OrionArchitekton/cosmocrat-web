@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import { once } from 'node:events';
 import { createServer } from 'node:http';
 import { spawn } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 
 test('built intake preserves validation, storage and honest mail acknowledgement', { timeout: 30000 }, async (t) => {
@@ -30,19 +31,16 @@ test('built intake preserves validation, storage and honest mail acknowledgement
   await once(database, 'listening');
   t.after(() => new Promise((resolve) => database.close(resolve)));
 
-  const reservation = createServer();
-  reservation.listen(0, '127.0.0.1');
-  await once(reservation, 'listening');
-  const port = reservation.address().port;
-  await new Promise((resolve) => reservation.close(resolve));
-  const origin = `http://127.0.0.1:${port}`;
+  let origin;
   // An explicit environment excludes production accounts, mail and ingest settings.
-  const server = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'start', '--hostname', '127.0.0.1', '--port', String(port)], {
+  // A separate argv value preserves spaces and decoded file URL characters.
+  // Next owns the OS-assigned port before reporting its actual bound address.
+  const server = spawn(process.execPath, ['--require', fileURLToPath(new URL('fixtures/intake-network.cjs', import.meta.url)), 'node_modules/next/dist/bin/next', 'start', '--hostname', '127.0.0.1', '--port', '0'], {
     cwd: new URL('..', import.meta.url),
     env: {
       PATH: process.env.PATH,
       SITE_ENV: 'staging',
-      NEXT_PUBLIC_SITE_URL: origin,
+      NEXT_PUBLIC_SITE_URL: 'http://127.0.0.1',
       NEXT_TELEMETRY_DISABLED: '1',
       SUPABASE_URL: `http://127.0.0.1:${database.address().port}`,
       SUPABASE_SERVICE_ROLE_KEY: 'synthetic-test-value-never-a-real-credential',
@@ -51,7 +49,6 @@ test('built intake preserves validation, storage and honest mail acknowledgement
       RESEND_REPLY_TO: 'reply@example.invalid',
       WAITLIST_NOTIFY_EMAIL: 'notify@example.invalid',
       INTAKE_TEST_MAIL_ORIGIN: `http://127.0.0.1:${database.address().port}`,
-      NODE_OPTIONS: `--require=${new URL('fixtures/intake-network.cjs', import.meta.url).pathname}`,
     },
     stdio: ['ignore', 'pipe', 'pipe'],
   });
@@ -69,7 +66,9 @@ test('built intake preserves validation, storage and honest mail acknowledgement
   for (let attempt = 0; attempt < 80; attempt++) {
     try {
       if (server.exitCode !== null || server.signalCode !== null) break;
-      if (output.includes('Ready in') && (await fetch(`${origin}/waitlist`)).status === 200) { ready = true; break; }
+      const bound = /Local:\s+(http:\/\/127\.0\.0\.1:[1-9]\d*)\b/.exec(output);
+      if (bound) origin = bound[1];
+      if (origin && output.includes('Ready in') && (await fetch(`${origin}/waitlist`)).status === 200) { ready = true; break; }
     } catch { /* Startup has not bound the loopback listener yet. */ }
     await new Promise((resolve) => setTimeout(resolve, 100));
   }
