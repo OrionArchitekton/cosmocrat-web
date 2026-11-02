@@ -37,10 +37,10 @@ This repo is the public web surface only.
 
 ## Stack
 
-- **Framework:** Next.js 14 (App Router)
-- **Language:** TypeScript 5.6, React 18.2
+- **Framework:** Next.js 15.5 (App Router)
+- **Language:** TypeScript 5, React 19.2
 - **Styling:** Tailwind CSS 3.4 + `@tailwindcss/typography`
-- **Validation:** Zod 3
+- **Validation:** Zod 4
 - **Database:** Supabase (early-access intake only)
 - **Email:** Resend (confirmation + internal notification)
 - **Icons:** lucide-react
@@ -53,7 +53,7 @@ This repo is the public web surface only.
 
 ### Requirements
 
-- Node.js 20 (18+ works; CI runs on 20)
+- Node.js 20.9 or later within the Node 20 release line (selected by `.nvmrc` for CI parity)
 - npm
 - Doppler CLI (or a local `.env` for the fallback path)
 - Supabase project + Resend API key for the waitlist flow

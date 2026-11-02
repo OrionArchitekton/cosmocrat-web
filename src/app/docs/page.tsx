@@ -19,16 +19,20 @@ export default function DocsPage() {
           one useful task.
         </h1>
         <p>
-          The Orion PM guide shows two local workers coordinating one task. It gives you a concrete
-          starting point before adding browser or phone-account access.
+          Try the Starter development-evidence preview: one worker retains an observation, and a
+          second recovers it and checks the current state. The pinned 0.3.0-rc.1 workflow needs
+          no browser, phone account or provider key. Use its stated local environment.
         </p>
         <a
           className="button button-primary"
-          href="https://www.danmercede.com/guides/coordinate-local-agents-with-orion-pm"
+          href="https://www.danmercede.com/guides/agent-development-evidence-handoff"
           rel="noreferrer"
         >
-          Try the PM guide <ArrowRight aria-hidden="true" />
+          Try the development-evidence preview <ArrowRight aria-hidden="true" />
         </a>
+        <p>
+          For task ownership alone, <a className="text-link" href="https://www.danmercede.com/guides/coordinate-local-agents-with-orion-pm">start with the PM guide ↗</a>.
+        </p>
         <h2>Choose your next piece</h2>
         <p>
           The catalog links each tool to its named release, guide, supported environment and scope.

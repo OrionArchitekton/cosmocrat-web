@@ -30,7 +30,7 @@ export function waitlistConfirmationEmail(opts: { name?: string | null }) {
   return { subject, html };
 }
 
-function escapeHtml(input: string) {
+export function escapeHtml(input: string) {
   return input
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
