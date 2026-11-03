@@ -197,16 +197,16 @@ export const tools: readonly ToolDefinition[] = [
     name: 'Orion Skills',
     category: 'practice',
     kind: 'Operating procedures',
-    version: 'v0.6.0',
+    version: 'v0.7.1',
     status: 'TAGGED RELEASE',
     tagline: 'Scoped work. Honest completion. Recoverable progress.',
     description:
       'Reusable procedures help agents verify outcomes, stay within scope, and preserve useful context. Choose the skills that fit your workflow.',
     environment:
-      'MIT. The full library targets Claude Code; a smaller set has documented Codex support.',
+      'MIT. 29 skills target Claude Code, with optional plugin loading and skill-specific setup requirements. Three skills have verified Codex support.',
     boundary:
       'Skills guide behavior. They are not an execution sandbox or a universal enforcement layer.',
-    release: 'https://github.com/OrionArchitekton/orion-skills/releases/tag/v0.6.0',
+    release: 'https://github.com/OrionArchitekton/orion-skills/releases/tag/v0.7.1',
     guide: 'https://www.danmercede.com/guides/done-needs-a-receipt',
     source: 'https://github.com/OrionArchitekton/orion-skills',
   },
