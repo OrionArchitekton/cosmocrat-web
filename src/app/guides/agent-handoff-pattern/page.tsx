@@ -13,9 +13,8 @@ export default function HandoffFieldNote() {
       <h1>A handoff the next agent can verify</h1>
       <p>
         A worker spots overlapping edits just before its session ends. By the time another
-        worker opens the task, both branches may have moved. A useful handoff gives the second
-        worker two things to compare: what the first worker actually saw and what the repository
-        shows now.
+        worker opens the task, both branches may have moved. The second worker needs both
+        the first worker’s original observation and a way to check what the repository shows now.
       </p>
       <h2>What to carry across the session boundary</h2>
       <dl className="grid gap-4 rounded-lg border border-[#334563] p-5">

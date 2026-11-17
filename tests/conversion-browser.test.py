@@ -37,6 +37,20 @@ commands = [
     ['set', 'media', 'dark', 'reduced-motion'],
     ['set', 'viewport', '320', '750'], ['open', origin + '/tools?source=private-test'],
     ['wait', '--fn', '!document.querySelector("[data-filter-controls]").hidden'], events([]),
+    ['click', '[data-filter="access"]'], ['click', '[data-tool-matcher] summary'],
+    ['click', '[data-tool-matcher] label:nth-child(1) input'],
+    ['click', '[data-tool-matcher] label:nth-child(2) input'],
+    ['click', '[data-tool-matcher] label:nth-child(3) input'],
+    ['wait', '--fn', 'document.querySelectorAll("[data-tool-matcher] a").length === 5'],
+    ['eval', """(() => {
+      const ids = [...document.querySelectorAll('[data-tool-matcher] a')].map(a => a.hash);
+      if(['#orion-pm','#orion-worktree-report','#orion-results','#orion-handoff','#orion-browser']
+          .some(id => !ids.includes(id)) || document.documentElement.scrollWidth > innerWidth)
+        throw Error('Missing matcher destination or 320px overflow');
+      return ids;
+    })()"""],
+    ['click', '[data-tool-matcher] a[href="#orion-pm"]'],
+    ['wait', '--fn', 'location.hash === "#orion-pm" && !document.querySelector("#orion-pm").hidden'],
     ['eval', """Object.defineProperty(navigator, 'clipboard', {configurable: true,
       value: {writeText: async text => { window.__copiedCommand = text; }}})"""],
     ['click', '#orion-pm button[aria-label^="Copy command"]'],

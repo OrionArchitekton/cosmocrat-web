@@ -14,8 +14,8 @@ export default function WorktreeFieldNote() {
       <p>
         Two branches can each have a clear purpose and still touch the same file. Imagine one
         worker changing a retry helper while another adds timeout handling in that helper.
-        Orion PM records who claimed each task. Orion Worktree Report answers a different
-        question: which registered worktrees currently show uncommitted edits to the same path?
+        Orion PM records who claimed each task. Orion Worktree Report shows which
+        registered worktrees currently have uncommitted edits to the same path.
       </p>
       <h2>Read coverage before reading the file list</h2>
       <p>
