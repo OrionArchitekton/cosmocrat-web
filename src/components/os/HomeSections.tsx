@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import HeroEmblemStage from '@/components/os/HeroEmblemStage';
 import StarterSimulator from '@/components/os/StarterSimulator';
+import { homeFaq } from '@/lib/faqs';
 import { tools } from '@/lib/toolCatalog';
 
 const resultsTool = tools.find((tool) => tool.id === 'orion-results');
@@ -357,7 +358,7 @@ export default function HomeSections() {
       </section>
 
       <section className="section">
-        <div className="wrap faq">
+        <div className="wrap faq" id="faq">
           <div>
             <div className="eyebrow">Before you start</div>
             <h2>
@@ -367,43 +368,12 @@ export default function HomeSections() {
             </h2>
           </div>
           <div>
-            <details>
-              <summary>Is this a replacement for Linux, Windows, or macOS?</summary>
-              <p>
-                Cosmocrat is an operating environment for AI work: coordination, continuity, tool
-                access, and human direction. The individual tools run on the host environments
-                documented in their releases.
-              </p>
-            </details>
-            <details>
-              <summary>Can I use a single Orion tool?</summary>
-              <p>
-                Yes. Pick the tool that solves your immediate problem. Each has its own release,
-                instructions, and boundaries. You can add a composition when it becomes useful.
-              </p>
-            </details>
-            <details>
-              <summary>Can I install the whole system?</summary>
-              <p>
-                Today you can install individual components and try selected Starter profiles. There
-                is no complete Cosmocrat OS installer or universal support promise.
-              </p>
-            </details>
-            <details>
-              <summary>Does everything stay private and local?</summary>
-              <p>
-                Many tools keep operating state in local stores. Browser accounts, connected
-                services, model providers, and agent permissions have their own data boundaries.
-                Check the selected workflow before using sensitive information.
-              </p>
-            </details>
-            <details>
-              <summary>Where should I begin?</summary>
-              <p>
-                Try the Orion PM guide to see two local workers coordinate one task. It is a
-                concrete starting point before adding browser or phone access.
-              </p>
-            </details>
+            {homeFaq.map(({ question, answer }) => (
+              <details key={question}>
+                <summary>{question}</summary>
+                <p>{answer}</p>
+              </details>
+            ))}
           </div>
         </div>
       </section>

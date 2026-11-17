@@ -29,13 +29,21 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Verify presentation assets
-        run: node --test tests/presentation-assets.test.mjs
+      - name: Verify presentation assets and site configuration
+        run: node --test tests/presentation-assets.test.mjs tests/site-config.test.mjs
 
       - name: Build
         run: npm run build
 
-      - name: Verify built catalog and reference documents
+      - name: Install the browser test driver
+        run: |
+          npm install --prefix "$RUNNER_TEMP/cosmocrat-browser" --no-audit --no-fund agent-browser@0.43.0
+          echo "$RUNNER_TEMP/cosmocrat-browser/node_modules/.bin" >> "$GITHUB_PATH"
+
+      - name: Verify built pages, intake and browser interactions
+        env:
+          SITE_TEST_ORIGIN: http://127.0.0.1:3000
+          AGENT_BROWSER_EXECUTABLE_PATH: /usr/bin/google-chrome
         run: |
           npm run start -- --hostname 127.0.0.1 --port 3000 > /tmp/cosmocrat-site.log 2>&1 &
           SITE_PID=$!
@@ -44,4 +52,7 @@ jobs:
             if curl --fail --silent http://127.0.0.1:3000/tools > /dev/null; then break; fi
             sleep 1
           done
-          SITE_TEST_ORIGIN=http://127.0.0.1:3000 node --test tests/*http.test.mjs tests/site-pages.test.mjs
+          node --test tests/*http.test.mjs tests/site-pages.test.mjs
+          for suite in tests/*browser.test.py; do
+            python3 "$suite"
+          done

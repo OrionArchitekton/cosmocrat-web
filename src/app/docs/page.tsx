@@ -100,6 +100,13 @@ export default function DocsPage() {
           </a>
         </div>
 
+        <h2>Engineering field notes</h2>
+        <ul className="my-5 space-y-3">
+          <li><Link className="text-link" href="/guides/agent-handoff-pattern">Hand off an agent task with recoverable evidence</Link></li>
+          <li><Link className="text-link" href="/guides/preventing-worktree-collisions">Check for collisions between Git worktrees</Link></li>
+          <li><Link className="text-link" href="/changelog">Cosmocrat web changelog</Link></li>
+        </ul>
+
         <h2>Understand the governance work</h2>
         <p>
           Architecture pages explain the separate kernel, authority and receipt design. They do not

@@ -46,8 +46,22 @@ commands = [
     ['wait', '--fn', 'document.querySelector("video").currentSrc.includes("desktop.mp4") && document.querySelector("video").readyState >= 2'],
     ['wait', 'button[aria-label="Play introduction"]'],
     check('document.querySelector("video").videoWidth === 1920 && !document.querySelector(".motion-fallback") && !window.partialUnavailable', 'A failed portrait source can fall back without reporting total failure'),
-    ['errors'],
 ]
+for width in ('320', '390'):
+    commands.extend([
+        ['set', 'viewport', width, '844'], ['open', origin + '/?t=11'],
+        ['wait', '--fn', 'document.querySelector("video").readyState >= 2 && Math.abs(document.querySelector("video").currentTime - 11) < .1'],
+        check('document.querySelector("video").paused && document.querySelector(".motion-chapter-btn[aria-current]").textContent.includes("Access & Practices")', 'A reduced-motion visitor lands on the requested chapter'),
+        check('document.documentElement.scrollWidth <= innerWidth', 'The theater fits the mobile viewport'),
+        ['focus', 'input[aria-label="Seek preview video timeline"]'], ['press', 'End'], ['press', 'Home'], ['press', 'ArrowRight'],
+        ['wait', '--fn', 'Math.abs(document.querySelector("video").currentTime - .1) < .01'],
+        check('document.querySelector("video").paused', 'Keyboard scrubbing keeps a paused video paused'),
+        ['eval', 'document.querySelectorAll(".motion-chapter-btn")[3].scrollIntoView({block:"center",behavior:"instant"})'],
+        ['click', '.motion-chapter-btn:nth-child(4)'],
+        ['wait', '--fn', 'document.querySelector("video").currentTime >= 17 && !document.querySelector("video").paused'],
+        check('document.querySelector(".motion-chapter-btn[aria-current]").textContent.includes("Explicit Boundaries")', 'Tapping the chapter selects its real time range'),
+    ])
+commands.append(['errors'])
 environment = os.environ.copy()
 for name in ('AGENT_BROWSER_AUTO_CONNECT', 'AGENT_BROWSER_PROFILE', 'AGENT_BROWSER_STATE',
              'AGENT_BROWSER_SESSION_NAME', 'AGENT_BROWSER_PROVIDER', 'AGENT_BROWSER_CDP'):

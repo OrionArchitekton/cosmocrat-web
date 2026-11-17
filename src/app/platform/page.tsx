@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import GovernanceContext from '@/components/os/GovernanceContext';
 import PlatformPipeline from '@/components/os/PlatformPipeline';
+import { architecturePillars } from '@/lib/toolArchitecture';
 import { generatePageMetadata } from '@/lib/metadata';
 import { generateFeatureSchema } from '@/lib/schemas';
 
@@ -12,39 +13,6 @@ export const metadata = generatePageMetadata({
   description,
   path: '/platform',
 });
-
-const topics = [
-  [
-    'Memory as infrastructure',
-    '/memory-infrastructure',
-    'What context may influence a decision, within an explicitly governed boundary.',
-  ],
-  [
-    'Decision exhaust',
-    '/decision-exhaust',
-    'The policy, authority and state references behind a governed decision.',
-  ],
-  [
-    'Runtime governance',
-    '/runtime-governance',
-    'Admission before a governed mutation, with the integration boundary made explicit.',
-  ],
-  [
-    'Gate system',
-    '/gate-system',
-    'A conceptual model separating intent, decision, authority, execution and outcome.',
-  ],
-  [
-    'Chronicle receipts',
-    '/chronicle-receipts',
-    'Authoritative decision records and their integrity and replay boundaries.',
-  ],
-  [
-    'Drift guard',
-    '/drift-guard',
-    'Specified checks for divergence, with their scope and limitations.',
-  ],
-] as const;
 
 const principles = [
   {
@@ -112,22 +80,38 @@ export default function PlatformPage() {
             permitted decision still needs separate outcome evidence.
           </p>
 
-          <h2>Explore the architecture</h2>
-          <div className="my-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {topics.map(([name, href, summary]) => (
-              <Link
-                className="tool-teaser"
-                href={href}
-                key={href}
-              >
-                <h3 className="text-base font-semibold text-white mb-2 flex items-center justify-between">
-                  <span>{name}</span>
-                  <ArrowRight size={14} className="text-[#f0b66a]" aria-hidden="true" />
-                </h3>
-                <p>{summary}</p>
-              </Link>
-            ))}
-          </div>
+          <h2 id="tool-boundaries" className="scroll-mt-28">Public tools and the private kernel</h2>
+          <p>
+            Each tool below addresses a related problem independently. The kernel column describes
+            the governance responsibility at an explicitly enrolled boundary.
+          </p>
+          <table aria-labelledby="tool-boundaries" className="my-6 block w-full text-left text-sm md:table">
+            <thead className="sr-only md:not-sr-only md:table-header-group">
+              <tr className="text-xs text-[#94a3b8]">
+                <th scope="col" className="py-2 pr-4">Architecture</th>
+                <th scope="col" className="py-2 pr-4">Public tool</th>
+                <th scope="col" className="py-2">Private kernel</th>
+              </tr>
+            </thead>
+            <tbody className="block md:table-row-group">
+              {architecturePillars.map((item) => (
+                <tr key={item.href} id={`compare-${item.toolId}`} className="block scroll-mt-28 border-t border-[#334155] py-4 align-top md:table-row">
+                  <th scope="row" className="block font-semibold md:table-cell md:w-1/4 md:py-3 md:pr-4">
+                    <Link className="text-link" href={item.href}>{item.label}</Link>
+                  </th>
+                  <td className="mt-2 block text-[#b2c0d4] md:table-cell md:py-3 md:pr-4">
+                    <span className="block text-xs text-[#94a3b8] md:hidden">Public tool</span>
+                    <Link className="text-link" href={`/tools#${item.toolId}`}>{item.tool}</Link>
+                    <span className="mt-1 block">{item.practice}</span>
+                  </td>
+                  <td className="mt-2 block text-[#b2c0d4] md:table-cell md:w-1/3 md:py-3">
+                    <span className="block text-xs text-[#94a3b8] md:hidden">Private kernel</span>
+                    {item.boundary}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
 
           <h2>Availability and scope</h2>
           <p>

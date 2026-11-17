@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { trackConversion } from '@/lib/analytics';
 import { motion } from 'motion/react';
 import { ArrowRight, CheckCircle2, Eye, FileText, GitBranch, RefreshCw } from 'lucide-react';
 
@@ -93,6 +94,18 @@ export default function StarterSimulator() {
   const [stepIdx, setStepIdx] = useState(0);
   const [showFullResult, setShowFullResult] = useState(false);
 
+  const visited = useRef(new Set([0]));
+
+  function selectStep(index: number) {
+    setStepIdx(index);
+    if (workflowSteps[index].id !== 'recover') setShowFullResult(false);
+    if (visited.current.has(index)) return;
+    visited.current.add(index);
+    if (visited.current.size === workflowSteps.length) {
+      trackConversion({ event: 'starter_simulator_complete' });
+    }
+  }
+
   const current = workflowSteps[stepIdx];
   const codeText =
     current.id === 'recover' && showFullResult && current.fullCode
@@ -114,10 +127,7 @@ export default function StarterSimulator() {
             role="tab"
             className="sim-step-btn"
             aria-selected={index === stepIdx}
-            onClick={() => {
-              setStepIdx(index);
-              if (step.id !== 'recover') setShowFullResult(false);
-            }}
+            onClick={() => selectStep(index)}
           >
             <span className="sim-step-num">{step.num}</span>
             <span className="sim-step-name">{step.shortLabel}</span>
@@ -166,7 +176,7 @@ export default function StarterSimulator() {
           </div>
           <button
             type="button"
-            onClick={() => setStepIdx((prev) => (prev + 1) % workflowSteps.length)}
+            onClick={() => selectStep((stepIdx + 1) % workflowSteps.length)}
             className="text-link text-xs whitespace-nowrap min-h-[32px]"
           >
             Next stage <ArrowRight size={13} aria-hidden="true" />

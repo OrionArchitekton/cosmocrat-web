@@ -18,6 +18,10 @@ import {
   Smartphone,
   X,
 } from 'lucide-react';
+import CommandSnippet from './CommandSnippet';
+import ToolMatcher from './ToolMatcher';
+import ReleaseLink from './ReleaseLink';
+import { architecturePillars } from '@/lib/toolArchitecture';
 import type { LucideIcon } from 'lucide-react';
 import type { ToolCategory, ToolDefinition } from '@/lib/toolCatalog';
 
@@ -98,6 +102,12 @@ export default function ToolCatalog({ tools }: { tools: readonly ToolDefinition[
 
   return (
     <>
+      {ready && (
+        <ToolMatcher tools={tools} onChoose={() => {
+          setCategory('all');
+          setQuery('');
+        }} />
+      )}
       <div className="filter-controls" data-filter-controls hidden={!ready}>
         <div className="filters" role="group" aria-label="Filter tools by category">
           {categories.map(({ key, label }) => (
@@ -159,10 +169,12 @@ export default function ToolCatalog({ tools }: { tools: readonly ToolDefinition[
       <div className="tool-grid" id="tool-list">
         {tools.map((tool) => {
           const Icon = icons[tool.icon];
+          const pillar = architecturePillars.find((item) => item.toolId === tool.id);
           const preview = tool.status === 'PREVIEW' || tool.status === 'EXPERIMENTAL';
           return (
             <article
               className="tool-card"
+              tabIndex={-1}
               data-tool={tool.id}
               data-category={tool.category}
               id={tool.id}
@@ -194,6 +206,7 @@ export default function ToolCatalog({ tools }: { tools: readonly ToolDefinition[
                   </a>
                 </div>
               ))}
+              <CommandSnippet tool={tool} />
               <details className="scope">
                 <summary>Environment &amp; boundaries</summary>
                 <p>
@@ -202,6 +215,9 @@ export default function ToolCatalog({ tools }: { tools: readonly ToolDefinition[
                 <p>
                   <strong>Boundary.</strong> {tool.boundary}
                 </p>
+                {pillar && (
+                  <p>Related architecture. <a className="text-link" href={pillar.href}>{pillar.label}</a></p>
+                )}
               </details>
               <div className="card-links">
                 {tool.guide && (
@@ -215,10 +231,10 @@ export default function ToolCatalog({ tools }: { tools: readonly ToolDefinition[
                   </a>
                 )}
                 {tool.release && (
-                  <a href={tool.release} rel="noreferrer">
+                  <ReleaseLink toolId={tool.id} href={tool.release} rel="noreferrer">
                     {tool.status === 'PREVIEW' ? 'Get the preview' : 'View release'}{' '}
                     <ArrowUpRight size={13} aria-hidden="true" />
-                  </a>
+                  </ReleaseLink>
                 )}
                 {!tool.release && tool.source && (
                   <a href={tool.source} rel="noreferrer">

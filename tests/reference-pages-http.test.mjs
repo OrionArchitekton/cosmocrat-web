@@ -54,3 +54,20 @@ test('the installed image optimizer serves the first-party wordmark', async () =
   const avif = data.toString('ascii', 4, 8) === 'ftyp' && data.toString('ascii', 8, 12).startsWith('avi');
   assert.ok(png || webp || avif, 'The image response must have a supported binary signature');
 });
+
+test('first-party field notes and website changes are discoverable at their canonical paths', async () => {
+  const docs = await fetch(origin + '/docs').then(r => r.text());
+  const sitemap = await fetch(origin + '/sitemap.xml').then(r => r.text());
+  const llms = await fetch(origin + '/llms.txt').then(r => r.text());
+  for (const path of ['/guides/agent-handoff-pattern', '/guides/preventing-worktree-collisions', '/changelog']) {
+    const response = await fetch(origin + path);
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    assert.ok(html.includes('rel="canonical" href="' + origin + path + '"'));
+    assert.ok(docs.includes('href="' + path + '"'));
+    assert.ok(sitemap.includes('<loc>' + origin + path + '</loc>'));
+    assert.ok(llms.includes(origin + path));
+  }
+  assert.match(docs, /id="starting-paths"/);
+  assert.ok(llms.includes(origin + '/docs#starting-paths'));
+});

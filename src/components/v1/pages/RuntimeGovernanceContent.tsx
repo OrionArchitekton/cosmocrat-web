@@ -17,6 +17,7 @@ import {
   User,
   XCircle,
 } from 'lucide-react';
+import { runtimeGovernanceFaq } from '@/lib/faqs';
 import FaqItem from '../FaqItem';
 import { ArchitectureNav, ArchitecturePager } from '@/components/os/ArchitectureNav';
 
@@ -435,23 +436,10 @@ export default function RuntimeGovernanceContent() {
           <h2 className="text-2xl sm:text-3xl font-semibold text-white mb-8">
             Frequently Asked Questions
           </h2>
-          <div className="space-y-3">
-            <FaqItem
-              question="Is the kernel a proxy or a sidecar?"
-              answer="The narrow kernel evaluates proposed mutations and issues decision receipts. Memory retrieval, orchestration and execution remain outside that kernel and need their own governed integration."
-            />
-            <FaqItem
-              question="Does runtime governance increase latency?"
-              answer="Policy, transport and receipt persistence add work to the decision path. Measure the actual deployment and workload; this reference establishes no universal latency benchmark."
-            />
-            <FaqItem
-              question="Can the AI bypass the kernel?"
-              answer="A non-bypassable boundary requires removing alternative tool, credential and network paths. Current tool-family membership does not establish that property. Verify actual enrollment and capability boundaries; application-layer admission alone is insufficient."
-            />
-            <FaqItem
-              question="How does it handle different models?"
-              answer="The admission design can evaluate proposed mutations from different model providers. Each model, tool and runtime path still needs an explicit integration and verified enforcement boundary."
-            />
+          <div id="faq" className="space-y-3">
+            {runtimeGovernanceFaq.map(({ question, answer }) => (
+              <FaqItem key={question} question={question} answer={answer} />
+            ))}
           </div>
 
           <ArchitecturePager current="/runtime-governance" />

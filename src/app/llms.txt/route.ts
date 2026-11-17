@@ -26,7 +26,7 @@ Human sovereignty; memory as infrastructure; explicit context boundaries; trust 
 - Project / Organization: Cosmocrat
 - Parent organization: Orion Apex Capital (OAC)
 - Founder and systems architect: Dan Mercede
-- Guides and videos retain their existing canonical homes at danmercede.com and the creator's channels.
+- Existing walkthroughs and videos retain their canonical homes at danmercede.com and the creator's channels. The field notes below are original to cosmocrat.ai.
 
 ## Available tools and profiles
 
@@ -36,11 +36,26 @@ The continuity guide remains pinned to Starter 0.2.0-rc.1. The development-evide
 
 ## Primary pages
 
-${['/', '/tools', '/about', '/docs', '/platform', '/runtime-governance', '/gate-system', '/decision-exhaust', '/drift-guard', '/chronicle-receipts', '/memory-infrastructure', '/contact', '/privacy', '/terms'].map((path) => `- ${base}${path}`).join('\n')}
+${['/', '/tools', '/about', '/docs', '/platform', '/runtime-governance', '/gate-system', '/decision-exhaust', '/drift-guard', '/chronicle-receipts', '/memory-infrastructure', '/contact', '/privacy', '/terms', '/waitlist'].map((path) => `- ${base}${path}`).join('\n')}
 
 ## Architecture references
 
 The governance topic pages describe design and integration boundaries. They are not evidence that every public tool implements the complete architecture. Use each named release, guide version and support contract for availability claims.
+
+- Memory infrastructure: admissibility determines which retained context may influence a governed decision. ${base}/memory-infrastructure
+- Decision exhaust: inspect the policy, authority and state references behind a decision. ${base}/decision-exhaust
+- Runtime governance: admission happens at a named integration boundary before a governed mutation. ${base}/runtime-governance
+- Gate system: intent, evidence, authority, execution and outcome have separate roles. ${base}/gate-system
+- Chronicle receipts: authoritative decision records have explicit integrity and replay boundaries. An external outcome requires its own evidence. ${base}/chronicle-receipts
+- Drift guard: compare later observations against a specified baseline and report within the coverage of the check. ${base}/drift-guard
+
+## Starting paths and field notes
+
+- Interactive starting paths: choose task ownership (PM v0.1.1), the continuity preview (Starter 0.2.0-rc.1), the development-evidence preview (Starter 0.3.0-rc.1), or governance design. ${base}/docs#starting-paths
+- Find a tool by task, then check its release, environment and support boundary. ${base}/tools
+- Agent handoff pattern: identify the task, retrieve the original observation and recheck the current state. ${base}/guides/agent-handoff-pattern
+- Preventing worktree collisions: interpret overlap and coverage separately before assigning edits. ${base}/guides/preventing-worktree-collisions
+- Website changelog: selected merged public-site changes and their source pull requests. ${base}/changelog
 
 ## Crawling guidance
 

@@ -5,7 +5,7 @@ import { siteConfig } from '@/lib/siteConfig';
 // lastModified must be a committed constant — never a fresh build-time clock
 // read, which would churn every build and emit a meaningless "modified today"
 // signal. Bump this when site content is materially updated.
-const LAST_CONTENT_UPDATE = new Date('2026-10-30T00:00:00Z');
+const LAST_CONTENT_UPDATE = new Date('2026-11-16T00:00:00Z');
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = LAST_CONTENT_UPDATE;
@@ -26,6 +26,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/privacy',
     '/terms',
     '/docs',
+    '/guides/agent-handoff-pattern',
+    '/guides/preventing-worktree-collisions',
+    '/changelog',
     '/waitlist',
   ];
 

@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import CommandSnippet from './CommandSnippet';
+import { continuityRelease, tools } from '@/lib/toolCatalog';
 import { ArrowRight, ArrowUpRight, ClipboardList, GitBranch, Layers, ShieldCheck } from 'lucide-react';
 
 interface StartPath {
@@ -92,9 +94,12 @@ export default function DocsPathFinder() {
   const [selectedId, setSelectedId] = useState<string>('evidence');
   const active = paths.find((p) => p.id === selectedId) ?? paths[0];
   const ActiveIcon = iconMap[active.icon];
+  const tool = active.id === 'governance' ? undefined :
+    tools.find((entry) => entry.id === (active.id === 'pm' ? 'orion-pm' : 'orion-starter'));
+  const commandTool = tool && active.id === 'continuity' ? { ...tool, ...continuityRelease } : tool;
 
   return (
-    <div className="my-8 rounded-xl border border-[#233047] bg-[#121b2e]/85 overflow-hidden">
+    <div id="starting-paths" className="my-8 scroll-mt-28 rounded-xl border border-[#233047] bg-[#121b2e]/85 overflow-hidden">
       <div className="border-b border-[#233047] bg-[#0e1628] px-5 py-3 flex items-center justify-between gap-4 flex-wrap">
         <span className="font-mono text-[11px] tracking-[0.08em] uppercase text-[#f0b66a]">
           Interactive path finder
@@ -134,7 +139,7 @@ export default function DocsPathFinder() {
             );
           })}
         </div>
-        <div className="md:col-span-7 p-6 flex flex-col justify-between bg-[#0b1120]/60">
+        <div className="min-w-0 md:col-span-7 p-6 flex flex-col justify-between bg-[#0b1120]/60">
           <div>
             <div className="flex items-center gap-2.5 mb-3">
               <span className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-[#334563] bg-[#121b2e] text-[#f0b66a]">
@@ -153,6 +158,7 @@ export default function DocsPathFinder() {
               </p>
             </div>
           </div>
+          {commandTool && <CommandSnippet key={active.id} tool={commandTool} />}
           <div className="mt-5">
             {active.external ? (
               <a

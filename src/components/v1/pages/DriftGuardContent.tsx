@@ -15,6 +15,7 @@ import {
   Scale,
   ShieldAlert,
 } from 'lucide-react';
+import { driftGuardFaq } from '@/lib/faqs';
 import FaqItem from '../FaqItem';
 import { ArchitectureNav, ArchitecturePager } from '@/components/os/ArchitectureNav';
 
@@ -409,23 +410,10 @@ export default function DriftGuardContent() {
           <h2 className="text-2xl sm:text-3xl font-semibold text-white mb-8">
             Frequently Asked Questions
           </h2>
-          <div className="space-y-3">
-            <FaqItem
-              question="How does Drift Guard differ from observability?"
-              answer="Observability records signals such as latency and errors. Drift Guard's design adds configured checks for divergence from authorized behavior, including cases without a software error. Detection coverage must be established in the deployed integration."
-            />
-            <FaqItem
-              question="What is 'Behavioral Drift'?"
-              answer="It's when an agent's response patterns shift over time—for example, becoming more aggressive, less concise, or hallucinating facts—without any code changes."
-            />
-            <FaqItem
-              question="Can Drift Guard automatically fix the AI?"
-              answer="The proposed response is 'Halt & Require G4' (Human Authorization). A deployment must explicitly configure and verify that response. Automatic correction requires its own authority and evidence."
-            />
-            <FaqItem
-              question="Does it work on non-deterministic models?"
-              answer="The design checks configured boundaries and observed behavior across model types. Non-deterministic behavior still requires suitable detection signals and workload-specific validation; no universal safety guarantee follows."
-            />
+          <div id="faq" className="space-y-3">
+            {driftGuardFaq.map(({ question, answer }) => (
+              <FaqItem key={question} question={question} answer={answer} />
+            ))}
           </div>
 
           <ArchitecturePager current="/drift-guard" />

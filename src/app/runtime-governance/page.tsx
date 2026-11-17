@@ -1,6 +1,7 @@
 import GovernanceContext from '@/components/os/GovernanceContext';
 import RuntimeGovernanceContent from '@/components/v1/pages/RuntimeGovernanceContent';
 import { generatePageMetadata } from '@/lib/metadata';
+import { runtimeGovernanceFaq } from '@/lib/faqs';
 import { generateFeatureSchema } from '@/lib/schemas';
 
 export const metadata = generatePageMetadata({
@@ -10,11 +11,12 @@ export const metadata = generatePageMetadata({
 });
 
 const schema = generateFeatureSchema({
+  questions: runtimeGovernanceFaq,
   name: 'Runtime Governance',
   description: 'Cosmocrat runtime governance architecture: policy and authority admission at a named integration boundary, separate from the independently released Orion tools.',
   path: '/runtime-governance',
 });
-const schemaJson = JSON.stringify(schema);
+const schemaJson = JSON.stringify(schema).replace(/</g, '\\u003c');
 
 export default function RuntimeGovernancePage() {
   return (

@@ -13,6 +13,7 @@ import {
   Lock,
   Shield,
 } from 'lucide-react';
+import { chronicleReceiptsFaq } from '@/lib/faqs';
 import FaqItem from '../FaqItem';
 import { ArchitectureNav, ArchitecturePager } from '@/components/os/ArchitectureNav';
 
@@ -502,23 +503,10 @@ export default function ChronicleReceiptsContent() {
           <h2 className="text-2xl sm:text-3xl font-semibold text-white mb-8">
             Frequently Asked Questions
           </h2>
-          <div className="space-y-3">
-            <FaqItem
-              question="How is a receipt different from a system log?"
-              answer="An authoritative governance receipt records the policy and authority behind a decision. Local task records, hashes and tool logs have distinct authority. Neither record alone proves an external outcome."
-            />
-            <FaqItem
-              question="Are receipts stored on a blockchain?"
-              answer="A blockchain is not required. Storage and integrity mechanisms depend on the kernel version and deployment. Do not infer a Merkle tree or external anchoring from the existence of a receipt."
-            />
-            <FaqItem
-              question="Can I replay a receipt?"
-              answer="A governed decision can be replayed when the necessary versioned inputs and policy are retained. A receipt is not a complete model reasoning trace or a guarantee that a real-world effect occurred."
-            />
-            <FaqItem
-              question="What format are receipts in?"
-              answer="Receipts are generated in a standardized, machine-readable JSON format, allowing for automated auditing and integration with compliance tools."
-            />
+          <div id="faq" className="space-y-3">
+            {chronicleReceiptsFaq.map(({ question, answer }) => (
+              <FaqItem key={question} question={question} answer={answer} />
+            ))}
           </div>
 
           <ArchitecturePager current="/chronicle-receipts" />

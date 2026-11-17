@@ -45,10 +45,7 @@ src/
     page.tsx                # Landing page
   components/v1/            # UI components
     Header.tsx, Footer.tsx  # Site chrome
-    Hero.tsx                # Landing hero
     WaitlistForm.tsx        # Waitlist intake form
-    Narrative.tsx           # Content narrative block
-    SeoSpine.tsx            # SEO spine component
     FaqItem.tsx             # FAQ accordion
     pages/                  # Pillar page content components
   lib/                      # Shared utilities
