@@ -53,6 +53,7 @@ for width in ('320', '390'):
         ['wait', '--fn', 'document.querySelector("video").readyState >= 2 && Math.abs(document.querySelector("video").currentTime - 11) < .1'],
         check('document.querySelector("video").paused && document.querySelector(".motion-chapter-btn[aria-current]").textContent.includes("Access & Practices")', 'A reduced-motion visitor lands on the requested chapter'),
         check('document.documentElement.scrollWidth <= innerWidth', 'The theater fits the mobile viewport'),
+        check('Array.from(document.querySelectorAll(".motion-deck-title,.motion-chapter-title")).every(el => el.scrollWidth <= el.clientWidth + 1)', 'The header and all four chapter titles fit without truncation'),
         ['focus', 'input[aria-label="Seek preview video timeline"]'], ['press', 'End'], ['press', 'Home'], ['press', 'ArrowRight'],
         ['wait', '--fn', 'Math.abs(document.querySelector("video").currentTime - .1) < .01'],
         check('document.querySelector("video").paused', 'Keyboard scrubbing keeps a paused video paused'),
