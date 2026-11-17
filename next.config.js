@@ -1,9 +1,9 @@
 const ALLOWED_SITE_ENVS = ['development', 'staging', 'production'];
-const siteEnv = process.env.SITE_ENV || 'development';
+const siteEnv = process.env.SITE_ENV;
 
-if (!ALLOWED_SITE_ENVS.includes(siteEnv)) {
+if (!siteEnv || !ALLOWED_SITE_ENVS.includes(siteEnv)) {
   throw new Error(
-    `Invalid SITE_ENV "${siteEnv}". Expected one of: ${ALLOWED_SITE_ENVS.join(', ')}.`
+    `Invalid SITE_ENV "${siteEnv ?? ''}". Expected one of: ${ALLOWED_SITE_ENVS.join(', ')}.`
   );
 }
 
@@ -41,7 +41,6 @@ if (isProd) {
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
   reactStrictMode: true,
   poweredByHeader: false,
   images: {
@@ -77,6 +76,7 @@ const nextConfig = {
         source: '/(.*)',
         headers: [
           { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'X-Frame-Options', value: 'DENY' },
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
           { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
         ],

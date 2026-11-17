@@ -29,6 +29,7 @@ commands = [
     check('document.activeElement.type === "search"', 'Reset returns search focus'),
     ['focus', '[data-filter="continuity"]'], ['press', 'Enter'],
     ['wait', '--fn', 'document.querySelectorAll("[data-tool]:not([hidden])").length === 2'],
+    ['eval', 'document.querySelector("#orion-handoff summary").scrollIntoView({block:"center",behavior:"instant"})'],
     ['click', '#orion-handoff summary'],
     check('document.querySelector("#orion-handoff details").open', 'Native boundary disclosure opens'),
     ['focus', '[data-filter="all"]'], ['press', 'Enter'],
