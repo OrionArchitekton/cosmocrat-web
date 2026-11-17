@@ -6,49 +6,30 @@ import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 
-test('built intake preserves validation, storage and honest mail acknowledgement', { timeout: 30000 }, async (t) => {
-  const rows = [];
-  const emails = [];
-  let duplicate = false;
-  let emailFailure = false;
-  const database = createServer(async (req, res) => {
-    assert.equal(req.method, 'POST');
-    let body = '';
-    for await (const chunk of req) body += chunk;
-    res.setHeader('content-type', 'application/json');
-    if (req.url === '/emails') {
-      emails.push(JSON.parse(body));
-      res.statusCode = emailFailure ? 422 : 200;
-      res.end(JSON.stringify(emailFailure ? { name: 'validation_error', message: 'Synthetic mail refusal', statusCode: 422 } : { id: 'synthetic-mail-acceptance' }));
-      return;
-    }
-    assert.equal(req.url, '/rest/v1/waitlist_signups');
-    rows.push(JSON.parse(body));
-    res.statusCode = duplicate ? 409 : 201;
-    res.end(JSON.stringify(duplicate ? { code: '23505', message: 'Synthetic duplicate' } : null));
-  });
-  database.listen(0, '127.0.0.1');
-  await once(database, 'listening');
-  t.after(() => new Promise((resolve) => database.close(resolve)));
-
+async function startIntake(t, overrides = {}) {
   let origin;
   // An explicit environment excludes production accounts, mail and ingest settings.
   // A separate argv value preserves spaces and decoded file URL characters.
   // Next owns the OS-assigned port before reporting its actual bound address.
-  const server = spawn(process.execPath, ['--require', fileURLToPath(new URL('fixtures/intake-network.cjs', import.meta.url)), 'node_modules/next/dist/bin/next', 'start', '--hostname', '127.0.0.1', '--port', '0'], {
+  const networkFixture = overrides.INTAKE_TEST_MAIL_ORIGIN
+    ? ['--require', fileURLToPath(new URL('fixtures/intake-network.cjs', import.meta.url))]
+    : [];
+  const server = spawn(process.execPath, [
+    ...networkFixture, 'node_modules/next/dist/bin/next', 'start', '--hostname', '127.0.0.1', '--port', '0',
+  ], {
     cwd: new URL('..', import.meta.url),
     env: {
       PATH: process.env.PATH,
       SITE_ENV: 'staging',
       NEXT_PUBLIC_SITE_URL: 'http://127.0.0.1',
       NEXT_TELEMETRY_DISABLED: '1',
-      SUPABASE_URL: `http://127.0.0.1:${database.address().port}`,
-      SUPABASE_SERVICE_ROLE_KEY: 'synthetic-test-value-never-a-real-credential',
+      SUPABASE_URL: '',
+      SUPABASE_SERVICE_ROLE_KEY: '',
+      RESEND_API_KEY: '',
+      COSMOCRAT_INGEST_URL: '',
+      COSMOCRAT_INGEST_TOKEN: '',
       IP_HASH_SALT: 'synthetic-test-salt',
-      RESEND_API_KEY: 'synthetic-test-value-never-a-real-credential',
-      RESEND_REPLY_TO: 'reply@example.invalid',
-      WAITLIST_NOTIFY_EMAIL: 'notify@example.invalid',
-      INTAKE_TEST_MAIL_ORIGIN: `http://127.0.0.1:${database.address().port}`,
+      ...overrides,
     },
     stdio: ['ignore', 'pipe', 'pipe'],
   });
@@ -77,11 +58,57 @@ test('built intake preserves validation, storage and honest mail acknowledgement
     assert.equal(server.exitCode, null, 'The owned intake server must still be running');
     assert.equal(server.signalCode, null);
     return fetch(`${origin}/api/waitlist`, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json', 'x-forwarded-for': '192.0.2.1' },
-    body: typeof body === 'string' ? body : JSON.stringify(body),
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-forwarded-for': '192.0.2.1' },
+      body: typeof body === 'string' ? body : JSON.stringify(body),
     });
   };
+  return { submit, logs: () => output };
+}
+
+test('waitlist does not acknowledge a signup without configured storage', { timeout: 30000 }, async (t) => {
+  const { submit, logs } = await startIntake(t);
+  const response = await submit({
+    email: 'storage-missing@example.invalid',
+    company: 'Synthetic',
+    role: 'Tester',
+  });
+  assert.equal(response.status, 500, logs());
+});
+
+test('built intake preserves validation, storage and honest mail acknowledgement', { timeout: 30000 }, async (t) => {
+  const rows = [];
+  const emails = [];
+  let duplicate = false;
+  let emailFailure = false;
+  const database = createServer(async (req, res) => {
+    assert.equal(req.method, 'POST');
+    let body = '';
+    for await (const chunk of req) body += chunk;
+    res.setHeader('content-type', 'application/json');
+    if (req.url === '/emails') {
+      emails.push(JSON.parse(body));
+      res.statusCode = emailFailure ? 422 : 200;
+      res.end(JSON.stringify(emailFailure ? { name: 'validation_error', message: 'Synthetic mail refusal', statusCode: 422 } : { id: 'synthetic-mail-acceptance' }));
+      return;
+    }
+    assert.equal(req.url, '/rest/v1/waitlist_signups');
+    rows.push(JSON.parse(body));
+    res.statusCode = duplicate ? 409 : 201;
+    res.end(JSON.stringify(duplicate ? { code: '23505', message: 'Synthetic duplicate' } : null));
+  });
+  database.listen(0, '127.0.0.1');
+  await once(database, 'listening');
+  t.after(() => new Promise((resolve) => database.close(resolve)));
+
+  const { submit, logs } = await startIntake(t, {
+    SUPABASE_URL: `http://127.0.0.1:${database.address().port}`,
+    SUPABASE_SERVICE_ROLE_KEY: 'synthetic-test-value-never-a-real-credential',
+    RESEND_API_KEY: 'synthetic-test-value-never-a-real-credential',
+    RESEND_REPLY_TO: 'reply@example.invalid',
+    WAITLIST_NOTIFY_EMAIL: 'notify@example.invalid',
+    INTAKE_TEST_MAIL_ORIGIN: `http://127.0.0.1:${database.address().port}`,
+  });
   let response = await submit('{');
   assert.equal(response.status, 400);
   assert.deepEqual(await response.json(), { ok: false, error: 'Invalid JSON' });
@@ -95,7 +122,7 @@ test('built intake preserves validation, storage and honest mail acknowledgement
   assert.equal(rows.length, 0, 'Rejected and honeypot submissions must not reach storage');
   assert.equal(emails.length, 0, 'Rejected and honeypot submissions must not send mail');
   response = await submit(input);
-  assert.equal(response.status, 200, output);
+  assert.equal(response.status, 200, logs());
   assert.deepEqual(await response.json(), { ok: true, duplicate: false, emailSent: true });
   assert.equal(emails.length, 2);
   assert.equal(emails[0].reply_to, 'reply@example.invalid');

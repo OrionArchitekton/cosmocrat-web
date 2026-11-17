@@ -2089,11 +2089,24 @@ h1 em {
 
 /* Responsive Breakpoints */
 @media (max-width: 1024px) {
+  .header-inner,
   .desktop-nav {
-    gap: 18px;
+    gap: 12px;
   }
   .wordmark {
-    width: 168px;
+    width: 152px;
+  }
+  .header-actions {
+    gap: 8px;
+  }
+  .cmd-trigger {
+    padding-inline: 8px;
+  }
+  .cmd-kbd {
+    display: none;
+  }
+  .nav-cta {
+    padding-inline: 10px;
   }
   .motion-deck-grid {
     grid-template-columns: 1fr;
