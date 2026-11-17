@@ -62,7 +62,7 @@ copied = milestone('copy_command', '/tools', 'orion-pm')
 release = milestone('github_release_click', '/tools', 'orion-pm')
 commands.extend([
     events([copied]),
-    ['eval', """navigator.clipboard.writeText = async () => {throw Error('Clipboard denied')}"""],
+    ['eval', """(() => {navigator.clipboard.writeText = async () => {throw Error('Clipboard denied')};})()"""],
     ['click', '#orion-pm button[aria-label^="Copy command"]'],
     ['wait', '--fn', "window.getSelection().toString() === window.__copiedCommand"],
     events([copied]),

@@ -13,7 +13,7 @@ export const metadata = generatePageMetadata({
 export default function DocsPage() {
   return (
     <div className="wrap">
-      <article className="origin-page">
+      <article className="origin-page docs-page">
         <div className="eyebrow">Cosmocrat / Start here</div>
         <h1>
           Begin with

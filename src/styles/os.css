@@ -1632,6 +1632,15 @@ h1 em {
   margin-top: 28px;
 }
 
+.docs-page .button {
+  max-width: 100%;
+  white-space: normal;
+}
+
+.docs-page .button svg {
+  flex-shrink: 0;
+}
+
 /* Catalog Page (/tools) */
 .catalog-hero {
   padding: 64px 0 44px;
@@ -2195,6 +2204,17 @@ h1 em {
   }
   .motion-shell {
     padding: 10px;
+  }
+  .motion-deck-bar {
+    flex-wrap: wrap;
+  }
+  .motion-deck-title {
+    flex: 1 1 10rem;
+  }
+  .motion-deck-title,
+  .motion-chapter-title {
+    white-space: normal;
+    overflow: visible;
   }
   .motion-deck-grid {
     grid-template-columns: 1fr;
