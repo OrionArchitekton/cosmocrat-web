@@ -1,4 +1,4 @@
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Compass, Layers, Wrench } from 'lucide-react';
 import ToolCatalog from '@/components/os/ToolCatalog';
 import { tools } from '@/lib/toolCatalog';
 import { generatePageMetadata } from '@/lib/metadata';
@@ -10,6 +10,27 @@ export const metadata = generatePageMetadata({
     'Explore independently usable Orion tools for coordinating agents, carrying context, browser and phone access, and recoverable results. Starter profiles remain previews.',
   path: '/tools',
 });
+
+const tiers = [
+  {
+    icon: Wrench,
+    label: 'Standalone releases',
+    summary:
+      'Orion PM, Browser, Phone, Handoff, Worktree Report, failclosed, and Skills install independently.',
+  },
+  {
+    icon: Layers,
+    label: 'Starter previews',
+    summary:
+      'Orion Results and Orion Starter (0.3.0-rc.1) test multiple tools working together in local workflows.',
+  },
+  {
+    icon: Compass,
+    label: 'Experimental source',
+    summary:
+      'Remote Hands publishes MIT source with explicit start-only public boundaries and no packaged release.',
+  },
+];
 
 export default function ToolsPage() {
   return (
@@ -37,6 +58,20 @@ export default function ToolsPage() {
             <span>INDEPENDENT COMPONENTS</span>
             <span>STARTER PREVIEWS</span>
             <span>HUMAN DIRECTION</span>
+          </div>
+          <div className="mt-8 grid grid-cols-1 gap-3 md:grid-cols-3">
+            {tiers.map(({ icon: Icon, label, summary }) => (
+              <div
+                key={label}
+                className="rounded-lg border border-[#233047] bg-[#121b2e]/70 p-4"
+              >
+                <div className="mb-2 flex items-center gap-2 text-xs font-semibold text-[#f0b66a]">
+                  <Icon size={14} aria-hidden="true" />
+                  <span>{label}</span>
+                </div>
+                <p className="m-0 text-xs leading-relaxed text-[#94a3b8]">{summary}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>

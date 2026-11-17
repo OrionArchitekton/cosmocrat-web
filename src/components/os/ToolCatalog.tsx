@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowRight,
   ArrowRightLeft,
+  ArrowUpRight,
   BookOpen,
   ClipboardList,
   FileText,
@@ -11,9 +12,11 @@ import {
   Layers,
   Monitor,
   PanelsTopLeft,
+  Play,
   Search,
   ShieldCheck,
   Smartphone,
+  X,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import type { ToolCategory, ToolDefinition } from '@/lib/toolCatalog';
@@ -30,6 +33,7 @@ const icons: Record<ToolDefinition['icon'], LucideIcon> = {
   skills: BookOpen,
   remote: Monitor,
 };
+
 const categories: readonly { key: ToolCategory | 'all'; label: string }[] = [
   { key: 'all', label: 'All' },
   { key: 'coordination', label: 'Coordination' },
@@ -44,7 +48,45 @@ export default function ToolCatalog({ tools }: { tools: readonly ToolDefinition[
   const [category, setCategory] = useState<ToolCategory | 'all'>('all');
   const [query, setQuery] = useState('');
   const search = useRef<HTMLInputElement>(null);
-  useEffect(() => setReady(true), []);
+
+  useEffect(() => {
+    setReady(true);
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== '/' || event.metaKey || event.ctrlKey || event.altKey) return;
+      const target = event.target as HTMLElement | null;
+      if (
+        target &&
+        (target.tagName === 'INPUT' ||
+          target.tagName === 'TEXTAREA' ||
+          target.tagName === 'SELECT' ||
+          target.isContentEditable)
+      ) {
+        return;
+      }
+      event.preventDefault();
+      search.current?.focus();
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, []);
+
+  const counts = useMemo(() => {
+    const map: Record<ToolCategory | 'all', number> = {
+      all: tools.length,
+      coordination: 0,
+      access: 0,
+      continuity: 0,
+      practice: 0,
+      experimental: 0,
+    };
+    for (const tool of tools) {
+      map[tool.category] += 1;
+    }
+    return map;
+  }, [tools]);
+
   const matches = tools.filter(
     (tool) =>
       (category === 'all' || tool.category === category) &&
@@ -67,7 +109,8 @@ export default function ToolCatalog({ tools }: { tools: readonly ToolDefinition[
               aria-pressed={category === key}
               onClick={() => setCategory(key)}
             >
-              {label}
+              <span>{label}</span>
+              <span className="filter-count">{counts[key]}</span>
             </button>
           ))}
         </div>
@@ -79,10 +122,23 @@ export default function ToolCatalog({ tools }: { tools: readonly ToolDefinition[
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Find a tool or a task…"
+            placeholder="Find a tool or task… (press /)"
             aria-controls="tool-list"
             autoComplete="off"
           />
+          {query && (
+            <button
+              type="button"
+              aria-label="Clear search"
+              onClick={() => {
+                setQuery('');
+                search.current?.focus();
+              }}
+              className="absolute right-2.5 top-2.5 inline-flex h-6 w-6 items-center justify-center rounded text-slate-400 hover:bg-slate-800 hover:text-amber-300"
+            >
+              <X size={14} aria-hidden="true" />
+            </button>
+          )}
         </label>
       </div>
       <div className="catalog-caption">
@@ -128,8 +184,13 @@ export default function ToolCatalog({ tools }: { tools: readonly ToolDefinition[
               <p className="card-description">{tool.description}</p>
               {tool.profiles?.map((profile) => (
                 <div className="card-profile" key={profile.href}>
-                  <a href={profile.href} rel="noreferrer">
-                    {profile.label} ↗
+                  <a
+                    href={profile.href}
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5"
+                  >
+                    <span>{profile.label}</span>
+                    <ArrowUpRight size={13} aria-hidden="true" />
                   </a>
                 </div>
               ))}
@@ -150,23 +211,24 @@ export default function ToolCatalog({ tools }: { tools: readonly ToolDefinition[
                 )}
                 {!tool.guide && tool.source && (
                   <a href={tool.source} rel="noreferrer">
-                    Instructions ↗
+                    Instructions <ArrowUpRight size={13} aria-hidden="true" />
                   </a>
                 )}
                 {tool.release && (
                   <a href={tool.release} rel="noreferrer">
-                    {tool.status === 'PREVIEW' ? 'Get the preview' : 'View release'} ↗
+                    {tool.status === 'PREVIEW' ? 'Get the preview' : 'View release'}{' '}
+                    <ArrowUpRight size={13} aria-hidden="true" />
                   </a>
                 )}
                 {!tool.release && tool.source && (
                   <a href={tool.source} rel="noreferrer">
-                    Source &amp; instructions ↗
+                    Source &amp; instructions <ArrowUpRight size={13} aria-hidden="true" />
                   </a>
                 )}
               </div>
               {tool.video && (
                 <a className="watch-link" href={tool.video} rel="noreferrer">
-                  ▷ Watch the guide companion
+                  <Play size={12} aria-hidden="true" /> Watch the guide companion
                 </a>
               )}
             </article>

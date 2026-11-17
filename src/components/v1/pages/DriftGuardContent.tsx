@@ -4,222 +4,191 @@ import { useState } from 'react';
 import Link from 'next/link';
 import {
   Activity,
-  ShieldAlert,
-  Lock,
-  BrainCircuit,
   Anchor,
-  AlertOctagon,
+  BrainCircuit,
+  CheckCircle2,
   Eye,
   FileCode,
-  Zap,
-  LayoutGrid,
-  Settings,
   Filter,
-  Aperture,
-  CheckCircle2,
-  XCircle,
-  Share2,
-  Database,
+  LayoutGrid,
+  Lock,
   Scale,
-  ChevronDown,
-  ChevronUp,
+  ShieldAlert,
 } from 'lucide-react';
+import FaqItem from '../FaqItem';
+import { ArchitectureNav, ArchitecturePager } from '@/components/os/ArchitectureNav';
 
-const FaqItem: React.FC<{ question: string; answer: React.ReactNode }> = ({
-  question,
-  answer,
-}) => {
-  const [isOpen, setIsOpen] = useState(false);
-  return (
-    <div className="border-b border-slate-800">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full py-4 flex justify-between items-center text-left focus:outline-none group"
-      >
-        <h3 className="text-base font-medium text-slate-300 group-hover:text-amber-500 transition-colors">
-          {question}
-        </h3>
-        {isOpen ? (
-          <ChevronUp className="text-slate-500" size={16} />
-        ) : (
-          <ChevronDown className="text-slate-500" size={16} />
-        )}
-      </button>
-      <div
-        className={`overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-96 opacity-100 mb-6' : 'max-h-0 opacity-0'}`}
-      >
-        <div className="text-slate-400 text-sm leading-relaxed">{answer}</div>
-      </div>
-    </div>
-  );
+interface DriftDomain {
+  id: string;
+  title: string;
+  subtitle: string;
+  problem: string;
+  mechanism: string;
+  boundary: string;
+  icon: 'behavioral' | 'policy' | 'context' | 'authority' | 'structural';
+}
+
+const driftDomains: readonly DriftDomain[] = [
+  {
+    id: 'behavioral',
+    title: 'Behavioral Drift',
+    subtitle: 'Vibe shifts & output variance',
+    problem: 'Same inputs produce materially different action trajectories under load or prompt edits.',
+    mechanism: 'AIMD controllers and repeated baseline checks flag variance across executions.',
+    boundary: 'Detects divergence only on signals configured in the active deployment.',
+    icon: 'behavioral',
+  },
+  {
+    id: 'policy',
+    title: 'Policy Drift',
+    subtitle: 'Silent rule changes',
+    problem: 'Rules change silently without promotion tracking or clear attribution.',
+    mechanism: 'Receipt Binding locks every evaluated admission to a cryptographic policy_hash.',
+    boundary: 'Historical comparison relies on retaining old policy definitions.',
+    icon: 'policy',
+  },
+  {
+    id: 'context',
+    title: 'Context Drift',
+    subtitle: 'Memory pollution',
+    problem: 'Memory from outside an allowed lane leaks into unrelated decision prompts.',
+    mechanism: 'Explicitly enrolled retrieval paths enforce lane policy filters before injection.',
+    boundary: 'Requires removing un-enrolled retrieval routes and preloaded caches.',
+    icon: 'context',
+  },
+  {
+    id: 'authority',
+    title: 'Authority Drift',
+    subtitle: 'Implicit permission creep',
+    problem: 'A permission granted yesterday remains active after current risk thresholds shift.',
+    mechanism: 'Runtime re-evaluation refuses grandfathered authority when risk exceeds limits.',
+    boundary: 'Must be wired cleanly at the enforcement boundary without residual tokens.',
+    icon: 'authority',
+  },
+  {
+    id: 'structural',
+    title: 'Structural Drift',
+    subtitle: 'Broken audit trails',
+    problem: 'Receipt lineage or expected Chronicle events go missing across handoffs.',
+    mechanism: 'Checks detect missing correlation between admitted intent and downstream outcome.',
+    boundary: 'Outcome verification still relies on retained downstream logs.',
+    icon: 'structural',
+  },
+];
+
+const domainIcons = {
+  behavioral: Activity,
+  policy: FileCode,
+  context: BrainCircuit,
+  authority: Anchor,
+  structural: LayoutGrid,
 };
 
+const responseModes = [
+  {
+    id: 'shadow',
+    badge: 'Response A · MODE: OBSERVE',
+    title: 'Degrade to SHADOW',
+    description:
+      'Observe-only mode. The action is executed in an isolated sandbox while drift is recorded without external mutation.',
+    actionTaken: 'SHADOW_OBSERVE_ONLY',
+    icon: Eye,
+  },
+  {
+    id: 'quarantine',
+    badge: 'Response B · MODE: ISOLATE',
+    title: 'Quarantine Lane',
+    description:
+      'Proposed response: deny new memory writes and external tool calls on enrolled paths. Isolation requires an enforced boundary without bypass paths.',
+    actionTaken: 'QUARANTINE_LANE_ACTIVE',
+    icon: Scale,
+  },
+  {
+    id: 'halt',
+    badge: 'Response C · MODE: HALT',
+    title: 'Halt & Require G4',
+    description:
+      'Proposed response: stop the enrolled action and require explicit human authority before proceeding.',
+    actionTaken: 'HALT_G4_REQUIRED',
+    icon: Lock,
+  },
+] as const;
+
 export default function DriftGuardContent() {
+  const [selectedDomainId, setSelectedDomainId] = useState<string>('policy');
+  const [selectedResponseId, setSelectedResponseId] = useState<'shadow' | 'quarantine' | 'halt'>(
+    'halt'
+  );
+
+  const activeDomain =
+    driftDomains.find((d) => d.id === selectedDomainId) ?? driftDomains[1];
+  const ActiveDomainIcon = domainIcons[activeDomain.icon];
+  const activeResponse =
+    responseModes.find((r) => r.id === selectedResponseId) ?? responseModes[2];
+
   return (
-    <div className="bg-[#0B1120] min-h-screen pb-24 font-sans selection:bg-amber-500/30">
-      <style>{`
-        .bronze-text {
-          background: linear-gradient(to right, #fcd34d, #fbbf24, #d97706);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-        }
-        .drift-grid-bg {
-           background-image: 
-              linear-gradient(rgba(217, 119, 6, 0.05) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(217, 119, 6, 0.05) 1px, transparent 1px);
-           background-size: 50px 50px;
-        }
-        .circuit-bg {
-           background-image: radial-gradient(rgba(51, 65, 85, 0.2) 1px, transparent 1px);
-           background-size: 20px 20px;
-        }
-        @keyframes diverge {
-           0% { stroke-dashoffset: 1000; opacity: 0; }
-           20% { opacity: 1; }
-           100% { stroke-dashoffset: 0; opacity: 1; }
-        }
-        .animate-diverge {
-           stroke-dasharray: 1000;
-           animation: diverge 4s ease-out infinite;
-        }
-        @keyframes spin-slow {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        .animate-spin-slow {
-           animation: spin-slow 20s linear infinite;
-        }
-        .animate-spin-reverse-slow {
-           animation: spin-slow 25s linear infinite reverse;
-        }
-        @keyframes particle-flow {
-          0% { transform: translateX(0); opacity: 0; }
-          10% { opacity: 1; }
-          80% { opacity: 1; }
-          100% { transform: translateX(180px); opacity: 0; }
-        }
-        .particle {
-           animation: particle-flow 2s linear infinite;
-        }
-        .delay-1 { animation-delay: 0.2s; }
-        .delay-2 { animation-delay: 0.5s; }
-        .delay-3 { animation-delay: 0.9s; }
-        .delay-4 { animation-delay: 1.4s; }
+    <div className="pb-20">
+      <ArchitectureNav current="/drift-guard" />
 
-        @keyframes wave {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        .animate-wave {
-          animation: wave 4s linear infinite;
-        }
-        @keyframes mesh-pulse {
-          0%, 100% { opacity: 0.3; }
-          50% { opacity: 0.6; }
-        }
-        .mesh-line {
-          animation: mesh-pulse 3s ease-in-out infinite;
-        }
-         @keyframes flow-dash {
-          to { stroke-dashoffset: -20; }
-        }
-        .animate-flow-dash {
-          stroke-dasharray: 5;
-          animation: flow-dash 1s linear infinite;
-        }
-        @keyframes laser-scan {
-          0%, 100% { top: 0%; opacity: 0; }
-          10% { opacity: 1; }
-          90% { opacity: 1; }
-          100% { top: 100%; opacity: 0; }
-        }
-        .animate-laser {
-          animation: laser-scan 2s ease-in-out infinite;
-        }
-      `}</style>
-
-      {/* 1. Hero: Failures are Loud. Drift is Quiet. */}
-      <section className="pt-32 pb-20 px-4 border-b border-slate-900 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[#0B1120]">
-          <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-amber-900/10 rounded-full blur-[100px] pointer-events-none"></div>
-          {/* Abstract Gear Background */}
-          <Settings
-            size={600}
-            strokeWidth={0.5}
-            className="absolute -top-24 -right-24 text-slate-800/20 animate-spin-slow"
-          />
-          <Settings
-            size={400}
-            strokeWidth={0.5}
-            className="absolute top-48 -left-24 text-slate-800/20 animate-spin-reverse-slow"
-          />
-        </div>
-
-        <div className="max-w-6xl mx-auto text-center relative z-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs font-bold text-slate-400 mb-8 uppercase tracking-widest shadow-lg shadow-amber-900/10">
-            <ShieldAlert size={14} className="text-amber-500" />
-            Runtime Integrity
-          </div>
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-8 leading-tight">
-            Failures are loud. <br />
-            <span className="bronze-text drop-shadow-sm">Drift is quiet.</span>
+      {/* 1. Hero */}
+      <section className="py-16 md:py-24 border-b border-[#233047]">
+        <div className="wrap text-center max-w-4xl">
+          <div className="eyebrow justify-center">Runtime Integrity / 06</div>
+          <h1>
+            Failures are loud. <em>Drift is quiet.</em>
           </h1>
-          <p className="text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed mb-8">
-            System behavior, memory, policy, and authority tend to silently diverge over time.
-            Drift Guard exists to hear the quiet before it becomes a failure.
+          <p className="text-lg text-[#b2c0d4] max-w-2xl mx-auto leading-relaxed mb-6">
+            System behavior, memory, policy, and authority tend to silently diverge over time. Drift
+            Guard exists to hear the quiet before it becomes a failure.
           </p>
-
-          {/* Canonical Definition Sentence */}
-          <div className="max-w-3xl mx-auto">
-            <p className="text-lg text-amber-500/90 font-medium">
-              Drift Guard describes checks for divergence between authorized intent and observed
-              AI behavior over time. Detection and response depend on the enrolled integration.
-            </p>
-          </div>
+          <p className="text-base text-[#f0b66a] font-medium max-w-3xl mx-auto">
+            Drift Guard describes checks for divergence between authorized intent and observed AI
+            behavior over time. Detection and response depend on the enrolled integration.
+          </p>
         </div>
       </section>
 
-      {/* 1.5 Definition Block (SEO Spine) */}
-      <section className="py-16 bg-cosmo-dark border-b border-slate-900/50">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-3xl font-semibold text-slate-300 mb-8 leading-snug">
+      {/* Definition Block (SEO Spine) */}
+      <section className="py-16 border-b border-[#233047]">
+        <div className="wrap max-w-4xl">
+          <h2 className="text-2xl md:text-3xl font-semibold text-white mb-6 text-center">
             What is Drift Guard?
           </h2>
-          <div className="prose prose-invert max-w-3xl mx-auto text-slate-500 text-base leading-relaxed space-y-4">
+          <div className="space-y-4 text-sm sm:text-base leading-relaxed text-[#b2c0d4]">
             <p>
               Drift Guard is the continuous integrity layer of the Cosmocrat operating system. While
               the{' '}
               <Link
                 href="/gate-system"
-                className="text-slate-400 hover:text-amber-500 underline decoration-slate-700 underline-offset-4 transition-colors"
+                className="text-[#f0b66a] underline underline-offset-4 hover:text-white"
               >
                 Gate System
               </Link>{' '}
-              evaluates enrolled actions at a point in time, Drift Guard proposes repeated checks
-              for behavior that diverges from what was authorized, observed, or intended as the
-              system evolves.
+              evaluates enrolled actions at a point in time, Drift Guard proposes repeated checks for
+              behavior that diverges from what was authorized, observed, or intended as the system
+              evolves.
             </p>
-            <p className="text-slate-300 font-medium">
+            <p className="text-white font-medium">
               Drift emerges across time and state transitions — not within a single execution.
             </p>
             <p>
-              It spans five critical domains: behavior, memory, policy, authority, and structure.
-              Its design looks beyond crashes for divergence from authorized behavior. Actual
-              coverage depends on the signals, checks and boundaries configured in a deployment.
+              It spans five critical domains: behavior, memory, policy, authority, and structure. Its
+              design looks beyond crashes for divergence from authorized behavior. Actual coverage
+              depends on the signals, checks and boundaries configured in a deployment.
             </p>
             <p>
-              A configured response can halt an enrolled action when divergence is detected.
-              The design retains{' '}
+              A configured response can halt an enrolled action when divergence is detected. The
+              design retains{' '}
               <Link
                 href="/decision-exhaust"
-                className="text-slate-400 hover:text-amber-500 underline decoration-slate-700 underline-offset-4 transition-colors"
+                className="text-[#f0b66a] underline underline-offset-4 hover:text-white"
               >
                 Decision Exhaust
               </Link>{' '}
               to document the event and informs the{' '}
               <Link
                 href="/runtime-governance"
-                className="text-slate-400 hover:text-amber-500 underline decoration-slate-700 underline-offset-4 transition-colors"
+                className="text-[#f0b66a] underline underline-offset-4 hover:text-white"
               >
                 Runtime Governance
               </Link>{' '}
@@ -229,765 +198,218 @@ export default function DriftGuardContent() {
         </div>
       </section>
 
-      {/* 2. The Divergence Visual */}
-      <section className="py-24 bg-slate-950 border-b border-slate-900 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-white mb-2">
-              Are we still doing what we proved we were doing?
+      {/* Interactive Five Domains of Drift */}
+      <section className="py-20 border-b border-[#233047] bg-[#090f1d]">
+        <div className="wrap max-w-5xl">
+          <div className="text-center mb-10">
+            <div className="eyebrow justify-center">Detection surface</div>
+            <h2 className="text-3xl font-semibold text-white mt-3 mb-2">
+              The Five Domains of Drift
             </h2>
-            <p className="text-slate-500">
-              Monitoring asks: &quot;Is something wrong?&quot; — Drift Guard asks: &quot;Is this
-              still authorized?&quot;
+            <p className="text-sm text-[#94a3b8]">
+              Select a domain to inspect how silent divergence forms and what mechanism watches it.
             </p>
           </div>
 
-          <div className="relative h-64 md:h-80 w-full max-w-5xl mx-auto border border-slate-800 rounded-xl bg-[#080a0f] flex items-center justify-center overflow-hidden shadow-2xl">
-            <div className="absolute inset-0 drift-grid-bg opacity-30"></div>
-
-            {/* Mechanical Caliper Overlay (Visual Decoration) */}
-            <div className="absolute top-0 bottom-0 left-1/4 border-l border-slate-800 border-dashed opacity-50"></div>
-            <div className="absolute top-0 bottom-0 right-1/4 border-r border-slate-800 border-dashed opacity-50"></div>
-
-            {/* Divergence Animation */}
-            <svg
-              width="100%"
-              height="100%"
-              viewBox="0 0 800 300"
-              preserveAspectRatio="none"
-              className="absolute inset-0"
-            >
-              <defs>
-                <marker id="arrow-white" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-                  <path d="M0,0 L0,6 L9,3 z" fill="#ffffff" />
-                </marker>
-                <marker id="arrow-red" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-                  <path d="M0,0 L0,6 L9,3 z" fill="#ef4444" />
-                </marker>
-                <filter id="glow">
-                  <feGaussianBlur stdDeviation="2.5" result="coloredBlur" />
-                  <feMerge>
-                    <feMergeNode in="coloredBlur" />
-                    <feMergeNode in="SourceGraphic" />
-                  </feMerge>
-                </filter>
-              </defs>
-
-              {/* Authorized Intent (Straight Line) */}
-              <line x1="0" y1="150" x2="800" y2="150" stroke="#334155" strokeWidth="1" strokeDasharray="4 4" />
-              <path
-                d="M 50 150 L 750 150"
-                stroke="#fff"
-                strokeWidth="3"
-                markerEnd="url(#arrow-white)"
-                className="opacity-80"
-                filter="url(#glow)"
-              />
-              <text
-                x="350"
-                y="130"
-                fill="white"
-                textAnchor="middle"
-                fontSize="12"
-                fontWeight="bold"
-                letterSpacing="1px"
-                className="uppercase font-mono"
-              >
-                Authorized Intent
-              </text>
-
-              {/* AI Behavior (Drifting Line) */}
-              <path
-                d="M 50 150 Q 400 150 750 250"
-                stroke="#ef4444"
-                strokeWidth="2"
-                fill="none"
-                strokeDasharray="5 5"
-                markerEnd="url(#arrow-red)"
-                className="animate-diverge"
-              />
-              <text
-                x="600"
-                y="270"
-                fill="#ef4444"
-                textAnchor="middle"
-                fontSize="12"
-                fontWeight="bold"
-                letterSpacing="1px"
-                className="uppercase font-mono"
-              >
-                Silent Drift
-              </text>
-
-              {/* Spark/Correction Point */}
-              <g transform="translate(350, 150)">
-                <circle r="4" fill="#d97706" className="animate-pulse" />
-                <circle r="12" stroke="#d97706" strokeWidth="1" fill="none" opacity="0.5" className="animate-ping" />
-              </g>
-            </svg>
-
-            {/* Labels */}
-            <div className="absolute left-4 top-4 bg-slate-900/80 backdrop-blur border border-slate-700 p-2 rounded text-xs text-slate-300 z-10 font-mono">
-              <div className="text-[10px] text-slate-500 uppercase">Status</div>
-              <div>DESIGN MODEL</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. Distributed Enforcement Mesh */}
-      <section className="py-24 bg-[#050505] relative border-b border-slate-900">
-        <div className="max-w-6xl mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold text-white mb-16">A Distributed Enforcement Mesh</h2>
-
-          <div className="relative w-full aspect-[16/9] md:aspect-[2/1] bg-[#0B1120] rounded-xl border border-slate-800 overflow-hidden shadow-2xl">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(217,119,6,0.05),transparent_70%)]"></div>
-
-            {/* Mesh SVG */}
-            <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid slice">
-              <defs>
-                <linearGradient id="meshGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="rgba(217, 119, 6, 0.1)" />
-                  <stop offset="50%" stopColor="rgba(217, 119, 6, 0.4)" />
-                  <stop offset="100%" stopColor="rgba(217, 119, 6, 0.1)" />
-                </linearGradient>
-              </defs>
-
-              {/* Triangle Connections */}
-              <path d="M 50% 30% L 25% 70% L 75% 70% Z" fill="none" stroke="url(#meshGradient)" strokeWidth="1" />
-
-              {/* Dense Mesh Lines (Abstract) */}
-              <g className="mesh-line">
-                <path d="M 50% 30% Q 35% 50% 25% 70%" fill="none" stroke="#d97706" strokeWidth="0.5" strokeOpacity="0.3" />
-                <path d="M 50% 30% Q 65% 50% 75% 70%" fill="none" stroke="#d97706" strokeWidth="0.5" strokeOpacity="0.3" />
-                <path d="M 25% 70% Q 50% 80% 75% 70%" fill="none" stroke="#d97706" strokeWidth="0.5" strokeOpacity="0.3" />
-
-                {/* Cross hatching */}
-                <path d="M 40% 45% L 60% 45%" stroke="#d97706" strokeWidth="0.5" strokeOpacity="0.2" />
-                <path d="M 30% 60% L 70% 60%" stroke="#d97706" strokeWidth="0.5" strokeOpacity="0.2" />
-              </g>
-            </svg>
-
-            {/* Nodes */}
-            {/* Top: Kernel */}
-            <div className="absolute top-[30%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-4">
-              <div className="w-24 h-24 bg-slate-900 rounded-full border-2 border-amber-600 flex items-center justify-center shadow-[0_0_30px_rgba(217,119,6,0.3)] z-10 relative">
-                <ShieldAlert size={40} className="text-amber-500" />
-                <div className="absolute inset-0 border border-amber-500/30 rounded-full animate-ping opacity-20"></div>
-              </div>
-              <div className="text-center">
-                <div className="text-white font-bold text-lg">Kernel</div>
-                <div className="text-slate-500 text-xs uppercase tracking-wider">(Gates)</div>
-              </div>
-            </div>
-
-            {/* Left: Memory */}
-            <div className="absolute top-[70%] left-[25%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-4">
-              <div className="w-20 h-20 bg-slate-900 rounded-full border border-slate-600 flex items-center justify-center shadow-lg z-10">
-                <Database size={32} className="text-slate-400" />
-              </div>
-              <div className="text-center">
-                <div className="text-slate-300 font-bold">Memory</div>
-                <div className="text-slate-500 text-xs uppercase tracking-wider">(Side-Brain)</div>
-              </div>
-            </div>
-
-            {/* Right: Execution */}
-            <div className="absolute top-[70%] left-[75%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-4">
-              <div className="w-20 h-20 bg-slate-900 rounded-full border border-slate-600 flex items-center justify-center shadow-lg z-10">
-                <Zap size={32} className="text-slate-400" />
-              </div>
-              <div className="text-center">
-                <div className="text-slate-300 font-bold">Execution</div>
-                <div className="text-slate-500 text-xs uppercase tracking-wider">(Runtime)</div>
-              </div>
-            </div>
-
-            {/* Label */}
-            <div className="absolute top-[45%] right-[20%] text-right hidden md:block">
-              <div className="border border-amber-500/50 bg-amber-900/10 px-4 py-2 rounded text-amber-500 font-mono text-sm inline-flex items-center gap-2">
-                <Share2 size={14} /> Drift Guard
-              </div>
-              <div className="w-16 h-px bg-amber-500/30 absolute right-full top-1/2"></div>
-            </div>
+          <div
+            className="grid grid-cols-2 sm:grid-cols-5 gap-2.5 mb-6"
+            role="tablist"
+            aria-label="Five domains of drift"
+          >
+            {driftDomains.map((domain) => {
+              const Icon = domainIcons[domain.icon];
+              const active = domain.id === selectedDomainId;
+              return (
+                <button
+                  key={domain.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={active}
+                  onClick={() => setSelectedDomainId(domain.id)}
+                  className={`rounded-lg border p-3.5 text-left transition-colors ${
+                    active
+                      ? 'border-[#f0b66a] bg-[#d97706]/15 text-white'
+                      : 'border-[#233047] bg-[#121b2e]/70 text-[#94a3b8] hover:border-[#334563] hover:text-white'
+                  }`}
+                >
+                  <Icon
+                    size={16}
+                    className={`mb-2 ${active ? 'text-[#f0b66a]' : 'text-[#64748b]'}`}
+                    aria-hidden="true"
+                  />
+                  <div className="text-xs font-semibold">{domain.title}</div>
+                  <div className="text-[11px] text-[#94a3b8] mt-1">{domain.subtitle}</div>
+                </button>
+              );
+            })}
           </div>
 
-          <p className="mt-12 text-slate-400 max-w-2xl mx-auto">
-            The design distributes checks across runtime integrations for behavioral, policy and
-            structural drift. This diagram does not establish that those checks are deployed.
-          </p>
-        </div>
-      </section>
-
-      {/* 4. The Five Domains of Drift (Radar Visual) */}
-      <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#0B1120] to-[#080a0f]">
-        <div className="text-center mb-20">
-          <h2 className="text-4xl font-bold text-white mb-6">The Five Domains of Drift</h2>
-          <p className="text-slate-400 max-w-2xl mx-auto">
-            Drift is not just &quot;hallucination.&quot; It is structural decay across five specific
-            vectors.
-          </p>
-        </div>
-
-        <div className="relative">
-          {/* Desktop Radar Visual */}
-          <div className="hidden lg:block relative w-[600px] h-[600px] mx-auto mb-12">
-            {/* Radar Background */}
-            <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 600 600">
-              <circle cx="300" cy="300" r="100" fill="none" stroke="#334155" strokeWidth="0.5" />
-              <circle cx="300" cy="300" r="200" fill="none" stroke="#334155" strokeWidth="0.5" />
-              <circle cx="300" cy="300" r="280" fill="none" stroke="#334155" strokeWidth="0.5" />
-              {/* Radial Lines */}
-              {[0, 72, 144, 216, 288].map((angle) => (
-                <line
-                  key={angle}
-                  x1="300"
-                  y1="300"
-                  x2={300 + 280 * Math.cos(((angle - 90) * Math.PI) / 180)}
-                  y2={300 + 280 * Math.sin(((angle - 90) * Math.PI) / 180)}
-                  stroke="#334155"
-                  strokeWidth="0.5"
-                />
-              ))}
-              {/* Connecting Polygon */}
-              <path
-                d="
-                  M 300 20 
-                  L 566 211 
-                  L 464 526 
-                  L 135 526 
-                  L 33 211 
-                  Z
-                "
-                fill="none"
-                stroke="#d97706"
-                strokeWidth="1"
-                strokeOpacity="0.3"
-              />
-            </svg>
-
-            {/* Nodes */}
-            {/* Top: Behavioral */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center w-64 group">
-              <div className="w-16 h-16 mx-auto bg-slate-900 border-2 border-slate-700 rounded-full flex items-center justify-center mb-4 group-hover:border-amber-500 group-hover:shadow-[0_0_20px_rgba(217,119,6,0.3)] transition-all">
-                <Activity className="text-amber-500" />
-              </div>
-              <h3 className="text-white font-bold mb-1">Behavioral Drift</h3>
-              <p className="text-xs text-slate-400">Vibe shifts &amp; variance</p>
-            </div>
-
-            {/* Top Right: Policy */}
-            <div className="absolute top-[35%] right-0 translate-x-1/4 text-center w-64 group">
-              <div className="w-16 h-16 mx-auto bg-slate-900 border-2 border-slate-700 rounded-full flex items-center justify-center mb-4 group-hover:border-amber-500 group-hover:shadow-[0_0_20px_rgba(217,119,6,0.3)] transition-all">
-                <FileCode className="text-amber-500" />
-              </div>
-              <h3 className="text-white font-bold mb-1">Policy Drift</h3>
-              <p className="text-xs text-slate-400">Silent rule changes</p>
-            </div>
-
-            {/* Bottom Right: Context */}
-            <div className="absolute bottom-0 right-[10%] translate-y-1/2 text-center w-64 group">
-              <div className="w-16 h-16 mx-auto bg-slate-900 border-2 border-slate-700 rounded-full flex items-center justify-center mb-4 group-hover:border-amber-500 group-hover:shadow-[0_0_20px_rgba(217,119,6,0.3)] transition-all">
-                <BrainCircuit className="text-amber-500" />
-              </div>
-              <h3 className="text-white font-bold mb-1">Context Drift</h3>
-              <p className="text-xs text-slate-400">Memory pollution</p>
-            </div>
-
-            {/* Bottom Left: Authority */}
-            <div className="absolute bottom-0 left-[10%] translate-y-1/2 text-center w-64 group">
-              <div className="w-16 h-16 mx-auto bg-slate-900 border-2 border-slate-700 rounded-full flex items-center justify-center mb-4 group-hover:border-amber-500 group-hover:shadow-[0_0_20px_rgba(217,119,6,0.3)] transition-all">
-                <Anchor className="text-amber-500" />
-              </div>
-              <h3 className="text-white font-bold mb-1">Authority Drift</h3>
-              <p className="text-xs text-slate-400">Implicit permission creep</p>
-            </div>
-
-            {/* Top Left: Structural */}
-            <div className="absolute top-[35%] left-0 -translate-x-1/4 text-center w-64 group">
-              <div className="w-16 h-16 mx-auto bg-slate-900 border-2 border-slate-700 rounded-full flex items-center justify-center mb-4 group-hover:border-amber-500 group-hover:shadow-[0_0_20px_rgba(217,119,6,0.3)] transition-all">
-                <LayoutGrid className="text-amber-500" />
-              </div>
-              <h3 className="text-white font-bold mb-1">Structural Drift</h3>
-              <p className="text-xs text-slate-400">Broken audit trails</p>
-            </div>
-
-            {/* Center Icon */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-slate-950 border border-slate-700 rounded-full flex items-center justify-center shadow-2xl z-10 animate-pulse">
-              <AlertOctagon size={48} className="text-amber-600" />
-            </div>
-          </div>
-
-          {/* Mobile Grid Fallback */}
-          <div className="lg:hidden grid grid-cols-1 md:grid-cols-2 gap-6">
-            {[
-              { icon: Activity, title: 'Behavioral Drift', desc: 'Same inputs, different actions.' },
-              { icon: FileCode, title: 'Policy Drift', desc: 'Rules changed without promotion.' },
-              { icon: LayoutGrid, title: 'Structural Drift', desc: 'Chronicle events missing.' },
-              { icon: Anchor, title: 'Authority Drift', desc: 'Action taken with implicit permission.' },
-              { icon: BrainCircuit, title: 'Context Drift', desc: 'Wrong memory influenced decision.' },
-            ].map((item, i) => (
-              <div key={i} className="bg-slate-900/50 p-6 rounded-lg border border-slate-800 flex items-start gap-4">
-                <item.icon className="text-amber-500 shrink-0" size={24} />
-                <div>
-                  <h3 className="text-white font-bold">{item.title}</h3>
-                  <p className="text-sm text-slate-400">{item.desc}</p>
+          <div className="rounded-xl border border-[#233047] bg-[#121b2e]/85 p-6 sm:p-7">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="tool-icon">
+                <ActiveDomainIcon size={18} aria-hidden="true" />
+              </span>
+              <div>
+                <div className="font-mono text-[11px] uppercase tracking-wider text-[#f0b66a]">
+                  {activeDomain.subtitle}
                 </div>
+                <h3 className="text-xl font-semibold text-white m-0">{activeDomain.title}</h3>
               </div>
-            ))}
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div className="rounded-lg border border-[#233047] bg-[#0b1120] p-4">
+                <div className="font-mono text-[10px] uppercase tracking-wider text-[#94a3b8] mb-1">
+                  Failure Mode
+                </div>
+                <p className="text-sm text-[#e2e8f0] m-0">{activeDomain.problem}</p>
+              </div>
+              <div className="rounded-lg border border-[#233047] bg-[#0b1120] p-4">
+                <div className="font-mono text-[10px] uppercase tracking-wider text-[#f0b66a] mb-1">
+                  Mitigation Design
+                </div>
+                <p className="text-sm text-[#e2e8f0] m-0">{activeDomain.mechanism}</p>
+              </div>
+            </div>
+            <div className="text-xs text-[#94a3b8]">
+              <strong className="text-[#f0b66a]">Scope limit:</strong> {activeDomain.boundary}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 5. Mechanisms Deep Dive */}
-      <section className="py-32 bg-[#080a0f] border-y border-slate-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-32">
-          {/* Title for Section */}
-          <div className="text-center mb-24">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Preventing Vibe Shifts and Silent Rule Changes
+      {/* Side-Brain & Authority Decay */}
+      <section className="py-20 border-b border-[#233047]">
+        <div className="wrap grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="rounded-xl border border-[#233047] bg-[#121b2e]/65 p-7">
+            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#f0b66a] mb-3">
+              <ShieldAlert size={14} aria-hidden="true" />
+              <span>Authority Decay</span>
+            </div>
+            <h3 className="text-2xl font-semibold text-white mb-3">
+              No Grandfathered Permissions
+            </h3>
+            <p className="text-sm text-[#b2c0d4] leading-relaxed mb-4">
+              A permission granted yesterday may not remain valid today when risk thresholds shift.
+              Drift Guard re-evaluates Gate conditions at runtime; if the current threshold check
+              fails, the gate closes regardless of past precedent.
+            </p>
+            <div className="font-mono text-xs rounded-lg border border-[#233047] bg-[#0b1120] px-4 py-3 text-[#f0b66a]">
+              STATUS EXAMPLE: GATE LOCKED (G4 RE-VERIFICATION REQUIRED)
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-[#233047] bg-[#121b2e]/65 p-7">
+            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#f0b66a] mb-3">
+              <Filter size={14} aria-hidden="true" />
+              <span>The Side-Brain Connection</span>
+            </div>
+            <h3 className="text-2xl font-semibold text-white mb-3">Lane Pollution Detectors</h3>
+            <p className="text-sm text-[#b2c0d4] leading-relaxed mb-4">
+              The Side-Brain is a conceptual governed retrieval interface. On explicitly enrolled
+              retrieval paths, configured lane policy can filter the context provided to a model.
+              Other retrieval routes and preloaded context need separate controls.
+            </p>
+            <ul className="space-y-2 list-none p-0 m-0 text-xs text-[#cbd5e1]">
+              <li className="flex items-center gap-2">
+                <CheckCircle2 size={14} className="text-emerald-400 shrink-0" aria-hidden="true" />
+                <span>Context access follows the enrolled lane policy.</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <CheckCircle2 size={14} className="text-emerald-400 shrink-0" aria-hidden="true" />
+                <span>Cross-lane access requires configured permission.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* Interactive Fail-Closed Response Modes + JSON Event Preview */}
+      <section className="py-20 border-b border-[#233047] bg-[#090f1d]">
+        <div className="wrap">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <h2 className="text-3xl font-semibold text-white mb-3">
+              Active Response: The Fail-Closed Doctrine
             </h2>
-            <p className="text-slate-400">Two distinct mechanisms for two distinct types of drift.</p>
+            <p className="text-sm sm:text-base text-[#94a3b8]">
+              Select a response mode to inspect how Drift Guard records divergence without trying
+              to silently &quot;patch&quot; execution live.
+            </p>
           </div>
 
-          {/* Behavioral + Policy Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-            {/* Behavioral Drift (Controller) */}
-            <div className="bg-[#0f1219] border border-slate-800 rounded-xl p-8 relative overflow-hidden group hover:border-amber-500/30 transition-colors">
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-amber-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-
-              <h3 className="text-xl font-bold text-white mb-2 flex items-center gap-2">
-                <Activity size={20} className="text-amber-500" /> Behavioral Drift
-              </h3>
-              <p className="text-sm text-slate-400 mb-8">
-                <strong>Problem:</strong> Model behaves differently under load.
-                <br />
-                <strong>Mechanism:</strong> AIMD Controllers.
-              </p>
-
-              {/* Mechanical Controller Visual */}
-              <div className="relative h-48 bg-[#0B1120] rounded-lg border border-slate-700/50 flex flex-col justify-between py-2 px-4 shadow-inner">
-                {/* Top Spring/Piston */}
-                <div className="h-4 w-full flex items-center gap-1">
-                  {[...Array(20)].map((_, i) => (
-                    <div key={i} className="h-full w-1 bg-slate-700 rounded-full opacity-50"></div>
-                  ))}
-                </div>
-                <div className="h-2 w-full bg-gradient-to-r from-slate-800 via-amber-700/50 to-slate-800 rounded-full border border-amber-900/30"></div>
-
-                {/* Waveform */}
-                <div className="flex-1 relative overflow-hidden">
-                  <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
-                    <path
-                      d="M0,50 Q25,10 50,50 T100,50 T150,50 T200,50 T250,50 T300,50"
-                      fill="none"
-                      stroke="#d97706"
-                      strokeWidth="2"
-                      strokeOpacity="0.2"
-                    />
-                    {/* Animated Wave */}
-                    <path
-                      d="M0,50 Q25,80 50,50 T100,20 T150,50 T200,80 T250,20 T300,50"
-                      fill="none"
-                      stroke="#d97706"
-                      strokeWidth="2"
-                      className="animate-wave"
-                    ></path>
-                  </svg>
-                  {/* Sparks/Clamping Effect */}
-                  <div className="absolute top-0 bottom-0 left-1/2 w-px bg-white/10"></div>
-                </div>
-
-                <div className="h-2 w-full bg-gradient-to-r from-slate-800 via-amber-700/50 to-slate-800 rounded-full border border-amber-900/30"></div>
-                {/* Bottom Spring/Piston */}
-                <div className="h-4 w-full flex items-center gap-1">
-                  {[...Array(20)].map((_, i) => (
-                    <div key={i} className="h-full w-1 bg-slate-700 rounded-full opacity-50"></div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Policy Drift (Receipt Binding) */}
-            <div className="bg-[#0f1219] border border-slate-800 rounded-xl p-8 relative overflow-hidden group hover:border-amber-500/30 transition-colors">
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-amber-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-
-              <h3 className="text-xl font-bold text-white mb-2 flex items-center gap-2">
-                <FileCode size={20} className="text-amber-500" /> Policy Drift
-              </h3>
-              <p className="text-sm text-slate-400 mb-8">
-                <strong>Problem:</strong> Rules change without oversight.
-                <br />
-                <strong>Mechanism:</strong> Receipt Binding &amp; Policy Hash.
-              </p>
-
-              {/* Receipt Binding Visual */}
-              <div className="relative h-48 bg-[#0B1120] rounded-lg border border-slate-700/50 flex items-center justify-center p-4 shadow-inner overflow-hidden">
-                {/* Background Circuitry */}
-                <div className="absolute inset-0 circuit-bg opacity-30"></div>
-
-                <div className="relative z-10 flex items-center gap-8 w-full justify-center">
-                  {/* Policy Doc */}
-                  <div className="w-16 h-20 bg-slate-800 border-2 border-amber-600 rounded flex flex-col items-center justify-center shadow-[0_0_15px_rgba(217,119,6,0.3)] relative">
-                    <div className="absolute -top-3 bg-slate-950 p-1 rounded-full border border-amber-600">
-                      <Lock size={12} className="text-amber-500" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
+            {responseModes.map((mode) => {
+              const Icon = mode.icon;
+              const selected = mode.id === selectedResponseId;
+              return (
+                <button
+                  key={mode.id}
+                  type="button"
+                  onClick={() => setSelectedResponseId(mode.id)}
+                  aria-pressed={selected}
+                  className={`rounded-xl border p-6 text-left flex flex-col justify-between transition-colors ${
+                    selected
+                      ? 'border-[#f0b66a] bg-[#121b2e]'
+                      : 'border-[#233047] bg-[#0d1526] hover:border-[#334563]'
+                  }`}
+                >
+                  <div>
+                    <div className="font-mono text-[11px] text-[#f0b66a] uppercase tracking-wider mb-3 flex items-center gap-2">
+                      <Icon size={14} aria-hidden="true" />
+                      <span>{mode.badge}</span>
                     </div>
-                    <div className="w-8 h-1 bg-slate-600 mb-1 rounded-full"></div>
-                    <div className="w-8 h-1 bg-slate-600 mb-1 rounded-full"></div>
-                    <div className="w-5 h-1 bg-slate-600 rounded-full"></div>
+                    <h3 className="text-lg font-semibold text-white mb-2">{mode.title}</h3>
+                    <p className="text-xs leading-relaxed text-[#94a3b8] m-0">{mode.description}</p>
                   </div>
-
-                  {/* Arrows/Flow */}
-                  <div className="flex flex-col gap-2">
-                    <div className="w-12 h-0.5 bg-amber-500/50 relative overflow-hidden">
-                      <div className="absolute inset-0 bg-amber-400 w-1/2 animate-flow-dash"></div>
-                    </div>
-                    <div className="w-12 h-0.5 bg-amber-500/50 relative overflow-hidden">
-                      <div
-                        className="absolute inset-0 bg-amber-400 w-1/2 animate-flow-dash"
-                        style={{ animationDelay: '0.2s' }}
-                      ></div>
-                    </div>
-                    <div className="w-12 h-0.5 bg-amber-500/50 relative overflow-hidden">
-                      <div
-                        className="absolute inset-0 bg-amber-400 w-1/2 animate-flow-dash"
-                        style={{ animationDelay: '0.4s' }}
-                      ></div>
-                    </div>
-                  </div>
-
-                  {/* Actions */}
-                  <div className="flex flex-col gap-2">
-                    <div className="px-3 py-1 bg-slate-900 border border-slate-700 rounded text-[10px] text-slate-300 flex items-center gap-2">
-                      <CheckCircle2 size={10} className="text-green-500" /> Auth Data
-                    </div>
-                    <div className="px-3 py-1 bg-slate-900 border border-slate-700 rounded text-[10px] text-slate-300 flex items-center gap-2">
-                      <CheckCircle2 size={10} className="text-green-500" /> Inference
-                    </div>
-                    <div className="px-3 py-1 bg-slate-900 border border-slate-700 rounded text-[10px] text-slate-300 flex items-center gap-2">
-                      <CheckCircle2 size={10} className="text-green-500" /> Log Trans
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+                </button>
+              );
+            })}
           </div>
 
-          {/* Authority Decay: The Gate System */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center lg:flex-row-reverse">
-            <div className="lg:order-2">
-              <div className="text-amber-600 font-bold tracking-widest text-xs uppercase mb-2 flex items-center gap-2">
-                <Aperture size={14} /> Authority Decay
-              </div>
-              <h2 className="text-3xl font-bold text-white mb-6">No Grandfathered Permissions</h2>
-              <p className="text-lg text-slate-400 mb-6">
-                <strong>Problem:</strong> A permission granted yesterday may not be valid today if
-                risk thresholds change.
-              </p>
-              <div className="prose prose-invert text-slate-400">
-                <p>
-                  Drift Guard re-evaluates Gate conditions at runtime. If &quot;Risk &lt;
-                  Threshold&quot; is false today, the gate shuts. The system does not respect
-                  historical precedent, only current policy.
-                </p>
-              </div>
-            </div>
-
-            <div className="lg:order-1 bg-slate-900 border border-slate-800 rounded-xl p-8 flex items-center justify-center relative shadow-2xl overflow-hidden group">
-              {/* Background Gear */}
-              <div className="absolute inset-0 flex items-center justify-center opacity-10">
-                <Settings size={300} className="animate-spin-slow" />
-              </div>
-
-              {/* Mechanical Iris */}
-              <div className="w-64 h-64 relative flex items-center justify-center">
-                {/* Outer Ring */}
-                <div className="absolute inset-0 rounded-full border-[12px] border-slate-800 shadow-[inset_0_0_20px_rgba(0,0,0,0.5)]"></div>
-
-                {/* Blades (Simulated with CSS Conic Gradient or SVGs) */}
-                <div className="absolute inset-4 rounded-full bg-slate-900 flex items-center justify-center overflow-hidden">
-                  {/* Iris Blades SVG */}
-                  <svg
-                    viewBox="0 0 100 100"
-                    className="w-full h-full text-amber-900/40 absolute animate-spin-reverse-slow"
-                  >
-                    {[0, 60, 120, 180, 240, 300].map((deg) => (
-                      <path
-                        key={deg}
-                        d="M50 50 L50 0 L100 0 Z"
-                        fill="currentColor"
-                        stroke="#0f172a"
-                        strokeWidth="1"
-                        transform={`rotate(${deg} 50 50)`}
-                      />
-                    ))}
-                  </svg>
-
-                  {/* Center Lock */}
-                  <div className="relative z-10 w-20 h-20 bg-slate-950 rounded-full border-2 border-amber-600 flex items-center justify-center shadow-[0_0_30px_rgba(217,119,6,0.3)]">
-                    <Lock size={32} className="text-amber-500" />
-                  </div>
-                </div>
-
-                {/* Scanner Line */}
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-amber-500/10 to-transparent h-1 w-full top-1/2 -translate-y-1/2 animate-pulse"></div>
-                {/* Laser Scan Vertical */}
-                <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-red-500 opacity-50 animate-laser"></div>
-              </div>
-
-              {/* Status Label */}
-              <div className="absolute bottom-4 right-4 bg-slate-950 border border-amber-900/50 px-2 py-1 rounded text-[10px] text-amber-500 font-mono">
-                GATE: LOCKED (G4)
-              </div>
-            </div>
-          </div>
-
-          {/* Context Drift: Side-Brain Connection */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center rounded-xl border border-[#233047] bg-[#0b1120] p-6 sm:p-8">
             <div>
-              <div className="text-amber-600 font-bold tracking-widest text-xs uppercase mb-2 flex items-center gap-2">
-                <Filter size={14} /> The Side-Brain Connection
-              </div>
-              <h2 className="text-3xl font-bold text-white mb-6">Lane Pollution Detectors</h2>
-              <p className="text-lg text-slate-400 mb-6">
-                <strong>Core Concept:</strong> Did memory from outside the allowed Lane influence
-                this decision?
+              <h3 className="text-2xl font-semibold text-white mb-3">
+                Evidence for a defined boundary
+              </h3>
+              <p className="text-sm text-[#b2c0d4] leading-relaxed mb-5">
+                On an enrolled path, retained receipts and drift observations can support review of
+                configured controls. Their integrity, coverage and external outcomes require
+                separate verification.
               </p>
-              <div className="prose prose-invert text-slate-400">
-                <p>
-                  The Side-Brain is a conceptual governed retrieval interface. On explicitly enrolled
-                  retrieval paths, configured lane policy can filter the context provided to a
-                  model. Other retrieval routes and preloaded context need separate controls.
-                </p>
-                <ul className="list-none space-y-2 pl-0 mt-4">
-                  <li className="flex gap-2 items-center text-sm">
-                    <CheckCircle2 size={14} className="text-green-500" /> Context access follows the
-                    enrolled lane policy.
-                  </li>
-                  <li className="flex gap-2 items-center text-sm">
-                    <CheckCircle2 size={14} className="text-green-500" /> Cross-lane access requires
-                    configured permission.
-                  </li>
-                </ul>
+              <div className="flex flex-wrap gap-3 font-mono text-xs">
+                <span className="rounded border border-[#233047] bg-[#121b2e] px-3 py-1.5 text-[#f0b66a]">
+                  DRIFT_DETECTED
+                </span>
+                <span className="rounded border border-[#233047] bg-[#121b2e] px-3 py-1.5 text-emerald-400">
+                  DRIFT_ACKED
+                </span>
               </div>
             </div>
 
-            {/* Visual: Particle Filter */}
-            <div className="relative h-80 bg-slate-900 border border-slate-800 rounded-xl overflow-hidden flex items-center justify-center">
-              {/* Background Grid */}
-              <div className="absolute inset-0 bg-[linear-gradient(rgba(30,41,59,0.3)_1px,transparent_1px),linear-gradient(90deg,rgba(30,41,59,0.3)_1px,transparent_1px)] bg-[size:20px_20px]"></div>
-
-              {/* The Wall */}
-              <div className="absolute top-4 bottom-4 left-1/2 w-4 bg-slate-800 border-x border-amber-500/50 flex flex-col items-center justify-around z-10 shadow-[0_0_20px_rgba(217,119,6,0.2)]">
-                <div className="w-full h-1 bg-amber-500/20"></div>
-                <div className="w-full h-1 bg-amber-500/20"></div>
-                <div className="w-full h-1 bg-amber-500/20"></div>
-                <Lock size={16} className="text-amber-500 bg-slate-950 p-0.5 rounded-full" />
-                <div className="w-full h-1 bg-amber-500/20"></div>
-                <div className="w-full h-1 bg-amber-500/20"></div>
-              </div>
-
-              {/* Lane Labels */}
-              <div className="absolute top-6 left-12 text-blue-400 text-xs font-bold uppercase tracking-wider">
-                Lane A (Legal)
-              </div>
-              <div className="absolute top-6 right-12 text-slate-500 text-xs font-bold uppercase tracking-wider">
-                Lane B (Eng)
-              </div>
-
-              {/* Blue Particles (Allowed in Left) */}
-              <div className="absolute top-1/3 left-12 w-3 h-3 bg-blue-500 rounded-full shadow-[0_0_10px_#3b82f6] animate-pulse"></div>
-              <div className="absolute top-1/2 left-20 w-3 h-3 bg-blue-500 rounded-full shadow-[0_0_10px_#3b82f6] animate-pulse delay-1"></div>
-
-              {/* Orange Particles (Trying to cross from Left to Right - Blocked) */}
-              <div className="absolute left-10 top-2/3 flex items-center">
-                <div className="w-3 h-3 bg-amber-500 rounded-full shadow-[0_0_10px_#f59e0b] particle"></div>
-              </div>
-              <div className="absolute left-10 top-2/3 flex items-center mt-8">
-                <div className="w-3 h-3 bg-amber-500 rounded-full shadow-[0_0_10px_#f59e0b] particle delay-2"></div>
-              </div>
-
-              {/* Impact Effects on Wall */}
-              <div className="absolute top-2/3 left-1/2 -translate-x-1/2 w-6 h-6 border border-amber-500 rounded-full opacity-0 animate-ping delay-4"></div>
-
-              <div className="absolute bottom-4 left-0 right-0 text-center text-[10px] text-amber-500 font-mono">
-                DESIGN EXAMPLE: Non-admissible context blocked
-              </div>
-            </div>
+            <pre className="m-0 rounded-lg border border-[#233047] bg-[#070b15] p-5 font-mono text-xs text-[#cbd5e1] overflow-x-auto leading-relaxed">
+              {`// audit_log_v2.json (${activeResponse.title})
+{
+  "event": "DRIFT_DETECTED",
+  "invariant_violated": "policy_hash_mismatch",
+  "lane_id": "finance_ops",
+  "timestamp": "2026-01-15T14:02:00Z",
+  "action_taken": "${activeResponse.actionTaken}",
+  "drift_vector": {
+    "expected": "0x99a...",
+    "actual": "0x11b..."
+  }
+}`}
+            </pre>
           </div>
         </div>
       </section>
 
-      {/* 6. Active Response: Fail-Closed Doctrine */}
-      <section className="py-32 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold text-white mb-4">
-            Active Response: The Fail-Closed Doctrine
+      {/* FAQ + Pager */}
+      <section className="pt-16">
+        <div className="wrap max-w-4xl">
+          <h2 className="text-2xl sm:text-3xl font-semibold text-white mb-8">
+            Frequently Asked Questions
           </h2>
-          <p className="text-slate-400">
-            Drift is treated as a governance event, not an ops anomaly. The system does not &quot;fix
-            it live.&quot;
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Response A */}
-          <div className="bg-[#0f1219] border border-slate-800 p-0 rounded-lg hover:border-blue-500 transition-all group overflow-hidden relative">
-            <div className="h-1 w-full bg-blue-500 absolute top-0"></div>
-            <div className="p-8">
-              <div className="text-blue-500 font-bold mb-4 flex items-center gap-2 text-xs uppercase tracking-widest">
-                <Eye size={16} /> Response A
-              </div>
-              <h3 className="text-white text-xl font-bold mb-2 group-hover:text-blue-400 transition-colors">
-                Degrade to SHADOW
-              </h3>
-              <p className="text-slate-400 text-sm leading-relaxed">
-                Observe-only mode. The action is executed in a sandbox, outputs are discarded, drift
-                is logged.
-              </p>
-            </div>
-            <div className="bg-slate-900/50 p-4 border-t border-slate-800 flex justify-between items-center">
-              <span className="text-xs text-slate-500 font-mono">MODE: OBSERVE</span>
-              <Activity size={14} className="text-blue-500" />
-            </div>
-          </div>
-
-          {/* Response B */}
-          <div className="bg-[#0f1219] border border-slate-800 p-0 rounded-lg hover:border-amber-500 transition-all group overflow-hidden relative transform md:-translate-y-4 shadow-xl">
-            <div className="h-1 w-full bg-amber-500 absolute top-0"></div>
-            <div className="p-8">
-              <div className="text-amber-500 font-bold mb-4 flex items-center gap-2 text-xs uppercase tracking-widest">
-                <Scale size={16} /> Response B
-              </div>
-              <h3 className="text-white text-xl font-bold mb-2 group-hover:text-amber-400 transition-colors">
-                Quarantine Lane
-              </h3>
-              <p className="text-slate-400 text-sm leading-relaxed">
-                Proposed response: deny new memory writes and external tool calls on enrolled
-                paths. Isolation requires an enforced boundary without bypass paths.
-              </p>
-            </div>
-            <div className="bg-slate-900/50 p-4 border-t border-slate-800 flex justify-between items-center">
-              <span className="text-xs text-slate-500 font-mono">MODE: ISOLATE</span>
-              <Lock size={14} className="text-amber-500" />
-            </div>
-          </div>
-
-          {/* Response C */}
-          <div className="bg-[#0f1219] border border-slate-800 p-0 rounded-lg hover:border-red-500 transition-all group overflow-hidden relative">
-            <div className="h-1 w-full bg-red-500 absolute top-0"></div>
-            <div className="absolute inset-0 bg-red-900/5 group-hover:bg-red-900/10 transition-colors"></div>
-            <div className="p-8 relative z-10">
-              <div className="text-red-500 font-bold mb-4 flex items-center gap-2 text-xs uppercase tracking-widest">
-                <Lock size={16} /> Response C
-              </div>
-              <h3 className="text-white text-xl font-bold mb-2 group-hover:text-red-400 transition-colors">
-                Halt &amp; Require G4
-              </h3>
-              <p className="text-slate-400 text-sm leading-relaxed">
-                Proposed response: stop the enrolled action and require explicit human authority
-                before proceeding.
-              </p>
-            </div>
-            <div className="bg-slate-900/50 p-4 border-t border-slate-800 flex justify-between items-center relative z-10">
-              <span className="text-xs text-slate-500 font-mono">MODE: HALT</span>
-              <XCircle size={14} className="text-red-500" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 7. Compliance is Evidence */}
-      <section className="py-24 bg-[#050505] border-t border-slate-900">
-        <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div>
-            <h2 className="text-3xl font-bold text-white mb-6">
-              Evidence for a defined boundary
-            </h2>
-            <p className="text-lg text-slate-400 mb-8">
-              On an enrolled path, retained receipts and drift observations can support review of
-              configured controls. Their integrity, coverage and external outcomes require
-              separate verification.
-            </p>
-            <div className="flex gap-4">
-              <div className="px-4 py-2 bg-slate-900 border border-slate-700 rounded text-slate-300 font-mono text-sm flex items-center gap-2">
-                <FileCode size={14} className="text-red-500" /> DRIFT_DETECTED
-              </div>
-              <div className="px-4 py-2 bg-slate-900 border border-slate-700 rounded text-slate-300 font-mono text-sm flex items-center gap-2">
-                <CheckCircle2 size={14} className="text-green-500" /> DRIFT_ACKED
-              </div>
-            </div>
-          </div>
-
-          <div className="relative group">
-            <div className="absolute -inset-1 bg-gradient-to-r from-red-900/20 to-amber-900/20 rounded-lg blur opacity-50 group-hover:opacity-100 transition duration-500"></div>
-            <div className="relative bg-[#0f1219] rounded-lg border border-slate-800 p-6 shadow-2xl font-mono text-sm overflow-hidden">
-              <div className="flex justify-between items-center mb-4 border-b border-slate-800 pb-2">
-                <div className="flex gap-2">
-                  <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                  <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                </div>
-                <div className="text-xs text-slate-600">audit_log_v2.json</div>
-              </div>
-              <div className="text-slate-300 space-y-2">
-                <div>
-                  <span className="text-purple-400">let</span> event ={' '}
-                  <span className="text-yellow-300">{'{'}</span>
-                </div>
-                <div className="pl-4">
-                  <span className="text-blue-400">&quot;event&quot;</span>:{' '}
-                  <span className="text-green-400">&quot;DRIFT_DETECTED&quot;</span>,
-                </div>
-                <div className="pl-4">
-                  <span className="text-blue-400">&quot;invariant_violated&quot;</span>:{' '}
-                  <span className="text-green-400">&quot;policy_hash_mismatch&quot;</span>,
-                </div>
-                <div className="pl-4">
-                  <span className="text-blue-400">&quot;lane_id&quot;</span>:{' '}
-                  <span className="text-green-400">&quot;finance_ops&quot;</span>,
-                </div>
-                <div className="pl-4">
-                  <span className="text-blue-400">&quot;timestamp&quot;</span>:{' '}
-                  <span className="text-green-400">&quot;2026-01-15T14:02:00Z&quot;</span>,
-                </div>
-                <div className="pl-4">
-                  <span className="text-blue-400">&quot;action_taken&quot;</span>:{' '}
-                  <span className="text-red-400">&quot;HALT_G4_REQUIRED&quot;</span>,
-                </div>
-                <div className="pl-4">
-                  <span className="text-blue-400">&quot;drift_vector&quot;</span>:{' '}
-                  <span className="text-yellow-300">{'{'}</span>
-                </div>
-                <div className="pl-8">
-                  <span className="text-blue-400">&quot;expected&quot;</span>:{' '}
-                  <span className="text-slate-400">&quot;0x99a...&quot;</span>,
-                </div>
-                <div className="pl-8">
-                  <span className="text-blue-400">&quot;actual&quot;</span>:{' '}
-                  <span className="text-slate-400">&quot;0x11b...&quot;</span>
-                </div>
-                <div className="pl-4">
-                  <span className="text-yellow-300">{'}'}</span>
-                </div>
-                <div>
-                  <span className="text-yellow-300">{'}'}</span>;
-                </div>
-                <div className="mt-4 text-slate-500">
-                  {/* Drift Guard ensures system did not "fail open" */}
-                  {'// Drift Guard ensures system did not "fail open"'}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="py-24 bg-cosmo-dark border-t border-slate-900">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-white mb-12">Frequently Asked Questions</h2>
-          <div className="space-y-2">
+          <div className="space-y-3">
             <FaqItem
               question="How does Drift Guard differ from observability?"
               answer="Observability records signals such as latency and errors. Drift Guard's design adds configured checks for divergence from authorized behavior, including cases without a software error. Detection coverage must be established in the deployed integration."
@@ -1005,46 +427,8 @@ export default function DriftGuardContent() {
               answer="The design checks configured boundaries and observed behavior across model types. Non-deterministic behavior still requires suitable detection signals and workload-specific validation; no universal safety guarantee follows."
             />
           </div>
-        </div>
 
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
-          <div>
-            <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-6">
-              Related Platform Concepts
-            </h3>
-            <div className="flex flex-wrap gap-4">
-              <Link
-                href="/memory-infrastructure"
-                className="px-4 py-2 rounded bg-slate-900 border border-slate-800 text-slate-300 hover:border-cosmo-accent hover:text-white transition-colors text-sm"
-              >
-                Memory as Infrastructure
-              </Link>
-              <Link
-                href="/decision-exhaust"
-                className="px-4 py-2 rounded bg-slate-900 border border-slate-800 text-slate-300 hover:border-cosmo-accent hover:text-white transition-colors text-sm"
-              >
-                Decision Exhaust
-              </Link>
-              <Link
-                href="/runtime-governance"
-                className="px-4 py-2 rounded bg-slate-900 border border-slate-800 text-slate-300 hover:border-cosmo-accent hover:text-white transition-colors text-sm"
-              >
-                Runtime Governance
-              </Link>
-              <Link
-                href="/gate-system"
-                className="px-4 py-2 rounded bg-slate-900 border border-slate-800 text-slate-300 hover:border-cosmo-accent hover:text-white transition-colors text-sm"
-              >
-                Gate System
-              </Link>
-              <Link
-                href="/chronicle-receipts"
-                className="px-4 py-2 rounded bg-slate-900 border border-slate-800 text-slate-300 hover:border-cosmo-accent hover:text-white transition-colors text-sm"
-              >
-                Chronicle Receipts
-              </Link>
-            </div>
-          </div>
+          <ArchitecturePager current="/drift-guard" />
         </div>
       </section>
     </div>

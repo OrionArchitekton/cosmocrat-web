@@ -12,88 +12,51 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
-    // Log the error to an error reporting service
     console.error('Application error:', error);
   }, [error]);
 
   return (
-    <div className="min-h-screen bg-cosmo-dark flex flex-col items-center justify-center px-4 relative overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0 opacity-10 pointer-events-none">
-        <svg width="100%" height="100%">
-          <pattern
-            id="error-grid"
-            width="40"
-            height="40"
-            patternUnits="userSpaceOnUse"
-          >
-            <path
-              d="M 40 0 L 0 0 0 40"
-              fill="none"
-              stroke="#ef4444"
-              strokeWidth="0.5"
-            />
-          </pattern>
-          <rect width="100%" height="100%" fill="url(#error-grid)" />
-        </svg>
-      </div>
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-red-500/5 rounded-full blur-[100px] pointer-events-none"></div>
-
-      {/* Content */}
-      <div className="relative z-10 text-center max-w-2xl">
-        {/* Icon */}
-        <div className="w-20 h-20 mx-auto mb-8 bg-red-500/10 border border-red-500/30 rounded-full flex items-center justify-center">
-          <AlertTriangle className="text-red-500" size={40} />
+    <div className="min-h-[75vh] flex items-center justify-center px-6 py-20">
+      <div className="max-w-lg w-full rounded-xl border border-[#233047] bg-[#121b2e]/80 p-8 text-center">
+        <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-xl border border-red-500/35 bg-red-500/10">
+          <AlertTriangle className="text-red-400" size={26} aria-hidden="true" />
         </div>
 
-        {/* Message */}
-        <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
-          Something Went Wrong
-        </h1>
-        <p className="text-lg text-slate-400 mb-4 max-w-md mx-auto">
-          An unexpected error occurred. Our team has been notified. 
-          You can try again or return to the home page.
+        <h1 className="text-3xl font-semibold text-white mb-3 mt-0">Something Went Wrong</h1>
+        <p className="text-sm text-[#94a3b8] mb-6 leading-relaxed">
+          An unexpected error occurred. You can retry loading this view or return to the home page.
         </p>
 
-        {/* Error Details (optional, for debugging) */}
         {error.digest && (
-          <div className="mb-8 p-4 bg-slate-900/50 border border-slate-800 rounded-lg inline-block">
-            <div className="flex items-center gap-2 text-sm text-slate-500">
-              <Bug size={14} />
-              <span>Error ID:</span>
-              <code className="text-slate-400">{error.digest}</code>
-            </div>
+          <div className="mb-6 inline-flex items-center gap-2 rounded-md border border-[#233047] bg-[#0b1120] px-3 py-1.5 font-mono text-xs text-[#94a3b8]">
+            <Bug size={13} aria-hidden="true" />
+            <span>Error ID:</span>
+            <code className="text-[#e2e8f0]">{error.digest}</code>
           </div>
         )}
 
-        {/* Actions */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <button
+            type="button"
             onClick={() => reset()}
-            className="flex items-center gap-2 bg-amber-600 text-white px-6 py-3 rounded font-semibold hover:bg-amber-500 transition-colors"
+            className="button button-primary w-full sm:w-auto"
           >
-            <RefreshCw size={18} />
+            <RefreshCw size={15} aria-hidden="true" />
             Try Again
           </button>
-          <Link
-            href="/"
-            className="flex items-center gap-2 bg-slate-800 text-white px-6 py-3 rounded font-semibold hover:bg-slate-700 transition-colors border border-slate-700"
-          >
-            <Home size={18} />
+          <Link href="/" className="button button-outline w-full sm:w-auto">
+            <Home size={15} aria-hidden="true" />
             Back to Home
           </Link>
         </div>
 
-        {/* Support Note */}
-        <div className="mt-12 pt-8 border-t border-slate-800">
-          <p className="text-sm text-slate-500">
-            If this problem persists, please contact{' '}
-            <a
-              href="mailto:support@cosmocrat.ai"
-              className="text-amber-500 hover:underline"
-            >
+        <div className="mt-8 border-t border-[#233047] pt-5">
+          <p className="m-0 text-xs text-[#94a3b8]">
+            If this persists, contact{' '}
+            <a href="mailto:support@cosmocrat.ai" className="text-[#f0b66a] hover:underline">
               support@cosmocrat.ai
             </a>
+            .
           </p>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
+import AboutMilestones, { type MilestoneItem } from '@/components/os/AboutMilestones';
 import { generatePageMetadata } from '@/lib/metadata';
 
 export const metadata = generatePageMetadata({
@@ -9,6 +10,33 @@ export const metadata = generatePageMetadata({
   path: '/about',
 });
 
+const milestones: readonly MilestoneItem[] = [
+  {
+    index: '01',
+    title: 'Cognitive continuity & human sovereignty',
+    detail:
+      'User-owned context connecting everyday tools without surrendering direction or authorship.',
+  },
+  {
+    index: '02',
+    title: 'Proven inside the Orion Estate',
+    detail:
+      'Field-tested daily questions about task leases, browser identities, session handoffs, and proof.',
+  },
+  {
+    index: '03',
+    title: 'Independent Orion releases',
+    detail:
+      'Focused public components keeping explicit versions, licenses, and documented support limits.',
+  },
+  {
+    index: '04',
+    title: 'Separate governance kernel',
+    detail:
+      'Narrow authority and receipt evaluation distinct from local execution workflows.',
+  },
+];
+
 export default function AboutPage() {
   return (
     <div className="wrap">
@@ -17,7 +45,7 @@ export default function AboutPage() {
         <h1>
           From an idea to
           <br />
-          the way we work.
+          <em>the way we work.</em>
         </h1>
         <p>
           Cosmocrat began with a question: how can intelligence preserve a person’s intent over time
@@ -28,6 +56,9 @@ export default function AboutPage() {
           could connect the tools a person already uses. Human sovereignty, governed memory and
           trust supported by evidence remain the foundation.
         </p>
+
+        <AboutMilestones milestones={milestones} />
+
         <h2>Putting the philosophy to work</h2>
         <p>
           The Orion Estate is Dan Mercede’s private operating environment for software, agents,
@@ -40,6 +71,7 @@ export default function AboutPage() {
           demonstrations make their behavior and limits inspectable. The tools keep their own names,
           versions, licenses and support boundaries.
         </p>
+
         <h2>Governance retains its own responsibility</h2>
         <p>
           The enterprise work developed a narrower governance boundary: evaluate policy and
@@ -52,6 +84,7 @@ export default function AboutPage() {
           Local observations, task records and authoritative governance receipts retain their
           distinct roles.
         </p>
+
         <h2>The part available today</h2>
         <p>
           You can use independent components and try selected Starter profiles. The full environment
@@ -62,11 +95,12 @@ export default function AboutPage() {
           Cosmocrat is architected and maintained by Dan Mercede. The project is unrelated to
           historical or theological uses of the word “cosmocrat.”
         </p>
+
         <div className="button-row">
           <Link className="button button-primary" href="/tools">
             Explore the tools <ArrowRight aria-hidden="true" />
           </Link>
-          <Link className="text-link" href="/platform">
+          <Link className="button button-outline" href="/platform">
             Read the governance principles <ArrowRight aria-hidden="true" />
           </Link>
         </div>

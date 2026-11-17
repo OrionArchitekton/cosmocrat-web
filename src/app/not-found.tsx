@@ -1,92 +1,50 @@
 import Link from 'next/link';
-import { Home, ArrowLeft, Search, AlertCircle } from 'lucide-react';
+import { Home, ArrowRight, Compass } from 'lucide-react';
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-cosmo-dark flex flex-col items-center justify-center px-4 relative overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0 opacity-10 pointer-events-none">
-        <svg width="100%" height="100%">
-          <pattern
-            id="grid-pattern"
-            width="40"
-            height="40"
-            patternUnits="userSpaceOnUse"
-          >
-            <path
-              d="M 40 0 L 0 0 0 40"
-              fill="none"
-              stroke="#d97706"
-              strokeWidth="0.5"
-            />
-          </pattern>
-          <rect width="100%" height="100%" fill="url(#grid-pattern)" />
-        </svg>
-      </div>
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-amber-500/5 rounded-full blur-[100px] pointer-events-none"></div>
-
-      {/* Content */}
-      <div className="relative z-10 text-center max-w-2xl">
-        {/* Error Code */}
-        <div className="mb-8">
-          <div className="text-[150px] md:text-[200px] font-bold text-slate-900 leading-none select-none relative">
-            404
-            <div className="absolute inset-0 text-transparent bg-clip-text bg-gradient-to-b from-amber-500/20 to-transparent">
-              404
-            </div>
-          </div>
+    <div className="min-h-[75vh] flex items-center justify-center px-6 py-20">
+      <div className="max-w-lg w-full rounded-xl border border-[#233047] bg-[#121b2e]/80 p-8 text-center">
+        <div className="font-mono text-xs tracking-[0.14em] uppercase text-[#f0b66a] mb-3">
+          Error 404
         </div>
-
-        {/* Icon */}
-        <div className="w-16 h-16 mx-auto mb-8 bg-slate-900 border border-slate-800 rounded-full flex items-center justify-center">
-          <AlertCircle className="text-amber-500" size={32} />
-        </div>
-
-        {/* Message */}
-        <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
-          Page Not Found
-        </h1>
-        <p className="text-lg text-slate-400 mb-8 max-w-md mx-auto">
-          The page you&apos;re looking for doesn&apos;t exist or has been moved. 
-          Check the URL or navigate back home.
+        <h1 className="text-3xl font-semibold text-white mb-3 mt-0">Page Not Found</h1>
+        <p className="text-sm text-[#94a3b8] mb-7 leading-relaxed">
+          The page you&apos;re looking for doesn&apos;t exist or has been moved. Return home or
+          explore the available Orion tools and governance architecture.
         </p>
 
-        {/* Actions */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link
-            href="/"
-            className="flex items-center gap-2 bg-amber-600 text-white px-6 py-3 rounded font-semibold hover:bg-amber-500 transition-colors"
-          >
-            <Home size={18} />
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <Link href="/" className="button button-primary w-full sm:w-auto">
+            <Home size={15} aria-hidden="true" />
             Back to Home
           </Link>
-          <Link
-            href="/waitlist"
-            className="flex items-center gap-2 bg-slate-800 text-white px-6 py-3 rounded font-semibold hover:bg-slate-700 transition-colors border border-slate-700"
-          >
-            <Search size={18} />
-            Request Early Access
+          <Link href="/tools" className="button button-outline w-full sm:w-auto">
+            <Compass size={15} aria-hidden="true" />
+            Explore Tools
           </Link>
         </div>
 
-        {/* Additional Links */}
-        <div className="mt-12 pt-8 border-t border-slate-800">
-          <p className="text-sm text-slate-500 mb-4">Looking for something specific?</p>
-          <div className="flex flex-wrap justify-center gap-4 text-sm">
-            <Link href="/about" className="text-slate-400 hover:text-amber-500 transition-colors">
-              About
+        <div className="mt-8 border-t border-[#233047] pt-5">
+          <p className="text-xs text-[#94a3b8] mb-3">Quick navigation</p>
+          <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-xs">
+            <Link href="/about" className="text-[#b2c0d4] hover:text-[#f0b66a]">
+              Our story
             </Link>
-            <Link href="/decision-exhaust" className="text-slate-400 hover:text-amber-500 transition-colors">
-              Decision Exhaust
+            <Link href="/platform" className="text-[#b2c0d4] hover:text-[#f0b66a]">
+              Architecture
             </Link>
-            <Link href="/runtime-governance" className="text-slate-400 hover:text-amber-500 transition-colors">
-              Runtime Governance
-            </Link>
-            <Link href="/gate-system" className="text-slate-400 hover:text-amber-500 transition-colors">
+            <Link href="/gate-system" className="text-[#b2c0d4] hover:text-[#f0b66a]">
               Gate System
             </Link>
-            <Link href="/docs" className="text-slate-400 hover:text-amber-500 transition-colors">
-              Documentation
+            <Link href="/docs" className="text-[#b2c0d4] hover:text-[#f0b66a]">
+              Start here
+            </Link>
+            <Link
+              href="/waitlist"
+              className="text-[#f0b66a] hover:underline inline-flex items-center gap-1"
+            >
+              Waitlist <ArrowRight size={12} aria-hidden="true" />
             </Link>
           </div>
         </div>

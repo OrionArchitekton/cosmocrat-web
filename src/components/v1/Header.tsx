@@ -5,13 +5,15 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { ArrowRight, Menu } from 'lucide-react';
+import CommandPalette from '@/components/os/CommandPalette';
 
 const links = [
-  { label: 'Home', href: '/' },
   { label: 'Tools', href: '/tools' },
-  { label: 'Principles', href: '/#principles' },
+  { label: 'Architecture', href: '/platform' },
+  { label: 'Start here', href: '/docs' },
   { label: 'Our story', href: '/about' },
 ];
+
 const firstGuide = 'https://www.danmercede.com/guides/coordinate-local-agents-with-orion-pm';
 
 export default function Header({ preview = false }: { preview?: boolean }) {
@@ -50,7 +52,7 @@ export default function Header({ preview = false }: { preview?: boolean }) {
         <div className="preview-bar">
           <div className="wrap">
             <span className="preview-label">LOCAL PREVIEW</span>
-            <span>Accepted visual direction · Publication on hold</span>
+            <span>Interactive preview environment · Publication controls active</span>
           </div>
         </div>
       )}
@@ -67,12 +69,18 @@ export default function Header({ preview = false }: { preview?: boolean }) {
               unoptimized
             />
           </Link>
+
           <nav className="desktop-nav" aria-label="Main navigation">
             {navigation}
+          </nav>
+
+          <div className="header-actions">
+            <CommandPalette />
             <a className="nav-cta" href={firstGuide} rel="noreferrer">
               Start with one task <ArrowRight aria-hidden="true" />
             </a>
-          </nav>
+          </div>
+
           <details
             className="mobile-nav"
             ref={menu}
@@ -87,7 +95,13 @@ export default function Header({ preview = false }: { preview?: boolean }) {
               Menu <Menu aria-hidden="true" />
             </summary>
             <nav aria-label="Mobile navigation">
+              <Link href="/" onClick={close}>
+                Home
+              </Link>
               {navigation}
+              <Link href="/waitlist" onClick={close}>
+                Request Early Access
+              </Link>
               <a href={firstGuide} rel="noreferrer" onClick={close}>
                 Start with one task ↗
               </a>

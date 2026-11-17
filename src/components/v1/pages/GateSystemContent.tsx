@@ -1,203 +1,172 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import FaqItem from '../FaqItem';
 import {
-  ShieldCheck,
   BrainCircuit,
-  Key,
-  Zap,
+  CheckCircle,
   Database,
   GitCommit,
-  Lock,
-  CheckCircle,
+  Key,
   Network,
-  Loader2,
+  Pause,
+  Play,
+  RotateCcw,
+  ShieldCheck,
+  XCircle,
+  Zap,
 } from 'lucide-react';
+import FaqItem from '../FaqItem';
+import { ArchitectureNav, ArchitecturePager } from '@/components/os/ArchitectureNav';
 
-// Gate Node Component
-const GateNode = ({
-  id,
-  label,
-  color,
-  icon: Icon,
-  status,
-  isMajor,
-}: {
+interface GateStage {
   id: string;
+  phase: 'Input & Memory' | 'Decision' | 'Authority' | 'Execution';
   label: string;
-  color: string;
-  icon: React.ElementType;
-  status: 'idle' | 'processing' | 'completed';
-  isMajor?: boolean;
-}) => {
-  const getStatusClasses = () => {
-    switch (status) {
-      case 'processing':
-        return 'gate-active z-10';
-      case 'completed':
-        return 'gate-completed';
-      default:
-        return 'gate-idle';
-    }
-  };
+  title: string;
+  question: string;
+  detail: string;
+  boundary: string;
+  icon: 'input' | 'memory' | 'formation' | 'eligibility' | 'auth' | 'execution' | 'truth';
+}
 
-  return (
-    <div
-      className={`flex flex-col items-center gap-3 relative transition-all duration-500 ${
-        isMajor ? 'scale-110' : ''
-      }`}
-    >
-      {/* Node Circle */}
-      <div
-        className={`
-          w-16 h-16 rounded-full border-2 flex items-center justify-center 
-          transition-all duration-500 bg-slate-900
-          ${getStatusClasses()}
-        `}
-        style={{ '--glow-color': color } as React.CSSProperties}
-      >
-        <Icon size={24} style={{ color: `rgb(${color})` }} />
-      </div>
+const gates: readonly GateStage[] = [
+  {
+    id: 'G0',
+    phase: 'Input & Memory',
+    label: 'Input',
+    title: 'G0 · Admissible Request Normalization',
+    question: 'Is this request structurally well-formed and attributed?',
+    detail:
+      'Normalizes the caller identity, action shape, and requested mutation before downstream evaluation.',
+    boundary: 'Does not yet validate semantic safety or authority to mutate external systems.',
+    icon: 'input',
+  },
+  {
+    id: 'G1',
+    phase: 'Input & Memory',
+    label: 'Memory',
+    title: 'G1 · Context & Lane Scope',
+    question: 'Which memory lanes and facts are admissible for this request?',
+    detail:
+      'Checks enrolled lane policy so unrelated personal, legal, or tenant context does not pollute the evaluation.',
+    boundary: 'Actual isolation requires enforcement at the external store without bypass routes.',
+    icon: 'memory',
+  },
+  {
+    id: 'G2',
+    phase: 'Decision',
+    label: 'Formation',
+    title: 'G2 · Decision Formation',
+    question: 'What proposed action and rationale is being requested?',
+    detail:
+      'Configured criteria for a proposed decision; a confidence score does not establish truth or authority.',
+    boundary: 'Separates proposal generation from permission to act.',
+    icon: 'formation',
+  },
+  {
+    id: 'G3',
+    phase: 'Decision',
+    label: 'Eligibility',
+    title: 'G3 · Execution Eligibility',
+    question: 'May this request touch the target resource under current policy?',
+    detail:
+      'Evaluates execution mode, risk class, and policy limits before allowing promotion toward action.',
+    boundary: 'Most proposed actions terminate safely at G3 when policy denies eligibility.',
+    icon: 'eligibility',
+  },
+  {
+    id: 'G4',
+    phase: 'Authority',
+    label: 'Human Auth',
+    title: 'G4 · Explicit Human Authorization',
+    question: 'Does this risk threshold require explicit human approval?',
+    detail:
+      'High-impact mutations pause at the operator plane until an authorized human approves or denies the transition.',
+    boundary: 'Missing authorization at an enrolled boundary denies the transition (fail-closed).',
+    icon: 'auth',
+  },
+  {
+    id: 'G5',
+    phase: 'Execution',
+    label: 'Execution',
+    title: 'G5 · Boundary Dispatch',
+    question: 'Is the admitted action dispatched through the runtime?',
+    detail:
+      'After admission passes, the runtime adapter invokes the external tool or service outside the narrow kernel.',
+    boundary: 'Admission receipt records permission, not external completion.',
+    icon: 'execution',
+  },
+  {
+    id: 'G6',
+    phase: 'Execution',
+    label: 'Truth',
+    title: 'G6 · Outcome & Receipt Correlation',
+    question: 'Did external outcome evidence reconcile with the admitted intent?',
+    detail:
+      'Separately retained outcome records correlate real-world execution results back to Decision Exhaust and Drift Guard.',
+    boundary: 'Outcome verification requires separate provider or repository evidence.',
+    icon: 'truth',
+  },
+];
 
-      {/* Label */}
-      <div
-        className={`text-center transition-opacity duration-500 ${
-          status === 'idle' ? 'opacity-50' : 'opacity-100'
-        }`}
-      >
-        <div className="text-xs font-bold" style={{ color: `rgb(${color})` }}>
-          {id}
-        </div>
-        <div className="text-sm font-medium text-slate-300">{label}</div>
-      </div>
-
-      {/* Status Badge (Absolute) */}
-      {status === 'processing' && (
-        <div className="absolute -top-3 px-2 py-0.5 bg-slate-900 border border-white/20 rounded-full flex items-center gap-1 shadow-lg animate-bounce">
-          <Loader2 size={10} className="animate-spin text-white" />
-          <span className="text-[10px] font-bold text-white">PROC</span>
-        </div>
-      )}
-      {status === 'completed' && (
-        <div className="absolute -top-3 px-2 py-0.5 bg-slate-900 border border-green-500/30 rounded-full flex items-center gap-1 shadow-lg">
-          <CheckCircle size={10} className="text-green-500" />
-          <span className="text-[10px] font-bold text-green-500">PASS</span>
-        </div>
-      )}
-    </div>
-  );
-};
-
-// Connector Component
-const Connector = ({
-  large,
-  status,
-}: {
-  large?: boolean;
-  status: 'idle' | 'processing' | 'completed';
-}) => {
-  const widthClass = large ? 'w-16' : 'w-8';
-
-  // If status is 'processing' or 'completed', the line is lit
-  const isLit = status === 'completed' || status === 'processing';
-
-  return (
-    <div
-      className={`${widthClass} h-[2px] bg-slate-800 relative overflow-hidden rounded-full`}
-    >
-      <div
-        className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-500 to-transparent transition-transform duration-700 ease-out"
-        style={{
-          transform: isLit ? 'translateX(0%)' : 'translateX(-100%)',
-          opacity: isLit ? 1 : 0,
-        }}
-      ></div>
-      {/* Solid fill after animation */}
-      <div
-        className="absolute inset-0 bg-slate-600 transition-opacity duration-500 delay-300"
-        style={{ opacity: status === 'completed' ? 1 : 0 }}
-      ></div>
-    </div>
-  );
+const gateIcons = {
+  input: GitCommit,
+  memory: Database,
+  formation: BrainCircuit,
+  eligibility: ShieldCheck,
+  auth: Key,
+  execution: Zap,
+  truth: CheckCircle,
 };
 
 export default function GateSystemContent() {
-  const [activeStep, setActiveStep] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [g4Decision, setG4Decision] = useState<'pending' | 'approved' | 'denied'>('pending');
 
-  // Simulation Loop: Cycle through Gates 0-6 then pause/reset
   useEffect(() => {
+    if (!isPlaying) return;
     const timer = setInterval(() => {
-      setActiveStep((prev) => (prev + 1) % 9); // 7 steps + 2 steps pause
-    }, 1500);
+      setSelectedIndex((prev) => (prev + 1) % gates.length);
+    }, 2400);
     return () => clearInterval(timer);
-  }, []);
+  }, [isPlaying]);
 
-  const getStatus = (gateIndex: number) => {
-    if (activeStep === gateIndex) return 'processing';
-    if (activeStep > gateIndex && activeStep < 7) return 'completed';
-    return 'idle';
-  };
+  const activeGate = gates[selectedIndex] ?? gates[0];
+  const ActiveIcon = gateIcons[activeGate.icon];
 
   return (
-    <div className="bg-cosmo-dark min-h-screen pb-24 font-sans text-slate-200">
-      {/* Add Component Styles */}
-      <style>{`
-        @keyframes pulse-ring {
-          0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(var(--glow-color), 0.7); }
-          70% { transform: scale(1); box-shadow: 0 0 0 20px rgba(var(--glow-color), 0); }
-          100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(var(--glow-color), 0); }
-        }
-        .gate-active {
-           animation: pulse-ring 2s cubic-bezier(0.24, 0, 0.38, 1) infinite;
-           border-color: rgba(var(--glow-color), 1) !important;
-           background: rgba(var(--glow-color), 0.1);
-        }
-        .gate-completed {
-           border-color: rgba(var(--glow-color), 0.5);
-           background: rgba(var(--glow-color), 0.05);
-           opacity: 1;
-        }
-        .gate-idle {
-           border-color: #1e293b;
-           opacity: 0.4;
-           transform: scale(0.95);
-        }
-        .connector-line {
-           transition: width 0.5s ease, background-color 0.5s ease;
-        }
-      `}</style>
+    <div className="pb-20">
+      <ArchitectureNav current="/gate-system" />
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4 border-b border-slate-900 relative overflow-hidden">
-        {/* Background element */}
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-amber-900/10 to-transparent pointer-events-none"></div>
-
-        <div className="max-w-7xl mx-auto relative z-10 text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-900/20 border border-amber-700/50 text-xs font-bold text-cosmo-accent mb-6 uppercase tracking-widest">
-            System Architecture
-          </div>
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
-            The Path of Resistance.
+      <section className="py-16 md:py-24 border-b border-[#233047]">
+        <div className="wrap text-center max-w-4xl">
+          <div className="eyebrow justify-center">System Architecture / 04</div>
+          <h1>
+            The Path of
+            <br />
+            <em>Resistance.</em>
           </h1>
-          <p className="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto leading-relaxed mb-6">
-            Power comes from delegation. Safety comes from restraint. <br />
-            The conceptual seven-stage model separates intent, decision, authority, execution and outcome. Actual governed coverage depends on the enrolled integration.
+          <p className="text-lg text-[#b2c0d4] max-w-3xl mx-auto leading-relaxed mb-6">
+            Power comes from delegation. Safety comes from restraint. The conceptual seven-stage
+            model separates intent, decision, authority, execution and outcome. Actual governed
+            coverage depends on the enrolled integration.
           </p>
-          <p className="text-lg text-amber-500 font-medium mb-10">
+          <p className="text-base text-[#f0b66a] font-medium">
             In the governed model, an enrolled decision must earn the right to become an action.
           </p>
         </div>
       </section>
 
       {/* Definition Block (SEO Spine) */}
-      <section className="py-16 bg-cosmo-dark border-b border-slate-900/50">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-3xl font-semibold text-slate-300 mb-8 leading-snug">
+      <section className="py-16 border-b border-[#233047]">
+        <div className="wrap max-w-4xl">
+          <h2 className="text-2xl md:text-3xl font-semibold text-white mb-6 text-center">
             What is the Gate System?
           </h2>
-          <div className="prose prose-invert max-w-3xl mx-auto text-slate-500 text-base leading-relaxed space-y-4">
+          <div className="space-y-4 text-sm sm:text-base leading-relaxed text-[#b2c0d4]">
             <p>
               The Gate System describes Cosmocrat&apos;s conceptual admission pipeline. An enrolled
               integration can place a policy boundary between a proposed mutation and execution.
@@ -207,7 +176,7 @@ export default function GateSystemContent() {
               Operating within{' '}
               <Link
                 href="/runtime-governance"
-                className="text-slate-400 hover:text-amber-500 underline decoration-slate-700 underline-offset-4 transition-colors"
+                className="text-[#f0b66a] underline underline-offset-4 hover:text-white"
               >
                 Runtime Governance
               </Link>
@@ -220,7 +189,7 @@ export default function GateSystemContent() {
               or authority is absent. Retained decisions contribute to{' '}
               <Link
                 href="/decision-exhaust"
-                className="text-slate-400 hover:text-amber-500 underline decoration-slate-700 underline-offset-4 transition-colors"
+                className="text-[#f0b66a] underline underline-offset-4 hover:text-white"
               >
                 Decision Exhaust
               </Link>
@@ -228,7 +197,7 @@ export default function GateSystemContent() {
               records do not establish an external outcome. The design uses this evidence for{' '}
               <Link
                 href="/drift-guard"
-                className="text-slate-400 hover:text-amber-500 underline decoration-slate-700 underline-offset-4 transition-colors"
+                className="text-[#f0b66a] underline underline-offset-4 hover:text-white"
               >
                 Drift Guard
               </Link>
@@ -238,371 +207,367 @@ export default function GateSystemContent() {
         </div>
       </section>
 
-      {/* The Gates Visualization (Live Simulation) */}
-      <section className="py-24 bg-slate-950 border-b border-slate-900 overflow-x-auto">
-        <div className="max-w-7xl mx-auto px-4 min-w-[1000px]">
-          <div className="flex justify-between items-center relative">
-            {/* G0-G1: Input & Memory (Blue) */}
-            <div className="flex items-center gap-4 relative p-4 rounded-xl bg-slate-900/30 border border-slate-800/50">
-              <div className="absolute -top-3 left-4 text-blue-500 text-[10px] font-bold tracking-widest uppercase bg-slate-950 px-2 border border-blue-900/30 rounded">
-                Input & Memory
-              </div>
-
-              <GateNode
-                id="G0"
-                label="Input"
-                color="59, 130, 246"
-                icon={GitCommit}
-                status={getStatus(0)}
-              />
-
-              <Connector status={getStatus(0)} />
-
-              <GateNode
-                id="G1"
-                label="Memory"
-                color="59, 130, 246"
-                icon={Database}
-                status={getStatus(1)}
-              />
+      {/* Interactive 7-Gate Simulation */}
+      <section className="py-20 border-b border-[#233047] bg-[#090f1d]">
+        <div className="wrap">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+            <div>
+              <div className="eyebrow">Interactive sequence</div>
+              <h2 className="text-2xl sm:text-3xl font-semibold text-white mt-3 mb-2">
+                Inspect G0 through G6
+              </h2>
+              <p className="text-sm text-[#94a3b8] m-0">
+                Select any gate to pause and examine its admission check, or toggle playback.
+              </p>
             </div>
-
-            <Connector large status={getStatus(1)} />
-
-            {/* G2-G3: Decision (Orange) */}
-            <div className="flex items-center gap-4 relative p-4 rounded-xl bg-slate-900/30 border border-slate-800/50">
-              <div className="absolute -top-3 left-4 text-orange-500 text-[10px] font-bold tracking-widest uppercase bg-slate-950 px-2 border border-orange-900/30 rounded">
-                Decision
-              </div>
-              <GateNode
-                id="G2"
-                label="Formation"
-                color="249, 115, 22"
-                icon={BrainCircuit}
-                status={getStatus(2)}
-              />
-
-              <Connector status={getStatus(2)} />
-
-              <GateNode
-                id="G3"
-                label="Eligibility"
-                color="249, 115, 22"
-                icon={ShieldCheck}
-                status={getStatus(3)}
-              />
-            </div>
-
-            <Connector large status={getStatus(3)} />
-
-            {/* G4: Auth (Yellow) */}
-            <div className="flex items-center gap-4 relative p-4 rounded-xl bg-slate-900/30 border border-slate-800/50">
-              <div className="absolute -top-3 left-4 text-yellow-500 text-[10px] font-bold tracking-widest uppercase bg-slate-950 px-2 border border-yellow-900/30 rounded">
-                Auth
-              </div>
-              <GateNode
-                id="G4"
-                label="Human Auth"
-                color="234, 179, 8"
-                icon={Key}
-                isMajor
-                status={getStatus(4)}
-              />
-            </div>
-
-            <Connector large status={getStatus(4)} />
-
-            {/* G5-G6: Exec (Green) */}
-            <div className="flex items-center gap-4 relative p-4 rounded-xl bg-slate-900/30 border border-slate-800/50">
-              <div className="absolute -top-3 left-4 text-green-500 text-[10px] font-bold tracking-widest uppercase bg-slate-950 px-2 border border-green-900/30 rounded">
-                Execution
-              </div>
-              <GateNode
-                id="G5"
-                label="Execution"
-                color="34, 197, 94"
-                icon={Zap}
-                status={getStatus(5)}
-              />
-
-              <Connector status={getStatus(5)} />
-
-              <GateNode
-                id="G6"
-                label="Truth"
-                color="34, 197, 94"
-                icon={CheckCircle}
-                status={getStatus(6)}
-              />
-            </div>
+            <button
+              type="button"
+              onClick={() => setIsPlaying((prev) => !prev)}
+              className="button button-outline self-start sm:self-auto"
+            >
+              {isPlaying ? (
+                <>
+                  <Pause size={15} aria-hidden="true" /> Pause walkthrough
+                </>
+              ) : (
+                <>
+                  <Play size={15} aria-hidden="true" /> Play walkthrough
+                </>
+              )}
+            </button>
           </div>
 
-          {/* Status Text / Legend */}
-          <div className="flex justify-center mt-12 gap-8 text-xs font-mono uppercase tracking-wider">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-slate-600"></div>
-              <span className="text-slate-500">Pending</span>
+          {/* Interactive Gate Stepper */}
+          <div
+            className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5 mb-6"
+            role="tablist"
+            aria-label="Seven gate stages"
+          >
+            {gates.map((gate, idx) => {
+              const Icon = gateIcons[gate.icon];
+              const isCurrent = idx === selectedIndex;
+              const isPassed = idx < selectedIndex;
+              return (
+                <button
+                  key={gate.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={isCurrent}
+                  onClick={() => {
+                    setIsPlaying(false);
+                    setSelectedIndex(idx);
+                  }}
+                  className={`rounded-lg border p-3.5 text-left transition-colors ${
+                    isCurrent
+                      ? 'border-[#f0b66a] bg-[#d97706]/15 text-white'
+                      : isPassed
+                        ? 'border-[#334563] bg-[#121b2e]/90 text-[#e2e8f0]'
+                        : 'border-[#233047] bg-[#0d1526] text-[#94a3b8] hover:border-[#334563]'
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="font-mono text-xs font-semibold text-[#f0b66a]">
+                      {gate.id}
+                    </span>
+                    <Icon
+                      size={15}
+                      className={isCurrent || isPassed ? 'text-[#f0b66a]' : 'text-[#64748b]'}
+                      aria-hidden="true"
+                    />
+                  </div>
+                  <div className="text-xs font-semibold">{gate.label}</div>
+                  <div className="font-mono text-[10px] text-[#94a3b8] mt-1">{gate.phase}</div>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Active Gate Inspector Readout */}
+          <div className="rounded-xl border border-[#233047] bg-[#121b2e]/85 p-6 sm:p-7">
+            <div className="flex items-center gap-3 mb-3">
+              <span className="tool-icon">
+                <ActiveIcon size={18} aria-hidden="true" />
+              </span>
+              <div>
+                <div className="font-mono text-[11px] uppercase tracking-wider text-[#f0b66a]">
+                  {activeGate.phase}
+                </div>
+                <h3 className="text-lg font-semibold text-white m-0">{activeGate.title}</h3>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></div>
-              <span className="text-amber-500">Processing</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-white"></div>
-              <span className="text-white">Passed</span>
+            <p className="text-sm font-medium text-[#e2e8f0] mb-2">{activeGate.question}</p>
+            <p className="text-sm text-[#b2c0d4] mb-4 leading-relaxed">{activeGate.detail}</p>
+            <div className="rounded-lg border border-[#233047] bg-[#0b1120] px-4 py-3 text-xs text-[#94a3b8]">
+              <strong className="text-[#f0b66a]">Boundary:</strong> {activeGate.boundary}
             </div>
           </div>
         </div>
       </section>
 
       {/* Deep Dive: Intelligence vs Authority */}
-      <section className="py-24 max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-        <div>
-          <div className="text-cosmo-accent font-bold mb-2 tracking-wider uppercase text-sm">
-            G2 vs G3
-          </div>
-          <h2 className="text-4xl font-bold text-white mb-6">Intelligence vs. Authority</h2>
-          <p className="text-lg text-slate-400 mb-6">
-            Most AI systems conflate &quot;can I do this?&quot; (capability) with &quot;may I do
-            this?&quot; (permission). Cosmocrat separates them into distinct gates.
-          </p>
+      <section className="py-20 border-b border-[#233047]">
+        <div className="wrap grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <div className="eyebrow">G2 vs G3</div>
+            <h2 className="text-3xl font-semibold text-white mt-3 mb-4">
+              Intelligence vs. Authority
+            </h2>
+            <p className="text-base text-[#b2c0d4] mb-6 leading-relaxed">
+              Most AI systems conflate &quot;can I do this?&quot; (capability) with &quot;may I do
+              this?&quot; (permission). Cosmocrat separates them into distinct gates.
+            </p>
 
-          <div className="space-y-6">
-            <div className="bg-slate-900 p-6 rounded border-l-4 border-orange-500/50">
-              <h3 className="text-white font-bold text-lg mb-1 flex items-center gap-2">
-                <BrainCircuit size={20} className="text-orange-400" /> G2: Decision Formation
-              </h3>
-              <p className="text-slate-400 text-sm">
-                Configured criteria for a proposed decision; a confidence score does not establish truth or authority.
-              </p>
-            </div>
-            <div className="bg-slate-900 p-6 rounded border-l-4 border-orange-500">
-              <h3 className="text-white font-bold text-lg mb-1 flex items-center gap-2">
-                <ShieldCheck size={20} className="text-orange-500" /> G3: Execution Eligibility
-              </h3>
-              <p className="text-slate-400 text-sm">
-                May this touch the real world? Checks execution mode, risk class, and policy limits.
-              </p>
-            </div>
-          </div>
-          <p className="mt-6 text-sm text-slate-500 italic">
-            Most AI decisions die at G3—safely.
-          </p>
-        </div>
-
-        <div className="relative h-96 bg-slate-900 rounded-xl border border-slate-800 overflow-hidden flex items-center justify-center">
-          {/* Abstract Visual: Brain hitting a Wall */}
-          <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
-          <div className="flex items-center gap-8">
-            <div className="w-32 h-32 rounded-full bg-orange-500/10 border border-orange-500/30 flex items-center justify-center animate-pulse">
-              <BrainCircuit size={64} className="text-orange-400" />
-            </div>
-            <div className="h-full w-1 bg-gradient-to-b from-transparent via-slate-600 to-transparent h-64 mx-4 relative">
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-950 border border-slate-600 p-2 rounded text-xs whitespace-nowrap text-slate-400">
-                Policy Wall
+            <div className="space-y-4">
+              <div className="rounded-lg border border-[#233047] bg-[#121b2e]/75 p-5">
+                <h3 className="text-white font-semibold text-base mb-1.5 flex items-center gap-2">
+                  <BrainCircuit size={18} className="text-[#f0b66a]" aria-hidden="true" />
+                  <span>G2: Decision Formation</span>
+                </h3>
+                <p className="text-sm text-[#94a3b8] m-0">
+                  Configured criteria for a proposed decision; a confidence score does not establish
+                  truth or authority.
+                </p>
+              </div>
+              <div className="rounded-lg border border-[#f0b66a]/40 bg-[#121b2e]/90 p-5">
+                <h3 className="text-white font-semibold text-base mb-1.5 flex items-center gap-2">
+                  <ShieldCheck size={18} className="text-[#f0b66a]" aria-hidden="true" />
+                  <span>G3: Execution Eligibility</span>
+                </h3>
+                <p className="text-sm text-[#94a3b8] m-0">
+                  May this touch the real world? Checks execution mode, risk class, and policy
+                  limits.
+                </p>
               </div>
             </div>
-            <div className="w-32 h-32 rounded-lg border-2 border-dashed border-slate-700 flex items-center justify-center grayscale opacity-50">
-              <Zap size={64} className="text-slate-600" />
+            <p className="mt-5 text-xs font-mono text-[#94a3b8]">
+              Most proposed AI actions terminate safely at G3 before external dispatch.
+            </p>
+          </div>
+
+          <div className="rounded-xl border border-[#233047] bg-[#0d1526] p-8 flex items-center justify-center min-h-[300px]">
+            <div className="flex items-center gap-6 sm:gap-10">
+              <div className="flex flex-col items-center gap-2 text-center">
+                <div className="w-20 h-20 rounded-xl border border-[#f0b66a]/50 bg-[#d97706]/10 flex items-center justify-center">
+                  <BrainCircuit size={36} className="text-[#f0b66a]" aria-hidden="true" />
+                </div>
+                <span className="font-mono text-[11px] text-[#cbd5e1]">Model Proposal (G2)</span>
+              </div>
+              <div className="flex flex-col items-center gap-2">
+                <div className="h-24 w-px bg-[#334563]" />
+                <span className="rounded border border-[#f0b66a]/50 bg-[#0b1120] px-2.5 py-1 font-mono text-[11px] text-[#f0b66a]">
+                  Policy Wall (G3)
+                </span>
+                <div className="h-24 w-px bg-[#334563]" />
+              </div>
+              <div className="flex flex-col items-center gap-2 text-center opacity-60">
+                <div className="w-20 h-20 rounded-xl border border-dashed border-[#334563] bg-[#0b1120] flex items-center justify-center">
+                  <Zap size={34} className="text-[#94a3b8]" aria-hidden="true" />
+                </div>
+                <span className="font-mono text-[11px] text-[#94a3b8]">External Action (G5)</span>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Deep Dive: The Operator Plane (G4) */}
-      <section className="py-24 bg-slate-900/30 border-y border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div className="order-2 lg:order-1 flex justify-center">
-            <div className="w-full max-w-md bg-slate-950 border border-amber-500/30 p-8 rounded-xl shadow-[0_0_50px_rgba(217,119,6,0.1)]">
-              <div className="flex items-center gap-4 mb-8 border-b border-slate-800 pb-6">
-                <Key size={40} className="text-amber-500" />
-                <div>
-                  <div className="text-xs text-amber-500 font-bold uppercase tracking-wider">
-                    Gate 4
+      {/* Deep Dive: Functional G4 Operator Plane Simulator */}
+      <section className="py-20 border-b border-[#233047] bg-[#090f1d]">
+        <div className="wrap grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="order-2 lg:order-1">
+            <div className="rounded-xl border border-[#f0b66a]/40 bg-[#0b1120] p-6 sm:p-7">
+              <div className="flex items-center justify-between gap-4 border-b border-[#233047] pb-5 mb-5">
+                <div className="flex items-center gap-3.5">
+                  <span className="tool-icon">
+                    <Key size={18} aria-hidden="true" />
+                  </span>
+                  <div>
+                    <div className="font-mono text-[11px] text-[#f0b66a] uppercase tracking-wider">
+                      Gate 4 · Interactive simulation
+                    </div>
+                    <h3 className="text-lg font-semibold text-white m-0">Human Authorization</h3>
                   </div>
-                  <h3 className="text-xl font-bold text-white">Human Authorization</h3>
+                </div>
+                {g4Decision !== 'pending' && (
+                  <button
+                    type="button"
+                    onClick={() => setG4Decision('pending')}
+                    className="inline-flex items-center gap-1.5 rounded border border-[#334563] px-2.5 py-1 font-mono text-[11px] text-[#cbd5e1] hover:border-[#f0b66a] hover:text-[#f0b66a]"
+                  >
+                    <RotateCcw size={12} aria-hidden="true" /> Reset
+                  </button>
+                )}
+              </div>
+
+              <div className="space-y-3 font-mono text-xs mb-5">
+                <div className="flex justify-between gap-4">
+                  <span className="text-[#94a3b8]">Risk Level</span>
+                  <span className="text-[#f0b66a]">HIGH (Level 3)</span>
+                </div>
+                <div className="flex justify-between gap-4">
+                  <span className="text-[#94a3b8]">Policy</span>
+                  <span className="text-[#e2e8f0]">finance.transfer &gt; $1000</span>
+                </div>
+                <div className="flex justify-between gap-4">
+                  <span className="text-[#94a3b8]">Status</span>
+                  <span
+                    className={
+                      g4Decision === 'approved'
+                        ? 'text-emerald-400'
+                        : g4Decision === 'denied'
+                          ? 'text-red-400'
+                          : 'text-[#f0b66a]'
+                    }
+                  >
+                    {g4Decision === 'pending' && 'AWAITING OPERATOR DECISION'}
+                    {g4Decision === 'approved' && 'ADMITTED BY OPERATOR (ILLUSTRATIVE)'}
+                    {g4Decision === 'denied' && 'DENIED / HELD AT G4 (FAIL-CLOSED)'}
+                  </span>
                 </div>
               </div>
-              <div className="space-y-4 font-mono text-sm">
-                <div className="flex justify-between">
-                  <span className="text-slate-500">Risk Level</span>
-                  <span className="text-red-400">HIGH (Level 3)</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-500">Policy</span>
-                  <span className="text-slate-300">finance.transfer &gt; $1000</span>
-                </div>
-                <div className="mt-6 p-4 bg-amber-900/10 border border-amber-900/30 rounded text-amber-200">
-                  WARNING: Explicit human approval required for state transition.
-                </div>
-                <div className="pt-4 flex gap-4">
-                  <button className="flex-1 bg-amber-600 text-white py-2 rounded font-bold hover:bg-amber-500 transition-colors">
-                    APPROVE
-                  </button>
-                  <button className="flex-1 bg-slate-800 text-slate-300 py-2 rounded hover:bg-slate-700 transition-colors">
-                    DENY
-                  </button>
-                </div>
+
+              <div className="rounded-lg border border-[#233047] bg-[#121b2e]/80 p-3.5 text-xs text-[#cbd5e1] mb-5">
+                {g4Decision === 'pending' &&
+                  'Explicit human approval required before transition to G5 execution.'}
+                {g4Decision === 'approved' &&
+                  'Operator credential bound to admission receipt. Downstream runtime may now dispatch under policy limits.'}
+                {g4Decision === 'denied' &&
+                  'Action refused and recorded to Decision Exhaust. No downstream mutation dispatched.'}
+              </div>
+
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => setG4Decision('approved')}
+                  aria-pressed={g4Decision === 'approved'}
+                  className={`flex-1 inline-flex items-center justify-center gap-2 rounded-lg border py-2.5 text-xs font-semibold transition-colors ${
+                    g4Decision === 'approved'
+                      ? 'border-emerald-500 bg-emerald-500/20 text-emerald-300'
+                      : 'border-transparent bg-[#d97706] text-[#0b1120] hover:bg-[#f09c38]'
+                  }`}
+                >
+                  <CheckCircle size={14} aria-hidden="true" />
+                  APPROVE
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setG4Decision('denied')}
+                  aria-pressed={g4Decision === 'denied'}
+                  className={`flex-1 inline-flex items-center justify-center gap-2 rounded-lg border py-2.5 text-xs font-semibold transition-colors ${
+                    g4Decision === 'denied'
+                      ? 'border-red-500 bg-red-500/20 text-red-300'
+                      : 'border-[#334563] bg-[#121b2e] text-[#cbd5e1] hover:border-red-400/60 hover:text-white'
+                  }`}
+                >
+                  <XCircle size={14} aria-hidden="true" />
+                  DENY
+                </button>
               </div>
             </div>
           </div>
 
           <div className="order-1 lg:order-2">
-            <div className="text-cosmo-accent font-bold mb-2 tracking-wider uppercase text-sm">
-              The Operator Plane
-            </div>
-            <h2 className="text-4xl font-bold text-white mb-6">
-              Humans do not &quot;monitor&quot;. <br />
+            <div className="eyebrow">The Operator Plane</div>
+            <h2 className="text-3xl font-semibold text-white mt-3 mb-4">
+              Humans do not &quot;monitor&quot;.
+              <br />
               They authorize.
             </h2>
-            <p className="text-lg text-slate-400 mb-6">
+            <p className="text-base text-[#b2c0d4] mb-6 leading-relaxed">
               The conceptual G4 stage calls for human authority at configured checkpoints on an
               enrolled execution path. A deployment selects checkpoints such as the examples below.
             </p>
-            <ul className="space-y-4">
-              <li className="flex items-start gap-3">
-                <CheckCircle className="text-amber-500 mt-1 shrink-0" size={18} />
-                <span className="text-slate-300">Required when Risk &gt; Threshold</span>
+            <ul className="space-y-3 list-none p-0 mb-6">
+              <li className="flex items-start gap-3 text-sm text-[#cbd5e1]">
+                <CheckCircle className="text-[#f0b66a] mt-0.5 shrink-0" size={16} aria-hidden="true" />
+                <span>Required when Risk &gt; Threshold</span>
               </li>
-              <li className="flex items-start gap-3">
-                <CheckCircle className="text-amber-500 mt-1 shrink-0" size={18} />
-                <span className="text-slate-300">Required for new policy generation</span>
+              <li className="flex items-start gap-3 text-sm text-[#cbd5e1]">
+                <CheckCircle className="text-[#f0b66a] mt-0.5 shrink-0" size={16} aria-hidden="true" />
+                <span>Required for new policy generation</span>
               </li>
-              <li className="flex items-start gap-3">
-                <CheckCircle className="text-amber-500 mt-1 shrink-0" size={18} />
-                <span className="text-slate-300">
-                  Required for first-time actions (trust-on-first-use)
-                </span>
+              <li className="flex items-start gap-3 text-sm text-[#cbd5e1]">
+                <CheckCircle className="text-[#f0b66a] mt-0.5 shrink-0" size={16} aria-hidden="true" />
+                <span>Required for first-time actions (trust-on-first-use)</span>
               </li>
             </ul>
-            <div className="mt-8 p-4 border border-slate-700 rounded bg-slate-800/50">
-              <p className="text-sm text-slate-300">
-                <strong>Crucial Distinction:</strong> At an enrolled, enforced admission boundary,
-                missing required authorization must deny the request. Alternative execution paths
-                must be removed before claiming non-bypassable enforcement.
-              </p>
+            <div className="rounded-lg border border-[#233047] bg-[#121b2e]/70 p-4 text-xs text-[#b2c0d4] leading-relaxed">
+              <strong className="text-white">Crucial Distinction:</strong> At an enrolled, enforced
+              admission boundary, missing required authorization must deny the request. Alternative
+              execution paths must be removed before claiming non-bypassable enforcement.
             </div>
           </div>
         </div>
       </section>
 
       {/* Restraint by Design */}
-      <section className="py-24 max-w-7xl mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-white mb-4">Restraint by Design</h2>
-          <p className="text-slate-400 max-w-2xl mx-auto">
-            Most platforms glue agents together and hope for alignment. Cosmocrat centralizes
-            authority and treats execution as a privilege, not a right.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          <div className="bg-slate-900/20 p-8 rounded-xl border border-slate-800 flex flex-col items-center text-center opacity-70 hover:opacity-100 transition-opacity">
-            <div className="mb-8 relative w-64 h-48">
-              {/* Chaotic Network SVG */}
-              <Network
-                size={120}
-                className="text-slate-600 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-                strokeWidth={1}
-              />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="bg-slate-900 px-2 py-1 text-xs text-slate-500">
-                  Unbounded Connection
-                </span>
-              </div>
-            </div>
-            <h3 className="text-xl font-bold text-slate-300 mb-2">The Status Quo</h3>
-            <p className="text-sm text-slate-500">
-              Messy, implicit permissions. Agents talking to agents without oversight.
+      <section className="py-20 border-b border-[#233047]">
+        <div className="wrap">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <h2 className="text-3xl font-semibold text-white mb-3">Restraint by Design</h2>
+            <p className="text-sm sm:text-base text-[#94a3b8]">
+              Most platforms glue agents together and hope for alignment. Cosmocrat centralizes
+              authority and treats execution as a privilege, not a right.
             </p>
           </div>
 
-          <div className="bg-slate-900/50 p-8 rounded-xl border border-cosmo-accent/30 flex flex-col items-center text-center shadow-lg relative overflow-hidden">
-            <div className="absolute top-0 w-full h-1 bg-gradient-to-r from-transparent via-cosmo-accent to-transparent"></div>
-            <div className="mb-8 relative w-64 h-48 flex items-center justify-center">
-              {/* Hierarchy SVG Placeholder */}
-              <div className="flex flex-col items-center gap-4">
-                <div className="w-4 h-4 rounded-full bg-cosmo-accent shadow-[0_0_10px_orange]"></div>
-                <div className="flex gap-8">
-                  <div className="w-1 h-8 bg-slate-700"></div>
-                  <div className="w-1 h-8 bg-slate-700"></div>
-                </div>
-                <div className="flex gap-16">
-                  <div className="w-3 h-3 rounded bg-slate-400"></div>
-                  <div className="w-3 h-3 rounded bg-slate-400"></div>
-                </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="rounded-xl border border-[#233047] bg-[#121b2e]/45 p-7 flex flex-col items-center text-center">
+              <span className="tool-icon mb-4">
+                <Network size={20} aria-hidden="true" />
+              </span>
+              <div className="font-mono text-[11px] uppercase tracking-wider text-[#94a3b8] mb-2">
+                Unbounded Connection
               </div>
+              <h3 className="text-lg font-semibold text-[#e2e8f0] mb-2">The Status Quo</h3>
+              <p className="text-sm text-[#94a3b8] m-0">
+                Implicit permissions spread across tool calls. Agents invoke other agents without an
+                explicit authorization boundary.
+              </p>
             </div>
-            <h3 className="text-xl font-bold text-white mb-2">Cosmocrat</h3>
-            <p className="text-sm text-slate-400">
-              Governed Architecture. Strict hierarchy. Explicit delegation.
-            </p>
+
+            <div className="rounded-xl border border-[#f0b66a]/40 bg-[#121b2e]/85 p-7 flex flex-col items-center text-center">
+              <span className="tool-icon mb-4">
+                <ShieldCheck size={20} aria-hidden="true" />
+              </span>
+              <div className="font-mono text-[11px] uppercase tracking-wider text-[#f0b66a] mb-2">
+                Explicit Hierarchy
+              </div>
+              <h3 className="text-lg font-semibold text-white mb-2">Cosmocrat</h3>
+              <p className="text-sm text-[#b2c0d4] m-0">
+                Governed architecture separating context, eligibility, human authority, and
+                retained decision records.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section className="py-24 bg-cosmo-dark border-t border-slate-900">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-16">
-            <h2 className="text-3xl font-bold text-white mb-12">Frequently Asked Questions</h2>
-            <div className="space-y-2">
-              <FaqItem
-                question="Why are there 7 gates?"
-                answer="The conceptual stages separate context, formation, eligibility, authority, execution and outcome evidence. This separation guides integration design; it does not establish that every stage is implemented or that all failures are prevented."
-              />
-              <FaqItem
-                question="What happens if a gate fails?"
-                answer="An enrolled boundary should deny or defer a request that fails a required check and retain the decision receipt. Verify fail-closed behavior, persistence failures and bypass paths in the actual integration."
-              />
-              <FaqItem
-                question="Can I customize the gates?"
-                answer="G0-G3 are structural stages in this conceptual model. Actual stages and policy settings depend on the enrolled integration. Changing a required authority or evidence check needs its own explicit authorization."
-              />
-              <FaqItem
-                question="Does this replace my existing evals?"
-                answer="Offline evaluations test model behavior before deployment. Enrolled runtime admission checks address proposed actions at their configured boundary. Both require validation; neither establishes universal safety."
-              />
-            </div>
+      {/* FAQ + Pager */}
+      <section className="pt-16">
+        <div className="wrap max-w-4xl">
+          <h2 className="text-2xl sm:text-3xl font-semibold text-white mb-8">
+            Frequently Asked Questions
+          </h2>
+          <div className="space-y-3">
+            <FaqItem
+              question="Why are there 7 gates?"
+              answer="The conceptual stages separate context, formation, eligibility, authority, execution and outcome evidence. This separation guides integration design; it does not establish that every stage is implemented or that all failures are prevented."
+            />
+            <FaqItem
+              question="What happens if a gate fails?"
+              answer="An enrolled boundary should deny or defer a request that fails a required check and retain the decision receipt. Verify fail-closed behavior, persistence failures and bypass paths in the actual integration."
+            />
+            <FaqItem
+              question="Can I customize the gates?"
+              answer="G0-G3 are structural stages in this conceptual model. Actual stages and policy settings depend on the enrolled integration. Changing a required authority or evidence check needs its own explicit authorization."
+            />
+            <FaqItem
+              question="Does this replace my existing evals?"
+              answer="Offline evaluations test model behavior before deployment. Enrolled runtime admission checks address proposed actions at their configured boundary. Both require validation; neither establishes universal safety."
+            />
           </div>
 
-          <div>
-            <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-6">
-              Related Platform Concepts
-            </h3>
-            <div className="flex flex-wrap gap-4">
-              <Link
-                href="/memory-infrastructure"
-                className="px-4 py-2 rounded bg-slate-900 border border-slate-800 text-slate-300 hover:border-cosmo-accent hover:text-white transition-colors text-sm"
-              >
-                Memory as Infrastructure
-              </Link>
-              <Link
-                href="/decision-exhaust"
-                className="px-4 py-2 rounded bg-slate-900 border border-slate-800 text-slate-300 hover:border-cosmo-accent hover:text-white transition-colors text-sm"
-              >
-                Decision Exhaust
-              </Link>
-              <Link
-                href="/runtime-governance"
-                className="px-4 py-2 rounded bg-slate-900 border border-slate-800 text-slate-300 hover:border-cosmo-accent hover:text-white transition-colors text-sm"
-              >
-                Runtime Governance
-              </Link>
-              <Link
-                href="/chronicle-receipts"
-                className="px-4 py-2 rounded bg-slate-900 border border-slate-800 text-slate-300 hover:border-cosmo-accent hover:text-white transition-colors text-sm"
-              >
-                Chronicle Receipts
-              </Link>
-              <Link
-                href="/drift-guard"
-                className="px-4 py-2 rounded bg-slate-900 border border-slate-800 text-slate-300 hover:border-cosmo-accent hover:text-white transition-colors text-sm"
-              >
-                Drift Guard
-              </Link>
-            </div>
-          </div>
+          <ArchitecturePager current="/gate-system" />
         </div>
       </section>
     </div>

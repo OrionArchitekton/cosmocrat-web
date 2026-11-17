@@ -1,9 +1,113 @@
-import Image from 'next/image';
 import Link from 'next/link';
+import {
+  ArrowRight,
+  ArrowRightLeft,
+  ClipboardList,
+  FileText,
+  GitBranch,
+  PanelsTopLeft,
+  Smartphone,
+} from 'lucide-react';
+import HeroEmblemStage from '@/components/os/HeroEmblemStage';
+import StarterSimulator from '@/components/os/StarterSimulator';
 import { tools } from '@/lib/toolCatalog';
 
 const resultsTool = tools.find((tool) => tool.id === 'orion-results');
 const starterTool = tools.find((tool) => tool.id === 'orion-starter');
+
+const featuredCards = [
+  {
+    id: 'orion-pm',
+    num: '01',
+    name: 'Orion PM',
+    kind: 'Task ownership',
+    description:
+      'Give a local task an explicit owner, retain revisions, and keep inspectable evidence as work moves forward.',
+    cta: 'Coordinate work',
+    icon: ClipboardList,
+    featured: true,
+  },
+  {
+    id: 'orion-browser',
+    num: '02',
+    name: 'Orion Browser',
+    kind: 'Browser access',
+    description: 'Persistent Chrome identities and a browser lease for each cooperating agent.',
+    cta: 'Share browser access',
+    icon: PanelsTopLeft,
+    featured: false,
+  },
+  {
+    id: 'orion-phone',
+    num: '03',
+    name: 'Orion Phone',
+    kind: 'Android access',
+    description: 'Android phones for agents, with action records and an operator-unlocked tier.',
+    cta: 'Give an agent a phone',
+    icon: Smartphone,
+    featured: false,
+  },
+  {
+    id: 'orion-handoff',
+    num: '04',
+    name: 'Orion Handoff',
+    kind: 'Session continuity',
+    description: 'Carry the intended task, its observed state, and what remains uncertain.',
+    cta: 'Keep the thread',
+    icon: ArrowRightLeft,
+    featured: false,
+  },
+  {
+    id: 'orion-results',
+    num: '05',
+    name: 'Orion Results',
+    kind: 'Recoverable results',
+    description: 'Store the complete result. Pass a bounded view. Recover the original by reference.',
+    cta: 'Keep the full result',
+    icon: FileText,
+    featured: false,
+    isPreview: resultsTool?.status === 'PREVIEW',
+  },
+  {
+    id: 'orion-worktree-report',
+    num: '06',
+    name: 'Orion Worktree Report',
+    kind: 'Development evidence',
+    description:
+      'Observe registered git worktrees and surface overlapping uncommitted paths while keeping partial or unavailable coverage visible.',
+    cta: 'Observe the work',
+    icon: GitBranch,
+    featured: true,
+  },
+] as const;
+
+const principles = [
+  {
+    num: '01',
+    title: 'Humans retain sovereignty.',
+    body: 'AI can work within the scope you give it. Decisions about purpose, permission, and consequential actions remain yours.',
+  },
+  {
+    num: '02',
+    title: 'Memory is infrastructure.',
+    body: 'Intent and context deserve continuity, provenance, and deliberate boundaries. Today’s continuity tools are steps toward that larger ambition.',
+  },
+  {
+    num: '03',
+    title: 'Trust is the product.',
+    body: 'Make claims inspectable. See what was observed, what was authorized, and what still needs checking.',
+  },
+  {
+    num: '04',
+    title: 'Context has boundaries.',
+    body: 'Personal, business, and account contexts carry different permissions. Scope is explicit; cooperative limits are documented.',
+  },
+  {
+    num: '05',
+    title: 'Reliability should feel ordinary.',
+    body: 'Clear ownership, recoverable results, and visible uncertainty keep work moving when something stops halfway through.',
+  },
+] as const;
 
 export default function HomeSections() {
   return (
@@ -24,32 +128,14 @@ export default function HomeSections() {
               </p>
               <div className="button-row">
                 <Link className="button button-primary" href="/tools">
-                  Explore the tools{' '}
-                  <svg
-                    aria-hidden="true"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.6"
-                  >
-                    <path d="M4 12h15m-6-6 6 6-6 6" />
-                  </svg>
+                  Explore the tools <ArrowRight aria-hidden="true" />
                 </Link>
                 <a
                   className="text-link"
                   href="https://www.danmercede.com/guides/coordinate-local-agents-with-orion-pm"
                   rel="noreferrer"
                 >
-                  Start with one task{' '}
-                  <svg
-                    aria-hidden="true"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.6"
-                  >
-                    <path d="M4 12h15m-6-6 6 6-6 6" />
-                  </svg>
+                  Start with one task <ArrowRight aria-hidden="true" />
                 </a>
               </div>
               <p className="availability">
@@ -57,28 +143,18 @@ export default function HomeSections() {
                 previews. The full operating environment is still taking shape.
               </p>
             </div>
-            <div className="emblem-stage" aria-hidden="true">
-              <span className="orbit-label orbit-top">HUMAN DIRECTION</span>
-              <span className="orbit-label orbit-left">PRESERVED CONTEXT</span>
-              <Image
-                className="hero-emblem"
-                src="/brand/cosmocrat-sigil.svg"
-                alt=""
-                width={885}
-                height={952}
-                unoptimized
-              />
-              <span className="orbit-label orbit-right">EXPLICIT AUTHORITY</span>
-              <span className="orbit-label orbit-bottom">TRUST, BUILT THROUGH EVIDENCE</span>
-            </div>
+
+            <HeroEmblemStage />
           </div>
+
           <div className="hero-note">
-            Intelligence should extend your agency. Authority stays in your hands.
+            <span className="hero-note-bar" aria-hidden="true" />
+            <span>Intelligence should extend your agency. Authority stays in your hands.</span>
           </div>
         </div>
       </section>
 
-      <section className="section">
+      <section className="section section-surface">
         <div className="wrap intro-grid">
           <div>
             <div className="eyebrow">The foundation</div>
@@ -98,6 +174,16 @@ export default function HomeSections() {
               boundary, or a result you can recover and inspect. These are the pieces we are
               building and releasing through Cosmocrat.
             </p>
+            <div className="intro-highlights">
+              <div className="intro-stat">
+                <strong>Modular releases</strong>
+                <span>Use one Orion component or combine them on your own machine</span>
+              </div>
+              <div className="intro-stat">
+                <strong>Explicit boundaries</strong>
+                <span>Every tool documents its supported environment and control limits</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -110,227 +196,47 @@ export default function HomeSections() {
               <h2>Start with the part you need.</h2>
             </div>
             <Link className="text-link" href="/tools">
-              Explore the catalog{' '}
-              <svg
-                aria-hidden="true"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.6"
-              >
-                <path d="M4 12h15m-6-6 6 6-6 6" />
-              </svg>
+              Explore the catalog (10 tools) <ArrowRight aria-hidden="true" />
             </Link>
           </div>
-          <div className="tools-overview">
-            <Link className="tool-teaser" href="/tools#orion-pm">
-              <div className="teaser-top">
-                <span className="tool-icon">
-                  <svg
-                    aria-hidden="true"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <rect x="4" y="4" width="16" height="17" rx="2" />
-                    <path d="M8 2v5m8-5v5M8 11h8m-8 5h5" />
-                  </svg>
-                </span>
-                <span className="teaser-number">01</span>
-              </div>
-              <h3>Orion PM</h3>
-              <p>Give a local task an explicit owner and keep evidence as work moves forward.</p>
-              <span className="teaser-bottom">
-                Coordinate work{' '}
-                <svg
-                  aria-hidden="true"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
+
+          <div className="tools-bento">
+            {featuredCards.map((card) => {
+              const Icon = card.icon;
+              return (
+                <Link
+                  key={card.id}
+                  className={`tool-teaser${card.featured ? ' tool-teaser-featured' : ''}`}
+                  href={`/tools#${card.id}`}
                 >
-                  <path d="M4 12h15m-6-6 6 6-6 6" />
-                </svg>
-              </span>
-            </Link>
-            <Link className="tool-teaser" href="/tools#orion-browser">
-              <div className="teaser-top">
-                <span className="tool-icon">
-                  <svg
-                    aria-hidden="true"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <rect x="2" y="4" width="20" height="16" rx="2" />
-                    <path d="M2 9h20m-16-3h.01M10 6h.01" />
-                  </svg>
-                </span>
-                <span className="teaser-number">02</span>
-              </div>
-              <h3>Orion Browser</h3>
-              <p>Persistent Chrome identities and a browser lease for each cooperating agent.</p>
-              <span className="teaser-bottom">
-                Share browser access{' '}
-                <svg
-                  aria-hidden="true"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                >
-                  <path d="M4 12h15m-6-6 6 6-6 6" />
-                </svg>
-              </span>
-            </Link>
-            <Link className="tool-teaser" href="/tools#orion-phone">
-              <div className="teaser-top">
-                <span className="tool-icon">
-                  <svg
-                    aria-hidden="true"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <rect x="6" y="2" width="12" height="20" rx="2" />
-                    <path d="M10 5h4m-3 14h2" />
-                  </svg>
-                </span>
-                <span className="teaser-number">03</span>
-              </div>
-              <h3>Orion Phone</h3>
-              <p>Android phones for agents, with action records and an operator-unlocked tier.</p>
-              <span className="teaser-bottom">
-                Give an agent a phone{' '}
-                <svg
-                  aria-hidden="true"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                >
-                  <path d="M4 12h15m-6-6 6 6-6 6" />
-                </svg>
-              </span>
-            </Link>
-            <Link className="tool-teaser" href="/tools#orion-handoff">
-              <div className="teaser-top">
-                <span className="tool-icon">
-                  <svg
-                    aria-hidden="true"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M4 7h14m-4-4 4 4-4 4M20 17H6m4-4-4 4 4 4" />
-                  </svg>
-                </span>
-                <span className="teaser-number">04</span>
-              </div>
-              <h3>Orion Handoff</h3>
-              <p>Carry the intended task, its observed state, and what remains uncertain.</p>
-              <span className="teaser-bottom">
-                Keep the thread{' '}
-                <svg
-                  aria-hidden="true"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                >
-                  <path d="M4 12h15m-6-6 6 6-6 6" />
-                </svg>
-              </span>
-            </Link>
-            <Link className="tool-teaser" href="/tools#orion-results">
-              <div className="teaser-top">
-                <span className="tool-icon">
-                  <svg
-                    aria-hidden="true"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M5 3h10l4 4v14H5zM14 3v5h5M8 12h8m-8 4h6" />
-                  </svg>
-                </span>
-                <span className="teaser-number">05</span>
-              </div>
-              <h3>
-                Orion Results{' '}
-                {resultsTool?.status === 'PREVIEW' && (
-                  <span className="tag tag-preview">{resultsTool.status}</span>
-                )}
-              </h3>
-              <p>Store the complete result. Pass a bounded view. Recover the original.</p>
-              <span className="teaser-bottom">
-                Keep the full result{' '}
-                <svg
-                  aria-hidden="true"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                >
-                  <path d="M4 12h15m-6-6 6 6-6 6" />
-                </svg>
-              </span>
-            </Link>
-            <Link className="tool-teaser" href="/tools#orion-worktree-report">
-              <div className="teaser-top">
-                <span className="tool-icon">
-                  <svg
-                    aria-hidden="true"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <circle cx="6" cy="4" r="2" />
-                    <circle cx="6" cy="20" r="2" />
-                    <circle cx="18" cy="8" r="2" />
-                    <path d="M6 6v12m0-4h5a7 7 0 0 0 7-4" />
-                  </svg>
-                </span>
-                <span className="teaser-number">06</span>
-              </div>
-              <h3>Orion Worktree Report</h3>
-              <p>See overlapping uncommitted paths, with missing coverage kept visible.</p>
-              <span className="teaser-bottom">
-                Observe the work{' '}
-                <svg
-                  aria-hidden="true"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                >
-                  <path d="M4 12h15m-6-6 6 6-6 6" />
-                </svg>
-              </span>
-            </Link>
+                  <div className="teaser-top">
+                    <span className="tool-icon">
+                      <Icon aria-hidden="true" />
+                    </span>
+                    <span className="teaser-meta">
+                      <span>{card.kind}</span>
+                      <span aria-hidden="true">·</span>
+                      <span>{card.num}</span>
+                    </span>
+                  </div>
+                  <h3>
+                    <span>{card.name}</span>
+                    {'isPreview' in card && card.isPreview && (
+                      <span className="tag tag-preview">PREVIEW</span>
+                    )}
+                  </h3>
+                  <p>{card.description}</p>
+                  <span className="teaser-bottom">
+                    {card.cta} <ArrowRight aria-hidden="true" />
+                  </span>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      <section className="section" id="starter">
+      <section className="section section-surface" id="starter">
         <div className="wrap composition">
           <div>
             <div className="eyebrow">Orion Starter · Development evidence</div>
@@ -348,66 +254,28 @@ export default function HomeSections() {
               One worker saves the original observation. The next recovers it, claims the task, and
               makes a fresh check before deciding whether this demonstration can finish.
             </p>
-            <p>
-              <span className="tag tag-preview">{starterTool?.version} · {starterTool?.status}</span>
-              <br />A manually invoked local example. The written guide is available; its video
-              companion is in preparation.
+            <p className="text-xs text-slate-400">
+              <span className="tag tag-preview mr-2">
+                {starterTool?.version} · {starterTool?.status}
+              </span>
+              A manually invoked local example. The written guide is available; its video companion
+              is in preparation.
             </p>
-            <a
-              className="text-link"
-              href="https://www.danmercede.com/guides/agent-development-evidence-handoff"
-              rel="noreferrer"
-            >
-              Follow the development-evidence guide{' '}
-              <svg
-                aria-hidden="true"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.6"
+            <div className="flex flex-col items-start gap-1 mt-4">
+              <a
+                className="text-link"
+                href="https://www.danmercede.com/guides/agent-development-evidence-handoff"
+                rel="noreferrer"
               >
-                <path d="M4 12h15m-6-6 6 6-6 6" />
-              </svg>
-            </a>
-            <br />
-            <Link className="text-link" href="/tools#orion-starter">
-              Explore the Starter preview ↗
-            </Link>
-          </div>
-          <div className="profile-flow">
-            <div className="flow-title">
-              <span>FOUR ROLES, ONE WORKFLOW</span>
-              <span className="tag tag-preview">PREVIEW</span>
-            </div>
-            <div className="flow-step">
-              <span className="step-dot">1</span>
-              <div>
-                <strong>Establish who owns the task</strong>
-                <p>Orion PM · A claim with a bounded scope.</p>
-              </div>
-            </div>
-            <div className="flow-step">
-              <span className="step-dot">2</span>
-              <div>
-                <strong>Carry the intended context forward</strong>
-                <p>Orion Handoff · Observations and uncertainty.</p>
-              </div>
-            </div>
-            <div className="flow-step">
-              <span className="step-dot">3</span>
-              <div>
-                <strong>Recover the original evidence</strong>
-                <p>Orion Results · Exact text by reference.</p>
-              </div>
-            </div>
-            <div className="flow-step">
-              <span className="step-dot">4</span>
-              <div>
-                <strong>Check what is true now</strong>
-                <p>Orion Worktree Report · An independent observation.</p>
-              </div>
+                Follow the development-evidence guide <ArrowRight aria-hidden="true" />
+              </a>
+              <Link className="text-link" href="/tools#orion-starter">
+                Explore the Starter preview ↗
+              </Link>
             </div>
           </div>
+
+          <StarterSimulator />
         </div>
       </section>
 
@@ -424,63 +292,28 @@ export default function HomeSections() {
               The ambition stays with the work. Each tool describes the controls it actually
               provides.
             </p>
+            <div className="mt-6">
+              <Link className="text-link" href="/platform">
+                Explore the governance architecture <ArrowRight aria-hidden="true" />
+              </Link>
+            </div>
           </div>
-          <div>
-            <div className="principle">
-              <span>01</span>
-              <div>
-                <h3>Humans retain sovereignty.</h3>
-                <p>
-                  AI can work within the scope you give it. Decisions about purpose, permission, and
-                  consequential actions remain yours.
-                </p>
+
+          <div className="principle-list">
+            {principles.map((p) => (
+              <div className="principle-item" key={p.num}>
+                <span className="principle-idx">{p.num}</span>
+                <div>
+                  <h3>{p.title}</h3>
+                  <p>{p.body}</p>
+                </div>
               </div>
-            </div>
-            <div className="principle">
-              <span>02</span>
-              <div>
-                <h3>Memory is infrastructure.</h3>
-                <p>
-                  Intent and context deserve continuity, provenance, and deliberate boundaries.
-                  Today’s continuity tools are steps toward that larger ambition.
-                </p>
-              </div>
-            </div>
-            <div className="principle">
-              <span>03</span>
-              <div>
-                <h3>Trust is the product.</h3>
-                <p>
-                  Make claims inspectable. See what was observed, what was authorized, and what
-                  still needs checking.
-                </p>
-              </div>
-            </div>
-            <div className="principle">
-              <span>04</span>
-              <div>
-                <h3>Context has boundaries.</h3>
-                <p>
-                  Personal, business, and account contexts carry different permissions. Scope is
-                  explicit; cooperative limits are documented.
-                </p>
-              </div>
-            </div>
-            <div className="principle">
-              <span>05</span>
-              <div>
-                <h3>Reliability should feel ordinary.</h3>
-                <p>
-                  Clear ownership, recoverable results, and visible uncertainty keep work moving
-                  when something stops halfway through.
-                </p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className="section" id="our-story">
+      <section className="section section-surface" id="our-story">
         <div className="wrap origin">
           <div>
             <div className="eyebrow">Built through operation</div>
@@ -503,28 +336,13 @@ export default function HomeSections() {
             </p>
             <div className="button-row">
               <a className="text-link" href="https://www.danmercede.com/guides" rel="noreferrer">
-                Read the guides{' '}
-                <svg
-                  aria-hidden="true"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                >
-                  <path d="M4 12h15m-6-6 6 6-6 6" />
-                </svg>
+                Read the guides <ArrowRight aria-hidden="true" />
               </a>
               <Link className="text-link" href="/tools">
-                Find a walkthrough{' '}
-                <svg
-                  aria-hidden="true"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                >
-                  <path d="M4 12h15m-6-6 6 6-6 6" />
-                </svg>
+                Find a walkthrough <ArrowRight aria-hidden="true" />
+              </Link>
+              <Link className="text-link" href="/about">
+                Read our story <ArrowRight aria-hidden="true" />
               </Link>
             </div>
             <div className="governance-note">
@@ -596,18 +414,14 @@ export default function HomeSections() {
             <h2>Build on work you can inspect.</h2>
             <p>Choose one tool, follow its guide, and see what it does in your environment.</p>
           </div>
-          <Link className="button button-primary" href="/tools">
-            Find your starting point{' '}
-            <svg
-              aria-hidden="true"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.6"
-            >
-              <path d="M4 12h15m-6-6 6 6-6 6" />
-            </svg>
-          </Link>
+          <div className="button-row">
+            <Link className="button button-primary" href="/tools">
+              Find your starting point <ArrowRight aria-hidden="true" />
+            </Link>
+            <Link className="button button-outline" href="/waitlist">
+              Request Early Access
+            </Link>
+          </div>
         </div>
       </section>
     </div>

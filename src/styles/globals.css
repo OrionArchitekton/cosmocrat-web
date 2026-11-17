@@ -3,13 +3,13 @@
 @tailwind utilities;
 
 :root {
-  /* V1 palette */
-  --bg: #0B1120;
-  --fg: #E2E8F0;
-  --muted: #94A3B8;
-  --card: #151F32;
-  --border: #1E293B;
-  --accent: #D97706;
+  --bg: #0b1120;
+  --fg: #e2e8f0;
+  --muted: #94a3b8;
+  --card: #121b2e;
+  --border: #233047;
+  --accent: #d97706;
+  --gold: #f0b66a;
 }
 
 html {
@@ -23,7 +23,7 @@ body {
 
 ::selection {
   background-color: rgba(217, 119, 6, 0.3);
-  color: white;
+  color: #ffffff;
 }
 
 @layer base {
@@ -32,16 +32,16 @@ body {
     height: 8px;
   }
   ::-webkit-scrollbar-track {
-    background: #0B1120;
+    background: #0b1120;
   }
   ::-webkit-scrollbar-thumb {
-    background: #334155;
+    background: #2b3952;
     border-radius: 4px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #475569;
+    background: #435678;
   }
   :focus-visible {
-    @apply outline-none ring-2 ring-cosmo-accent ring-offset-2 ring-offset-cosmo-dark;
+    @apply outline-none ring-2 ring-amber-400 ring-offset-2 ring-offset-[#0B1120];
   }
 }
