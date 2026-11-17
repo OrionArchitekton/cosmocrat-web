@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { siteConfig } from './siteConfig';
+import { socialCards } from './socialCards';
 
 interface PageMetadataOptions {
   title: string;
@@ -20,23 +21,27 @@ export function generatePageMetadata({
 }: PageMetadataOptions): Metadata {
   const canonicalUrl = new URL(path, siteConfig.origin).toString();
 
+  const socialTitle = path === '/' ? title : `${title} | ${siteConfig.name}`;
+  const card = socialCards.find(({ slug }) => path === `/${slug}`);
+  const image = card ? `/og/${card.slug}?v=1` : siteConfig.ogImage;
+
   return {
-    title,
+    title: path === '/' ? { absolute: title } : title,
     description,
     alternates: { canonical: canonicalUrl },
     openGraph: {
-      title: `${title} | ${siteConfig.name}`,
+      title: socialTitle,
       description,
       url: canonicalUrl,
       siteName: siteConfig.name,
-      images: [siteConfig.ogImage],
+      images: [image],
       type: 'website',
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${title} | ${siteConfig.name}`,
+      title: socialTitle,
       description,
-      images: [siteConfig.ogImage],
+      images: [image],
     },
     robots: noIndex || process.env.SITE_ENV !== 'production'
       ? { index: false, follow: false }

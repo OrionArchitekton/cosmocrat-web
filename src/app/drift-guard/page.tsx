@@ -1,6 +1,7 @@
 import GovernanceContext from '@/components/os/GovernanceContext';
 import DriftGuardContent from '@/components/v1/pages/DriftGuardContent';
 import { generatePageMetadata } from '@/lib/metadata';
+import { driftGuardFaq } from '@/lib/faqs';
 import { generateFeatureSchema } from '@/lib/schemas';
 
 export const metadata = generatePageMetadata({
@@ -10,11 +11,12 @@ export const metadata = generatePageMetadata({
 });
 
 const schema = generateFeatureSchema({
+  questions: driftGuardFaq,
   name: 'Drift Guard',
   description: 'Cosmocrat integrity and drift architecture: specified divergence checks and their limits, without a universal behavioral-drift prevention guarantee.',
   path: '/drift-guard',
 });
-const schemaJson = JSON.stringify(schema);
+const schemaJson = JSON.stringify(schema).replace(/</g, '\\u003c');
 
 export default function DriftGuardPage() {
   return (

@@ -16,6 +16,7 @@ import {
   XCircle,
   Zap,
 } from 'lucide-react';
+import { gateSystemFaq } from '@/lib/faqs';
 import FaqItem from '../FaqItem';
 import { ArchitectureNav, ArchitecturePager } from '@/components/os/ArchitectureNav';
 
@@ -548,23 +549,10 @@ export default function GateSystemContent() {
           <h2 className="text-2xl sm:text-3xl font-semibold text-white mb-8">
             Frequently Asked Questions
           </h2>
-          <div className="space-y-3">
-            <FaqItem
-              question="Why are there 7 gates?"
-              answer="The conceptual stages separate context, formation, eligibility, authority, execution and outcome evidence. This separation guides integration design; it does not establish that every stage is implemented or that all failures are prevented."
-            />
-            <FaqItem
-              question="What happens if a gate fails?"
-              answer="An enrolled boundary should deny or defer a request that fails a required check and retain the decision receipt. Verify fail-closed behavior, persistence failures and bypass paths in the actual integration."
-            />
-            <FaqItem
-              question="Can I customize the gates?"
-              answer="G0-G3 are structural stages in this conceptual model. Actual stages and policy settings depend on the enrolled integration. Changing a required authority or evidence check needs its own explicit authorization."
-            />
-            <FaqItem
-              question="Does this replace my existing evals?"
-              answer="Offline evaluations test model behavior before deployment. Enrolled runtime admission checks address proposed actions at their configured boundary. Both require validation; neither establishes universal safety."
-            />
+          <div id="faq" className="space-y-3">
+            {gateSystemFaq.map(({ question, answer }) => (
+              <FaqItem key={question} question={question} answer={answer} />
+            ))}
           </div>
 
           <ArchitecturePager current="/gate-system" />

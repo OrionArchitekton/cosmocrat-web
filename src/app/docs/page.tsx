@@ -13,7 +13,7 @@ export const metadata = generatePageMetadata({
 export default function DocsPage() {
   return (
     <div className="wrap">
-      <article className="origin-page">
+      <article className="origin-page docs-page">
         <div className="eyebrow">Cosmocrat / Start here</div>
         <h1>
           Begin with
@@ -99,6 +99,13 @@ export default function DocsPage() {
             </p>
           </a>
         </div>
+
+        <h2>Engineering field notes</h2>
+        <ul className="my-5 space-y-3">
+          <li><Link className="text-link" href="/guides/agent-handoff-pattern">Hand off an agent task with recoverable evidence</Link></li>
+          <li><Link className="text-link" href="/guides/preventing-worktree-collisions">Check for collisions between Git worktrees</Link></li>
+          <li><Link className="text-link" href="/changelog">Cosmocrat web changelog</Link></li>
+        </ul>
 
         <h2>Understand the governance work</h2>
         <p>

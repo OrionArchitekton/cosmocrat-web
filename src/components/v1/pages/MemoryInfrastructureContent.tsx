@@ -17,6 +17,7 @@ import {
   ShieldAlert,
   ShieldCheck,
 } from 'lucide-react';
+import { memoryInfrastructureFaq } from '@/lib/faqs';
 import FaqItem from '../FaqItem';
 import { ArchitectureNav, ArchitecturePager } from '@/components/os/ArchitectureNav';
 
@@ -456,23 +457,10 @@ export default function MemoryInfrastructureContent() {
           <h2 className="text-2xl sm:text-3xl font-semibold text-white mb-8">
             Frequently Asked Questions
           </h2>
-          <div className="space-y-3">
-            <FaqItem
-              question="Is this different from a vector database?"
-              answer="Yes. A vector database optimizes retrieval relevance. This design adds authority checks and provenance to an explicitly enrolled retrieval path. The underlying store remains external; verify that its actual access boundary applies the required decision before relying on isolation."
-            />
-            <FaqItem
-              question="How does lane isolation work technically?"
-              answer="In this design, lanes identify policy scopes for enrolled memory writes and retrieval. An integration can tag records and apply lane filters, but labels alone do not enforce isolation. Verify enforcement and durable receipt persistence at the actual access boundary, including bypass and denial paths."
-            />
-            <FaqItem
-              question="What happens if an agent needs cross-lane context?"
-              answer="On an explicitly enrolled retrieval path, a cross-lane request can be evaluated against policy before access. The integration must verify that denial prevents retrieval and that the decision receipt is durably retained. An admission receipt alone does not prove what the external store returned."
-            />
-            <FaqItem
-              question="Does memory governance slow down retrieval?"
-              answer="Measure retrieval and governance overhead in the actual deployment. Context provenance depends on the enrolled retrieval path and retained evidence; this reference establishes no universal latency or coverage guarantee."
-            />
+          <div id="faq" className="space-y-3">
+            {memoryInfrastructureFaq.map(({ question, answer }) => (
+              <FaqItem key={question} question={question} answer={answer} />
+            ))}
           </div>
 
           <ArchitecturePager current="/memory-infrastructure" />

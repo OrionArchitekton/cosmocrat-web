@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { trackConversion } from '@/lib/analytics';
 import Link from 'next/link';
 import { Lock, CheckCircle, AlertCircle, Loader2, ArrowRight } from 'lucide-react';
 
@@ -45,7 +46,7 @@ export default function WaitlistForm() {
         body: JSON.stringify(payload),
       });
 
-      let data: { ok?: boolean; error?: string };
+      let data: { ok?: boolean; duplicate?: boolean; error?: string };
       try {
         data = await res.json();
       } catch {
@@ -56,6 +57,7 @@ export default function WaitlistForm() {
         throw new Error(data.error || 'Request failed');
       }
 
+      if (data.duplicate === false) trackConversion({ event: 'waitlist_success' });
       setStatus('success');
       setName('');
       setEmail('');

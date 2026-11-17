@@ -15,7 +15,7 @@ if artifacts:
     Path(artifacts).mkdir(parents=True, exist_ok=True)
 commands = []
 routes = ['runtime-governance', 'gate-system', 'memory-infrastructure', 'decision-exhaust', 'chronicle-receipts', 'drift-guard']
-for width, height in [(1440, 1000), (390, 844)]:
+for width, height in [(1440, 1000), (390, 844), (320, 750)]:
     commands.append(['set', 'viewport', str(width), str(height)])
     for route in routes:
         commands.extend([

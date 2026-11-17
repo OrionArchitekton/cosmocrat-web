@@ -83,15 +83,18 @@ test('static Inter subsets cover their declared refresh copy and active bundled 
     ['600', 'DESCRIPTOR', 'Tools for human-directed AI work.'],
     ['400', 'TAGLINE', 'Coordinate agents. Carry context forward. Keep authority with you.'],
   ];
-  const route = await readFile(new URL('../src/app/og/route.tsx', import.meta.url), 'utf8');
-  const active = route.includes('src/styles/fonts/og-inter-');
+  const renderer = await readFile(new URL('../src/lib/socialCardImage.tsx', import.meta.url), 'utf8');
+  const source = await readFile(new URL('../src/lib/socialCards.ts', import.meta.url), 'utf8');
+  const { outputText } = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.ESNext } });
+  const { socialCards } = await import(`data:text/javascript;base64,${Buffer.from(outputText).toString('base64')}`);
   for (const [weight, name, target] of targets) {
     const font = await readFile(
       new URL(`../src/styles/fonts/og-inter-${weight}.ttf`, import.meta.url)
     );
-    const copy = active ? route.match(new RegExp(`const ${name} = '([^']+)'`))?.[1] : target;
-    assert.ok(copy, `Declared ${name} copy is available`);
-    for (const letter of new Set(target + copy)) {
+    const copy = renderer.match(new RegExp(`const ${name} = '([^']+)'`))?.[1];
+    assert.equal(copy, target, 'The v4 default card retains its copy');
+    const topicCopy = socialCards.map(card => weight === '600' ? card.title : card.subtitle).join('');
+    for (const letter of new Set(copy + topicCopy)) {
       assert.ok(
         hasGlyph(font, letter.codePointAt(0)),
         `${weight} is missing ${JSON.stringify(letter)}`

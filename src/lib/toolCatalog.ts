@@ -24,10 +24,31 @@ export interface ToolDefinition {
   release?: string;
   guide?: string;
   guide_label?: string;
-  source?: string;
+  source: string;
+  license: string;
+  asset?: { name: string; sha256: string };
   video?: string;
   profiles?: readonly { label: string; href: string }[];
 }
+
+type ReleaseAsset = NonNullable<ToolDefinition['asset']>;
+
+function releaseInfo(repository: string, tag: string, asset?: ReleaseAsset) {
+  const source = `https://github.com/OrionArchitekton/${repository}`;
+  return { source, release: `${source}/releases/tag/${tag}`, license: `${source}/blob/${tag}/LICENSE`, asset };
+}
+
+export function toolDownloadUrl(tool: Pick<ToolDefinition, 'release' | 'asset'>) {
+  if (tool.asset && tool.release) {
+    return `${tool.release.replace('/releases/tag/', '/releases/download/')}/${tool.asset.name}`;
+  }
+}
+
+// The continuity walkthrough is pinned to a different archive from the development-evidence profile.
+export const continuityRelease = releaseInfo('orion-starter', 'v0.2.0-rc.1', {
+  name: 'orion-starter-0.2.0-rc.1.zip',
+  sha256: '5858b935014443c1ad98100a60fa80da6518e2d0a3b10f5448a3e50110963b48',
+});
 
 // Release and guide relationships checked October 30, 2026. Affiliation does not
 // imply private-estate adoption, kernel integration or a shared support boundary.
@@ -47,7 +68,10 @@ export const tools: readonly ToolDefinition[] = [
       'CPython 3.11 on WSL2 Linux with local ext4. Consult the release for exact support limits.',
     boundary:
       'A claim coordinates work. It grants no account, merge, deployment or publishing authority, and does not stop an expired worker.',
-    release: 'https://github.com/OrionArchitekton/orion-pm-oss/releases/tag/v0.1.1',
+    ...releaseInfo('orion-pm-oss', 'v0.1.1', {
+      name: 'orion_pm-0.1.1-py3-none-any.whl',
+      sha256: '54f28272550054c32958c67fd84094b825bb387f91ad3efe3b342d463b9c16c7',
+    }),
     guide: 'https://www.danmercede.com/guides/coordinate-local-agents-with-orion-pm',
     video: 'https://www.youtube.com/watch?v=U8q_0b1lu_4',
   },
@@ -66,7 +90,10 @@ export const tools: readonly ToolDefinition[] = [
       'Linux with a systemd user manager; separately installed Chrome and display packages. WSL2 as documented.',
     boundary:
       'Leases coordinate cooperative agents. They do not sandbox hostile local processes or limit a holder’s signed-in account actions.',
-    release: 'https://github.com/OrionArchitekton/orion-browser-oss/releases/tag/v0.1.0',
+    ...releaseInfo('orion-browser-oss', 'v0.1.0', {
+      name: 'orion_browser-0.1.0-py3-none-any.whl',
+      sha256: 'ba793c5271dc7f1909f88823be88195b84f43fbbf58e5e9cd39c5efb085a746a',
+    }),
     guide: 'https://www.danmercede.com/guides/multi-agent-browser-pool',
     video: 'https://www.youtube.com/watch?v=ggYDb2nDhDY',
   },
@@ -85,7 +112,10 @@ export const tools: readonly ToolDefinition[] = [
       'Linux with systemd and KVM, or documented WSL2 with nested virtualization. Android SDK and image requirements apply.',
     boundary:
       'Unlocked accounts retain their powers. Leases and the locked tier do not remove local adb or host access or attest who supplied an unlock credential.',
-    release: 'https://github.com/OrionArchitekton/orion-phone-oss/releases/tag/v0.2.0',
+    ...releaseInfo('orion-phone-oss', 'v0.2.0', {
+      name: 'orion_phone-0.2.0-py3-none-any.whl',
+      sha256: '98c581241d425bb557ac8a8b1eb564128e91ae4d22393a07e75d1b6eeeb82ddd',
+    }),
     guide: 'https://www.danmercede.com/guides/agent-android-phones',
     video: 'https://www.youtube.com/watch?v=YE9snj66-A0',
   },
@@ -104,7 +134,10 @@ export const tools: readonly ToolDefinition[] = [
       'CPython 3.11 and 3.13 on Linux x86_64, with WSL2/ext4 artifact validation. Exact combinations are in the release receipt.',
     boundary:
       'A handoff records observations and claims. It grants no permission for the next action and does not make an old observation current.',
-    release: 'https://github.com/OrionArchitekton/orion-handoff/releases/tag/v0.1.0',
+    ...releaseInfo('orion-handoff', 'v0.1.0', {
+      name: 'orion_handoff-0.1.0-py3-none-any.whl',
+      sha256: 'e1f3e1e43839cfd2896cfc553bef9366867c1cf50bce1e4d4762cdbec9977e41',
+    }),
     guide: 'https://www.danmercede.com/guides/hand-off-local-agent-tasks',
     video: 'https://www.youtube.com/watch?v=fPeXt-E-j14',
   },
@@ -123,7 +156,10 @@ export const tools: readonly ToolDefinition[] = [
       'Python library. Demonstrated on CPython 3.11.9, SQLite 3.45.1, WSL2 Linux x86_64 and local ext4.',
     boundary:
       'The byte limit applies to selected snapshot text, not the whole model context. References identify content; they do not authorize, redact or encrypt it. The README still labels this version a release candidate.',
-    release: 'https://github.com/OrionArchitekton/orion-results/releases/tag/v0.1.0',
+    ...releaseInfo('orion-results', 'v0.1.0', {
+      name: 'orion_results-0.1.0-py3-none-any.whl',
+      sha256: '67af57c4deda8967db83c2176642184bb3b7fb59f826539284086efa95e78e2e',
+    }),
     guide: 'https://www.danmercede.com/guides/capture-agent-results-with-byte-bounded-snapshots',
   },
   {
@@ -141,7 +177,10 @@ export const tools: readonly ToolDefinition[] = [
       'Acceptance target: CPython 3.11, Git 2.43.0, Linux x86_64, WSL2 and local ext4. MIT with retained attribution.',
     boundary:
       'The report makes no edits, grants no ownership, and does not establish that a merge is safe.',
-    release: 'https://github.com/OrionArchitekton/orion-worktree-report/releases/tag/v0.1.0',
+    ...releaseInfo('orion-worktree-report', 'v0.1.0', {
+      name: 'orion_worktree_report-0.1.0-py3-none-any.whl',
+      sha256: 'f06d7ca9d3fd1001b9bd16ed18a8ee7827727c09eeb4a535f41692723336550b',
+    }),
     guide: 'https://www.danmercede.com/guides/git-worktree-overlap-report',
   },
   {
@@ -159,7 +198,10 @@ export const tools: readonly ToolDefinition[] = [
       'Manually invoked cooperative local examples on the environments in each profile. MIT with applicable notices.',
     boundary:
       'Independent newcomer onboarding, universal platform support and native agent-harness integrations remain unverified. The continuity guide below is pinned to 0.2.0-rc.1; the development-evidence guide teaches 0.3.0-rc.1.',
-    release: 'https://github.com/OrionArchitekton/orion-starter/releases/tag/v0.3.0-rc.1',
+    ...releaseInfo('orion-starter', 'v0.3.0-rc.1', {
+      name: 'orion-starter-0.3.0-rc.1.zip',
+      sha256: '0140b2c4e3df2ad1bb0f015c9785d3ff44b44a6da51004026344a02c5ba91c01',
+    }),
     guide: 'https://www.danmercede.com/guides/agent-development-evidence-handoff',
     guide_label: 'Development-evidence guide',
     profiles: [
@@ -188,8 +230,7 @@ export const tools: readonly ToolDefinition[] = [
       'MIT source and tagged release. Follow repository instructions for the reviewer command and toolchain.',
     boundary:
       'A repository’s actual merge protections and authorization remain separate controls. A tool verdict does not grant merge authority.',
-    release: 'https://github.com/OrionArchitekton/failclosed/releases/tag/v0.2.0',
-    source: 'https://github.com/OrionArchitekton/failclosed',
+    ...releaseInfo('failclosed', 'v0.2.0'),
   },
   {
     id: 'orion-skills',
@@ -206,9 +247,8 @@ export const tools: readonly ToolDefinition[] = [
       'MIT. 29 skills target Claude Code, with optional plugin loading and skill-specific setup requirements. Three skills have verified Codex support.',
     boundary:
       'Skills guide behavior. They are not an execution sandbox or a universal enforcement layer.',
-    release: 'https://github.com/OrionArchitekton/orion-skills/releases/tag/v0.7.1',
+    ...releaseInfo('orion-skills', 'v0.7.1'),
     guide: 'https://www.danmercede.com/guides/done-needs-a-receipt',
-    source: 'https://github.com/OrionArchitekton/orion-skills',
   },
   {
     id: 'remote-hands',
@@ -226,6 +266,7 @@ export const tools: readonly ToolDefinition[] = [
     boundary:
       'The public experiment is start-only. The private estate implementation’s broader session-driving and peer-delivery features are not part of this download.',
     source: 'https://github.com/OrionArchitekton/remote-hands',
+    license: 'https://github.com/OrionArchitekton/remote-hands/blob/ceab0704135db71ea917e97507d7be0e9106120b/LICENSE',
     guide: 'https://www.danmercede.com/guides/openai-dot-starts-claude-code-sessions',
   },
 ];

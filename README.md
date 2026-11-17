@@ -122,7 +122,7 @@ Doppler is the source of truth in production. `.env` files are a local fallback 
 
 > `DOCS_URL` appears in `.env.example` but is not currently read by any code; leave it blank unless a consumer is added.
 
-Build is fail-closed on `SITE_ENV` (`next.config.js`). When `SITE_ENV=production`, the build also fails unless `NEXT_PUBLIC_SITE_URL` is exactly `https://www.cosmocrat.ai` (https, host `www.cosmocrat.ai`, no path/query/port).
+Build is fail-closed on `SITE_ENV` (`next.config.js`). A Vercel production target requires `SITE_ENV=production`, and a Vercel preview or development target rejects production indexing. When `SITE_ENV=production`, the build also fails unless `NEXT_PUBLIC_SITE_URL` is exactly `https://www.cosmocrat.ai` (https, host `www.cosmocrat.ai`, no path/query/port).
 
 ---
 
@@ -185,6 +185,19 @@ Sends a confirmation to the submitter and an internal notification to `WAITLIST_
 
 When both `COSMOCRAT_INGEST_URL` and `COSMOCRAT_INGEST_TOKEN` are set, each new lead is forwarded to `${COSMOCRAT_INGEST_URL}/api/tenants/cosmocrat/leads` with a bearer token so the lead becomes visible in Hub. This forward is **fail-open**: any error is swallowed and never degrades the signup. Leave both unset to disable forwarding entirely.
 
+### Public-site conversion events
+
+The existing production GTM container consumes these `dataLayer` events. The event payload always includes the public page path, without its query or fragment.
+
+| Event | Fires when | Additional field |
+| --- | --- | --- |
+| `waitlist_success` | The API confirms a newly persisted signup. Retries acknowledged as duplicates and honeypot responses do not count. | — |
+| `copy_command` | Clipboard write succeeds. | `tool_id` |
+| `starter_simulator_complete` | A visitor has viewed all four stages, once per mounted simulator. | — |
+| `github_release_click` | A visitor activates a tool’s GitHub release link. | `tool_id` |
+
+Configure any GA4 triggers or key-event reporting in the GTM/GA4 accounts. These events do not include form values, clipboard contents or outbound URLs.
+
 ---
 
 ## Canonical pages
@@ -201,6 +214,8 @@ These pages define the category and are referenced by search synthesis. Renaming
 - `/memory-infrastructure`
 - `/docs` — gated-access explanation
 - `/waitlist` — early-access intake
+
+The two original field notes under `/guides` and the source-linked `/changelog` are linked from `/docs`. Existing tool walkthroughs retain their canonical homes.
 
 The full indexed set is enumerated in `src/app/sitemap.ts`.
 
@@ -232,7 +247,7 @@ src/
   app/                      # App Router routes (one dir per page) + api/waitlist/route.ts
     layout.tsx, page.tsx    # Root layout + landing
     sitemap.ts, robots.ts   # SEO surface
-  components/v1/            # Header, Footer, Hero, WaitlistForm, SEO spine, pillar page content
+  components/v1/            # Header, Footer, WaitlistForm and pillar page content
   lib/                      # supabaseAdmin, resendClient, waitlist, schemas, siteConfig, metadata
   styles/                   # Tailwind globals
 next.config.js              # SITE_ENV fail-closed guard, host redirect, security headers

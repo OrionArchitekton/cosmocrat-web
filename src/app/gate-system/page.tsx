@@ -1,6 +1,7 @@
 import GovernanceContext from '@/components/os/GovernanceContext';
 import GateSystemContent from '@/components/v1/pages/GateSystemContent';
 import { generatePageMetadata } from '@/lib/metadata';
+import { gateSystemFaq } from '@/lib/faqs';
 import { generateFeatureSchema } from '@/lib/schemas';
 
 export const metadata = generatePageMetadata({
@@ -10,11 +11,12 @@ export const metadata = generatePageMetadata({
 });
 
 const schema = generateFeatureSchema({
+  questions: gateSystemFaq,
   name: 'Gate System',
   description: 'The conceptual Cosmocrat gate model separates intent, decision, authority, execution and observed outcome. Actual integration scope must be verified.',
   path: '/gate-system',
 });
-const schemaJson = JSON.stringify(schema);
+const schemaJson = JSON.stringify(schema).replace(/</g, '\\u003c');
 
 export default function GateSystemPage() {
   return (

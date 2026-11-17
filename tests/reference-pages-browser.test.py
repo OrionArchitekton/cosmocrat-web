@@ -13,7 +13,7 @@ artifacts = os.environ.get('SITE_TEST_ARTIFACT_DIR')
 if artifacts:
     Path(artifacts).mkdir(parents=True, exist_ok=True)
 commands = []
-for width, height in [(1440, 1000), (390, 844)]:
+for width, height in [(1440, 1000), (390, 844), (320, 750)]:
     commands.append(['set', 'viewport', str(width), str(height)])
     for route in ['about', 'docs', 'platform']:
         commands.extend([

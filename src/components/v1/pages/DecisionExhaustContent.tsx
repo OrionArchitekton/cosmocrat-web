@@ -16,6 +16,7 @@ import {
   User,
   Workflow,
 } from 'lucide-react';
+import { decisionExhaustFaq } from '@/lib/faqs';
 import FaqItem from '../FaqItem';
 import { ArchitectureNav, ArchitecturePager } from '@/components/os/ArchitectureNav';
 
@@ -450,35 +451,10 @@ export default function DecisionExhaustContent() {
           <h2 className="text-2xl sm:text-3xl font-semibold text-white mb-8">
             Frequently asked questions
           </h2>
-          <div className="space-y-3">
-            <FaqItem
-              question="What is decision exhaust vs data exhaust?"
-              answer={
-                <>
-                  <p className="mb-2">
-                    Data exhaust is the byproduct of system operation (logs, traces). Decision
-                    exhaust is the byproduct of governance (reasoning, policy checks, authority
-                    grants).
-                  </p>
-                  <p className="m-0">
-                    One captures <em>what</em> happened. The other captures <em>why</em> it was
-                    allowed.
-                  </p>
-                </>
-              }
-            />
-            <FaqItem
-              question="Is decision exhaust the same as observability?"
-              answer="Observability records signals. Decision exhaust retains policy and authority information for an enrolled decision. Auditability depends on the actual retention and integrity controls."
-            />
-            <FaqItem
-              question="Why isn't logging enough for AI governance?"
-              answer="An event log can omit the policy and authority behind an action. A decision receipt records that admission basis; it does not prove that execution or an external outcome occurred."
-            />
-            <FaqItem
-              question="Does decision exhaust increase latency or cost?"
-              answer="Policy evaluation and durable receipt persistence add work. Measure the enrolled workload; this reference makes no universal overhead or latency guarantee."
-            />
+          <div id="faq" className="space-y-3">
+            {decisionExhaustFaq.map(({ question, answer }) => (
+              <FaqItem key={question} question={question} answer={answer} />
+            ))}
           </div>
 
           <ArchitecturePager current="/decision-exhaust" />

@@ -4,49 +4,7 @@ import { useEffect, useRef, useState, type SyntheticEvent } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { ArrowDown, Gauge, Pause, Play, RotateCcw } from 'lucide-react';
 
-interface PreviewChapter {
-  index: string;
-  start: number;
-  end: number;
-  timeLabel: string;
-  title: string;
-  summary: string;
-}
-
-const PREVIEW_CHAPTERS: readonly PreviewChapter[] = [
-  {
-    index: '01',
-    start: 0,
-    end: 5,
-    timeLabel: '00:00',
-    title: 'Cosmocrat OS Umbrella',
-    summary: 'Human direction across ten independent Orion tools.',
-  },
-  {
-    index: '02',
-    start: 5,
-    end: 11,
-    timeLabel: '00:05',
-    title: 'Coordination & Continuity',
-    summary: 'Orion PM claims, Handoff context, Results recovery, and Worktree state.',
-  },
-  {
-    index: '03',
-    start: 11,
-    end: 17,
-    timeLabel: '00:11',
-    title: 'Access & Practices',
-    summary: 'Browser identity separation, Android access, Starter, and failclosed.',
-  },
-  {
-    index: '04',
-    start: 17,
-    end: 22,
-    timeLabel: '00:17',
-    title: 'Explicit Boundaries',
-    summary: 'Starter previews and experimental Remote Hands keep their own limits.',
-  },
-];
+import { PREVIEW_CHAPTERS, WELCOME_DURATION } from '@/lib/welcomeVideo';
 
 const EASE_OUT_EXPO: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
@@ -75,7 +33,7 @@ export default function MotionWelcome() {
   const [failed, setFailed] = useState(false);
   const [portrait, setPortrait] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(22);
+  const [duration, setDuration] = useState(WELCOME_DURATION);
   const [playbackRate, setPlaybackRate] = useState<1 | 1.5>(1);
 
   useEffect(() => {
@@ -87,6 +45,13 @@ export default function MotionWelcome() {
     const motionPref = window.matchMedia('(prefers-reduced-motion: reduce)');
     const narrow = window.matchMedia('(max-width: 760px)');
     setPortrait(narrow.matches);
+    const start = new URLSearchParams(window.location.search).get('t');
+    if (start && /^\d+(?:\.\d+)?$/.test(start)) {
+      const seconds = Number(start);
+      if (seconds < WELCOME_DURATION) {
+        resumeAfterResize.current = { time: seconds, playing: false, ended: false };
+      }
+    }
     let attempted = false;
     const stop = () => player.pause();
     const hold = () => {
@@ -153,6 +118,7 @@ export default function MotionWelcome() {
     narrow.addEventListener('change', viewport);
     document.addEventListener('visibilitychange', visibility);
     player.addEventListener('loadedmetadata', restore);
+    restore();
     player.addEventListener('play', started);
     return () => {
       observer.disconnect();
@@ -230,7 +196,7 @@ export default function MotionWelcome() {
     }
   };
 
-  const activeDuration = duration > 0 ? duration : 22;
+  const activeDuration = duration > 0 ? duration : WELCOME_DURATION;
   const progressRatio = Math.max(0, Math.min(1, currentTime / activeDuration));
   const activeChapterIdx = PREVIEW_CHAPTERS.findIndex(
     (ch, idx) =>
@@ -243,6 +209,7 @@ export default function MotionWelcome() {
     <section
       className="motion-welcome"
       ref={section}
+      id="welcome-video"
       data-motion-welcome
       aria-label="Cosmocrat OS introduction"
     >

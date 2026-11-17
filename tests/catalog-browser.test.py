@@ -51,6 +51,14 @@ commands = [
     check('(()=>{const h=document.querySelector("header").getBoundingClientRect();return [...document.querySelectorAll("header a,header button,header summary")].every(e=>{const b=e.getBoundingClientRect();return !b.height || (b.top>=h.top && b.bottom<=h.bottom && b.right<=innerWidth)}) && document.documentElement.scrollWidth<=innerWidth})()', 'Intermediate navigation stays inside the header'),
     ['set', 'viewport', '1024', '1000'],
     check('(()=>{const h=document.querySelector("header").getBoundingClientRect();return [...document.querySelectorAll("header a,header button,header summary")].every(e=>{const b=e.getBoundingClientRect();return !b.height || (b.top>=h.top && b.bottom<=h.bottom && b.right<=innerWidth)}) && document.documentElement.scrollWidth<=innerWidth})()', 'Desktop navigation stays inside the header'),
+    ['set', 'viewport', '390', '844'],
+    ['open', origin + '/docs#starting-paths'],
+    ['wait', '--fn', '!!document.querySelector("#starting-paths pre code")'],
+    check('document.querySelector("#starting-paths code").textContent.includes("orion-starter-0.3.0-rc.1.zip")', 'Development evidence uses the 0.3 archive'),
+    ['click', '[role=tablist] > button:nth-child(3)'],
+    check('document.querySelector("#starting-paths code").textContent.includes("orion-starter-0.2.0-rc.1.zip")', 'Continuity uses its own verified archive'),
+    ['click', '[role=tablist] > button:nth-child(4)'],
+    check('!document.querySelector("#starting-paths code")', 'Architecture reading path has no installation command'),
     ['errors'],
 ]
 environment = os.environ.copy()

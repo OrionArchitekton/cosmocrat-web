@@ -3,14 +3,7 @@
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight, Compass } from 'lucide-react';
 
-export const architecturePillars = [
-  { href: '/memory-infrastructure', label: 'Memory Infrastructure', short: '01 Memory' },
-  { href: '/decision-exhaust', label: 'Decision Exhaust', short: '02 Exhaust' },
-  { href: '/runtime-governance', label: 'Runtime Governance', short: '03 Runtime' },
-  { href: '/gate-system', label: 'Gate System', short: '04 Gates' },
-  { href: '/chronicle-receipts', label: 'Chronicle Receipts', short: '05 Receipts' },
-  { href: '/drift-guard', label: 'Drift Guard', short: '06 Drift Guard' },
-] as const;
+import { architecturePillars } from '@/lib/toolArchitecture';
 
 export function ArchitectureNav({ current }: { current: string }) {
   return (
@@ -50,12 +43,22 @@ export function ArchitectureNav({ current }: { current: string }) {
 
 export function ArchitecturePager({ current }: { current: string }) {
   const index = architecturePillars.findIndex((p) => p.href === current);
+  const related = architecturePillars[index];
   const prev = index > 0 ? architecturePillars[index - 1] : null;
   const next =
     index >= 0 && index < architecturePillars.length - 1 ? architecturePillars[index + 1] : null;
 
   return (
     <div className="mt-16 pt-8 border-t border-[#233047]">
+      {related && (
+        <div className="mb-6 text-sm text-[#b2c0d4]">
+          <span className="font-semibold text-white">Related public practice. </span>
+          {related.practice}{' '}
+          <Link className="text-link" href={`/tools#${related.toolId}`}>{related.tool}</Link>
+          {' · '}
+          <Link className="text-link" href={`/platform#compare-${related.toolId}`}>Compare boundaries</Link>
+        </div>
+      )}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 mb-8">
         {prev ? (
           <Link

@@ -34,7 +34,10 @@ class Fixture(BaseHTTPRequestHandler):
             self.send_error(400)
             return
         try:
-            response = urllib.request.urlopen(origin + self.path, timeout=30)
+            # Keep the built server's byte-range support so seeking tests the actual MP4.
+            headers = {'Range': self.headers['Range']} if self.headers.get('Range') else {}
+            request = urllib.request.Request(origin + self.path, headers=headers)
+            response = urllib.request.urlopen(request, timeout=30)
         except urllib.error.HTTPError as error:
             response = error
         with response:
@@ -44,6 +47,9 @@ class Fixture(BaseHTTPRequestHandler):
                 body = body.replace(b'<head>', b'<head>' + fixture, 1)
             self.send_response(response.status)
             self.send_header('Content-Type', kind)
+            for name in ('Accept-Ranges', 'Content-Range'):
+                if name in response.headers:
+                    self.send_header(name, response.headers[name])
             self.send_header('Content-Length', str(len(body)))
             self.end_headers()
             self.wfile.write(body)

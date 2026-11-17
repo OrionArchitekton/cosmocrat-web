@@ -8,6 +8,12 @@ if (!siteEnv || !ALLOWED_SITE_ENVS.includes(siteEnv)) {
 }
 
 const isProd = siteEnv === 'production';
+const vercelEnv = process.env.VERCEL_ENV;
+if ((vercelEnv === 'production' && !isProd) ||
+    (['preview', 'development'].includes(vercelEnv) && isProd)) {
+  throw new Error('SITE_ENV and VERCEL_ENV disagree about production indexing.');
+}
+
 const canonicalOrigin = process.env.NEXT_PUBLIC_SITE_URL;
 
 if (isProd) {
@@ -15,27 +21,8 @@ if (isProd) {
     throw new Error('NEXT_PUBLIC_SITE_URL is required when SITE_ENV=production.');
   }
 
-  let parsedOrigin;
-  try {
-    parsedOrigin = new URL(canonicalOrigin);
-  } catch {
-    throw new Error(
-      `NEXT_PUBLIC_SITE_URL must be a valid absolute URL in production. Received "${canonicalOrigin}".`
-    );
-  }
-
-  const isInvalidCanonicalOrigin =
-    parsedOrigin.protocol !== 'https:' ||
-    parsedOrigin.hostname !== 'www.cosmocrat.ai' ||
-    parsedOrigin.pathname !== '/' ||
-    parsedOrigin.search ||
-    parsedOrigin.hash ||
-    parsedOrigin.port;
-
-  if (isInvalidCanonicalOrigin) {
-    throw new Error(
-      `NEXT_PUBLIC_SITE_URL must be exactly "https://www.cosmocrat.ai" when SITE_ENV=production. Received "${canonicalOrigin}".`
-    );
+  if (canonicalOrigin !== 'https://www.cosmocrat.ai' && canonicalOrigin !== 'https://www.cosmocrat.ai/') {
+    throw new Error('NEXT_PUBLIC_SITE_URL must be exactly "https://www.cosmocrat.ai" in production.');
   }
 }
 
