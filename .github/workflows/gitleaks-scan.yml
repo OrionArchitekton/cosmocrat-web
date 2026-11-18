@@ -8,7 +8,6 @@ on:
 
 permissions:
   contents: read
-  pull-requests: read
 
 jobs:
   gitleaks:
@@ -19,8 +18,19 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
+          persist-credentials: false
 
-      - name: Run gitleaks
-        uses: gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf42907196329070c7 # v2.3.9
+      - name: Scan every commit of the range with gitleaks 8.24.3
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SCAN_EVENT: ${{ github.event_name }}
+          SCAN_PR_BASE: ${{ github.event.pull_request.base.sha }}
+          SCAN_PR_HEAD: ${{ github.event.pull_request.head.sha }}
+          SCAN_PUSH_BEFORE: ${{ github.event.before }}
+          SCAN_PUSH_AFTER: ${{ github.event.after }}
+        run: |
+          set -euo pipefail
+          if ! printf '%s  %s\n' '1b6e60d6f45ecb76bdc171a2633114e82f17af200a41e6d16797baf3d3d5e5c7' '.github/scripts/gitleaks_scan.py' | sha256sum --check --status; then
+            echo 'RESULT: FAIL scanner-integrity: pinned scanner digest not verified' >&2
+            exit 1
+          fi
+          python3 -I .github/scripts/gitleaks_scan.py
