@@ -18,6 +18,7 @@ import {
 import { driftGuardFaq } from '@/lib/faqs';
 import FaqItem from '../FaqItem';
 import { ArchitectureNav, ArchitecturePager } from '@/components/os/ArchitectureNav';
+import DriftGuardDiagnostic from '@/components/os/DriftGuardDiagnostic';
 
 interface DriftDomain {
   id: string;
@@ -149,6 +150,8 @@ export default function DriftGuardContent() {
         </div>
       </section>
 
+      <DriftGuardDiagnostic />
+
       {/* Definition Block (SEO Spine) */}
       <section className="py-16 border-b border-[#233047]">
         <div className="wrap max-w-4xl">
@@ -170,7 +173,7 @@ export default function DriftGuardContent() {
               evolves.
             </p>
             <p className="text-white font-medium">
-              Drift emerges across time and state transitions — not within a single execution.
+              Drift emerges across time and state transitions. It rarely appears inside a single execution.
             </p>
             <p>
               It spans five critical domains: behavior, memory, policy, authority, and structure. Its
