@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from 'next';
+import { Suspense } from 'react';
 import Script from 'next/script';
 import localFont from 'next/font/local';
+import AttributionTracker from '@/components/os/AttributionTracker';
 import Header from '@/components/v1/Header';
 import Footer from '@/components/v1/Footer';
 import { siteConfig } from '@/lib/siteConfig';
@@ -146,6 +148,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header preview={process.env.SITE_ENV !== 'production'} />
         <main id="main" className="flex-grow">{children}</main>
         <Footer />
+        <Suspense fallback={null}>
+          <AttributionTracker />
+        </Suspense>
 
         {/* GTM script - afterInteractive to avoid blocking render */}
         {/* GA4 (G-RPJ9C1KYMF) is injected via GTM, not hard-coded */}
@@ -153,7 +158,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           id="gtm"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];var dbg=/[?&]debug_mode=(?:1|true)\\b/.test(w.location.search)||/(?:^|\\.)(localhost|vercel\\.app)$|^127\\.0\\.0\\.1$|^\\[::1\\]$/.test(w.location.hostname);if(dbg){w[l].push({debug_mode:true});}w[l].push({'gtm.start':
             new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
             j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);

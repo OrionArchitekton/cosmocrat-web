@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { trackConversion } from '@/lib/analytics';
+import { trackConversion, trackGa4Conversion } from '@/lib/analytics';
+import { getEffectiveUtmParams } from '@/lib/attribution';
 import Link from 'next/link';
 import { Lock, CheckCircle, AlertCircle, Loader2, ArrowRight } from 'lucide-react';
 
@@ -22,7 +23,7 @@ export default function WaitlistForm() {
     setErrorMessage('');
 
     try {
-      const params = new URLSearchParams(window.location.search);
+      const utms = getEffectiveUtmParams();
       const payload = {
         email,
         name: name || undefined,
@@ -31,11 +32,11 @@ export default function WaitlistForm() {
         ai_system: aiSystem || undefined,
         first_run: firstRun || undefined,
         website: website || undefined,
-        utm_source: params.get('utm_source') || undefined,
-        utm_medium: params.get('utm_medium') || undefined,
-        utm_campaign: params.get('utm_campaign') || undefined,
-        utm_content: params.get('utm_content') || undefined,
-        utm_term: params.get('utm_term') || undefined,
+        utm_source: utms.utm_source,
+        utm_medium: utms.utm_medium,
+        utm_campaign: utms.utm_campaign,
+        utm_content: utms.utm_content,
+        utm_term: utms.utm_term,
         referrer: document.referrer || undefined,
         landing_path: window.location.pathname,
       };
@@ -57,7 +58,10 @@ export default function WaitlistForm() {
         throw new Error(data.error || 'Request failed');
       }
 
-      if (data.duplicate === false) trackConversion({ event: 'waitlist_success' });
+      if (data.duplicate === false) {
+        trackConversion({ event: 'waitlist_success' });
+        trackGa4Conversion('newsletter_signup', { lead_surface: 'waitlist' });
+      }
       setStatus('success');
       setName('');
       setEmail('');

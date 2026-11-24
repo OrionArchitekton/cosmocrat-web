@@ -8,6 +8,7 @@
     "start": "next start -p 3000 -H 0.0.0.0",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
+    "test": "node --test tests/presentation-assets.test.mjs tests/site-config.test.mjs tests/drift-guard-unit.test.mjs",
     "format": "prettier --write ."
   },
   "dependencies": {
