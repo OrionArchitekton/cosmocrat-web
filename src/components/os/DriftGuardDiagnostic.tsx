@@ -83,11 +83,13 @@ export default function DriftGuardDiagnostic() {
   const defaultPreset = DRIFT_PRESETS[0];
   const [inputText, setInputText] = useState<string>(defaultPreset.sampleText);
   const [activePresetId, setActivePresetId] = useState<string>(defaultPreset.id);
+  const [analyzedText, setAnalyzedText] = useState<string>(defaultPreset.sampleText);
   const [report, setReport] = useState<DriftAnalysisReport>(() =>
     analyzeAgentDrift(defaultPreset.sampleText)
   );
   const [hasUserRun, setHasUserRun] = useState<boolean>(false);
   const [clientUtms, setClientUtms] = useState<UtmParams>({});
+  const isStale = analyzedText !== inputText;
 
   useEffect(() => {
     setClientUtms(getEffectiveUtmParams());
@@ -108,6 +110,7 @@ export default function DriftGuardDiagnostic() {
 
   const handleRun = () => {
     const nextReport = analyzeAgentDrift(inputText);
+    setAnalyzedText(inputText);
     setReport(nextReport);
     setHasUserRun(true);
     emitSimulatorEvent(nextReport, activePresetId || 'custom');
@@ -118,6 +121,7 @@ export default function DriftGuardDiagnostic() {
     if (!preset) return;
     setActivePresetId(preset.id);
     setInputText(preset.sampleText);
+    setAnalyzedText(preset.sampleText);
     const nextReport = analyzeAgentDrift(preset.sampleText);
     setReport(nextReport);
     setHasUserRun(true);
@@ -127,6 +131,7 @@ export default function DriftGuardDiagnostic() {
   const handleClear = () => {
     setActivePresetId('custom');
     setInputText('');
+    setAnalyzedText('');
     setReport(analyzeAgentDrift(''));
     setHasUserRun(false);
   };
@@ -142,8 +147,8 @@ export default function DriftGuardDiagnostic() {
   }, [activePresetId, clientUtms]);
 
   const highlightedNodes = useMemo(
-    () => renderHighlightedSegments(inputText, report.findings),
-    [inputText, report.findings]
+    () => (isStale ? null : renderHighlightedSegments(analyzedText, report.findings)),
+    [analyzedText, isStale, report.findings]
   );
 
   const { metrics, findings } = report;
@@ -250,7 +255,11 @@ export default function DriftGuardDiagnostic() {
               </div>
 
               <span className="font-mono text-[11px] text-[#94a3b8]">
-                {hasUserRun ? 'Updated from active input' : 'Showing initial sample scan'}
+                {isStale
+                  ? 'Input changed. Click Run Diagnostic to refresh'
+                  : hasUserRun
+                    ? 'Updated from active input'
+                    : 'Showing initial sample scan'}
               </span>
             </div>
 
@@ -268,12 +277,14 @@ export default function DriftGuardDiagnostic() {
                 data-drift-highlight-preview
                 className="text-xs sm:text-sm text-[#cbd5e1] leading-relaxed whitespace-pre-wrap break-words min-h-[72px]"
               >
-                {inputText.trim() ? (
-                  highlightedNodes
-                ) : (
+                {!inputText.trim() ? (
                   <span className="text-[#64748b]">
                     Paste text above and select Run Diagnostic to inspect phrase highlights.
                   </span>
+                ) : isStale ? (
+                  <span className="text-[#94a3b8]">{inputText}</span>
+                ) : (
+                  highlightedNodes
                 )}
               </div>
             </div>

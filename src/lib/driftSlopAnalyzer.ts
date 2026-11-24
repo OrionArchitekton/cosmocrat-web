@@ -286,12 +286,14 @@ function lineColAt(text: string, offset: number): { line: number; col: number } 
 }
 
 function maskUrls(text: string): string {
-  return text.replace(/https?:\/\/\S+/g, (match) =>
-    match
+  return text.replace(/https?:\/\/\S+/g, (match) => {
+    const trimmed = match.replace(/[.,!?;:)\]]+$/, '');
+    const masked = trimmed
       .split('')
       .map((ch) => (ch === '\n' ? '\n' : ' '))
-      .join('')
-  );
+      .join('');
+    return masked + match.slice(trimmed.length);
+  });
 }
 
 interface SentenceSpan {
@@ -303,7 +305,7 @@ interface SentenceSpan {
 
 function splitSentences(text: string): SentenceSpan[] {
   const spans: SentenceSpan[] = [];
-  const rx = /[^.!?\n]+(?:[.!?]+|$)/g;
+  const rx = /(?:[^.!?\n]|(?<=\d)\.(?=\d))+(?:[.!?]+|$)/g;
   let match: RegExpExecArray | null;
   while ((match = rx.exec(text)) !== null) {
     const raw = match[0];

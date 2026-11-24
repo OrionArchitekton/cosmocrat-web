@@ -1,5 +1,6 @@
 import {
   getEffectiveUtmParams,
+  hasDebugQueryFlag,
   isBrowserDebugMode,
   type UtmParams,
 } from './attribution';
@@ -99,6 +100,9 @@ export function trackGa4Conversion(
 export function syncAttributionToDataLayer(utms: UtmParams, debugMode: boolean): void {
   if (typeof window === 'undefined') return;
   try {
+    const winState = window as Window & { __cosmocratDebugPublished?: boolean };
+    const explicitOptOut = hasDebugQueryFlag(window.location?.search) === false;
+    const shouldClearDebug = !debugMode && (Boolean(winState.__cosmocratDebugPublished) || explicitOptOut);
     const context = compactParams({
       utm_source: utms.utm_source,
       utm_medium: utms.utm_medium,
@@ -108,14 +112,34 @@ export function syncAttributionToDataLayer(utms: UtmParams, debugMode: boolean):
       page_path: window.location.pathname,
       ...(debugMode ? { debug_mode: true } : {}),
     });
-    if (Object.keys(context).length <= 1 && !debugMode) return;
+    if (Object.keys(context).length <= 1 && !debugMode && !shouldClearDebug) return;
+    if (debugMode) {
+      winState.__cosmocratDebugPublished = true;
+      (window.dataLayer ??= []).push({
+        event: 'attribution_context',
+        ...context,
+      });
+      if (typeof window.gtag === 'function') {
+        window.gtag('set', { debug_mode: true });
+      }
+      return;
+    }
+    if (shouldClearDebug) {
+      winState.__cosmocratDebugPublished = false;
+      (window.dataLayer ??= []).push({
+        event: 'attribution_context',
+        ...context,
+        debug_mode: undefined,
+      });
+      if (typeof window.gtag === 'function') {
+        window.gtag('set', { debug_mode: undefined });
+      }
+      return;
+    }
     (window.dataLayer ??= []).push({
       event: 'attribution_context',
       ...context,
     });
-    if (typeof window.gtag === 'function' && debugMode) {
-      window.gtag('set', { debug_mode: true });
-    }
   } catch {
     // Ignore read-only dataLayer environments.
   }

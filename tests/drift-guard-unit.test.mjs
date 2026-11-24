@@ -178,3 +178,48 @@ test('driftSlopAnalyzer exempts URL slugs and passes clean operator prose', () =
   assert.ok(report.metrics.burstinessCv >= 0.42, `expected CV >= 0.42, got ${report.metrics.burstinessCv}`);
   assert.equal(report.metrics.verdict, 'PASS');
 });
+
+test('driftSlopAnalyzer preserves sentence punctuation after URLs and keeps decimals intact', () => {
+  const urlSentenceReport = analyzer.analyzeAgentDrift(
+    'We checked https://example.com. The job was queued. We fixed it.'
+  );
+  assert.equal(urlSentenceReport.metrics.sentenceCount, 3);
+  assert.equal(urlSentenceReport.metrics.passiveSentenceCount, 1);
+
+  const decimalReport = analyzer.analyzeAgentDrift('We processed 1.5 GB. We processed 2.5 GB.');
+  assert.equal(decimalReport.metrics.sentenceCount, 2);
+  assert.equal(decimalReport.findings.some((f) => f.ruleId === 'LOW_BURSTINESS_CV'), false);
+});
+
+test('syncAttributionToDataLayer clears active debug_mode on opt-out without polluting normal prod hits', () => {
+  const originalWindow = globalThis.window;
+  const dataLayer = [];
+  const gtagCalls = [];
+  globalThis.window = {
+    location: { pathname: '/drift-guard', search: '' },
+    dataLayer,
+    gtag: (...args) => {
+      gtagCalls.push(args);
+    },
+  };
+  try {
+    analytics.syncAttributionToDataLayer({ utm_source: 'google' }, false);
+    assert.equal('debug_mode' in dataLayer[0], false);
+    assert.equal(gtagCalls.length, 0);
+
+    analytics.syncAttributionToDataLayer({ utm_source: 'google' }, true);
+    assert.equal(dataLayer[1].debug_mode, true);
+    assert.deepEqual(gtagCalls[0], ['set', { debug_mode: true }]);
+
+    analytics.syncAttributionToDataLayer({ utm_source: 'google' }, false);
+    assert.equal(dataLayer[2].debug_mode, undefined);
+    assert.equal('debug_mode' in dataLayer[2], true);
+    assert.deepEqual(gtagCalls[1], ['set', { debug_mode: undefined }]);
+  } finally {
+    if (originalWindow === undefined) {
+      delete globalThis.window;
+    } else {
+      globalThis.window = originalWindow;
+    }
+  }
+});
