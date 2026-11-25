@@ -19,6 +19,7 @@ export default function MotionWelcome() {
   const section = useRef<HTMLElement>(null);
   const failedSources = useRef(new Set<HTMLSourceElement>());
   const pendingSeek = useRef<number | null>(null);
+  const autoPlayOnActivate = useRef(true);
   const resumeAfterResize = useRef<{
     time: number;
     playing: boolean;
@@ -36,10 +37,26 @@ export default function MotionWelcome() {
   const [playbackRate, setPlaybackRate] = useState<1 | 1.5>(1);
 
   useEffect(() => {
+    const start = new URLSearchParams(window.location.search).get('t');
+    if (start && /^\d+(?:\.\d+)?$/.test(start)) {
+      const seconds = Number(start);
+      if (seconds < WELCOME_DURATION) {
+        resumeAfterResize.current = { time: seconds, playing: false, ended: false };
+        setCurrentTime(seconds);
+        autoPlayOnActivate.current = false;
+        setActivated(true);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
     if (!activated) return;
     const player = video.current;
     const host = section.current;
     if (!player || !host) return;
+    const shouldAutoPlay = autoPlayOnActivate.current;
+    autoPlayOnActivate.current = true;
+    if (player.networkState === player.NETWORK_NO_SOURCE) setFailed(true);
 
     const narrow = window.matchMedia('(max-width: 760px)');
     const motionPref = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -62,6 +79,7 @@ export default function MotionWelcome() {
         ended: player.ended,
       };
       stop();
+      setFailed(false);
       failedSources.current.clear();
       player.load();
     };
@@ -94,7 +112,7 @@ export default function MotionWelcome() {
       ([entry]) => {
         if (!entry.isIntersecting) hold();
       },
-      { threshold: 0.2 }
+      { threshold: 0.05 }
     );
     const visibility = () => {
       if (document.hidden) hold();
@@ -106,7 +124,9 @@ export default function MotionWelcome() {
     document.addEventListener('visibilitychange', visibility);
     player.addEventListener('loadedmetadata', restore);
     restore();
-    play();
+    if (shouldAutoPlay) {
+      play();
+    }
 
     return () => {
       observer.disconnect();
@@ -200,6 +220,7 @@ export default function MotionWelcome() {
       (source) => !source.media || window.matchMedia(source.media).matches
     );
     if (candidates.length && candidates.every((source) => failedSources.current.has(source))) {
+      video.current?.pause();
       setFailed(true);
       setPlaying(false);
     }
@@ -215,6 +236,11 @@ export default function MotionWelcome() {
   const resolvedChapterIdx = activeChapterIdx === -1 ? 0 : activeChapterIdx;
 
   const controlLabel = playing ? 'Pause intro' : ended ? 'Replay intro' : 'Play intro';
+  const controlAriaLabel = playing
+    ? 'Pause introduction'
+    : ended
+      ? 'Replay introduction'
+      : 'Play introduction';
 
   return (
     <section
@@ -286,12 +312,17 @@ export default function MotionWelcome() {
                       setEnded(true);
                       setPlaying(false);
                     }}
+                    onLoadedData={() => {
+                      setFailed(false);
+                      failedSources.current.clear();
+                    }}
                     onCanPlay={() => {
                       setFailed(false);
                       failedSources.current.clear();
                     }}
                     onError={(event) => {
                       if (event.target === event.currentTarget) {
+                        event.currentTarget.pause();
                         setFailed(true);
                         setPlaying(false);
                       }
@@ -340,6 +371,28 @@ export default function MotionWelcome() {
                       className="motion-poster-img"
                     />
                   </picture>
+                )}
+
+                {!activated && (
+                  <noscript>
+                    <video
+                      controls
+                      preload="none"
+                      poster="/media/cosmocrat/cosmocrat-welcome-desktop.jpg"
+                      width={1920}
+                      height={1080}
+                    >
+                      <source
+                        src="/media/cosmocrat/cosmocrat-welcome-mobile.mp4"
+                        type="video/mp4"
+                        media="(max-width: 760px)"
+                      />
+                      <source
+                        src="/media/cosmocrat/cosmocrat-welcome-desktop.mp4"
+                        type="video/mp4"
+                      />
+                    </video>
+                  </noscript>
                 )}
 
                 {!failed && !playing && (
@@ -447,7 +500,7 @@ export default function MotionWelcome() {
                   className="motion-control"
                   type="button"
                   onClick={toggle}
-                  aria-label={controlLabel}
+                  aria-label={controlAriaLabel}
                 >
                   {playing ? (
                     <Pause aria-hidden="true" />
