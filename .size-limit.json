@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Poster facade assets (AVIF + WebP)",
+    "path": "public/media/cosmocrat/*.{avif,webp}",
+    "limit": "65 kB"
+  },
+  {
+    "name": "Home page client bundle",
+    "path": ".next/static/chunks/app/page-*.js",
+    "limit": "120 kB"
+  }
+]

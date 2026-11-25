@@ -355,7 +355,7 @@ export default function ChronicleReceiptsContent() {
             </h2>
             <p className="text-base text-[#b2c0d4] mb-6 leading-relaxed">
               In standard systems, policies change, but old logs don&apos;t update. This creates
-              &quot;Policy Drift&quot;—you can&apos;t prove <em>why</em> an action was allowed last
+              &quot;Policy Drift&quot;: you can&apos;t prove <em>why</em> an action was allowed last
               month if the rules changed today.
             </p>
             <div className="rounded-xl border border-[#233047] bg-[#121b2e]/70 p-5">
@@ -464,7 +464,7 @@ export default function ChronicleReceiptsContent() {
             <div className="eyebrow justify-center">Forensic Architecture</div>
             <h2 className="text-3xl font-semibold text-white mt-3 mb-2">Incident-as-Data</h2>
             <p className="text-sm text-[#94a3b8]">
-              Every incident becomes structured forensic evidence—with an author and a receipt.
+              Every incident becomes structured forensic evidence, with an author and a receipt.
             </p>
           </div>
 

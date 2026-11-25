@@ -1,15 +1,21 @@
 :root {
   --bg: #0b1120;
-  --surface: #121b2e;
-  --surface-elevated: #172238;
+  --surface: #151f32;
+  --surface-elevated: #1e293b;
   --text: #e2e8f0;
   --muted: #94a3b8;
   --line: #233047;
-  --line-strong: #334563;
-  --accent: #d97706;
-  --gold: #f0b66a;
-  --soft: #b2c0d4;
-  --radius: 8px;
+  --line-strong: #64748b;
+  --accent: #f59e0b;
+  --gold: #fbbf24;
+  --soft: #cbd5e1;
+  --radius: 6px;
+  --font-display: 'Space Grotesk Variable', 'Space Grotesk', system-ui, sans-serif;
+  --font-sans: 'IBM Plex Sans Variable', 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', monospace;
+  --font-inter: var(--font-sans);
+  --font-orbitron: var(--font-display);
+  --font-jetbrains: var(--font-mono);
 }
 
 * {
@@ -25,10 +31,23 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: var(--font-inter), system-ui, sans-serif;
+  font-family: var(--font-sans);
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+}
+
+input,
+textarea,
+select {
+  background-color: #0b1120;
+  color: #e2e8f0;
 }
 
 a {
@@ -287,19 +306,17 @@ p {
 }
 
 h1 {
-  font-size: clamp(40px, 5.2vw, 68px);
+  font-size: clamp(32px, 4.8vw, 62px);
   line-height: 1.07;
   letter-spacing: -0.04em;
   font-weight: 650;
-  margin: 20px 0 22px;
+  margin: 16px 0 18px;
   text-wrap: balance;
 }
 
 h1 em {
   font-style: normal;
-  background: linear-gradient(120deg, #fce1b8 0%, #f0b66a 45%, #d97706 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #fbbf24;
 }
 
 .button-row {
@@ -330,13 +347,15 @@ h1 em {
 }
 
 .button-primary {
-  background: linear-gradient(180deg, #f09c38 0%, #d97706 100%);
+  background-color: #f59e0b;
+  background-image: linear-gradient(180deg, #fbbf24 0%, #f59e0b 100%);
   color: #0b1120;
-  box-shadow: 0 8px 24px -8px rgba(217, 119, 6, 0.5);
+  box-shadow: 0 8px 24px -8px rgba(245, 158, 11, 0.45);
 }
 
 .button-primary:hover {
-  background: linear-gradient(180deg, #f7b057 0%, #e08312 100%);
+  background-color: #fbbf24;
+  background-image: linear-gradient(180deg, #fcd34d 0%, #fbbf24 100%);
   color: #0b1120;
   transform: translateY(-1px);
 }
@@ -493,7 +512,9 @@ h1 em {
   justify-content: center;
 }
 
-.motion-stage video {
+.motion-stage video,
+.motion-poster-picture,
+.motion-poster-img {
   display: block;
   width: 100%;
   height: auto;
@@ -588,6 +609,8 @@ h1 em {
   height: 100%;
   margin: 0;
   opacity: 0;
+  background-color: #0b1120;
+  color: #e2e8f0;
   cursor: pointer;
 }
 
@@ -763,7 +786,7 @@ h1 em {
 .hero {
   position: relative;
   overflow: hidden;
-  padding: 72px 0 64px;
+  padding: 44px 0 48px;
   border-bottom: 1px solid var(--line);
   background:
     radial-gradient(circle at 78% 35%, rgba(217, 119, 6, 0.11), transparent 46%),
@@ -978,6 +1001,21 @@ h1 em {
 }
 
 /* Foundation Intro */
+.hero-grid > *,
+.intro-grid > *,
+.composition > *,
+.principles-grid > *,
+.origin > *,
+.faq > * {
+  min-width: 0;
+}
+
+.proof-chart-card {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+
 .intro-grid {
   display: grid;
   grid-template-columns: 1fr 1.15fr;
@@ -1533,6 +1571,8 @@ h1 em {
 
 .footer-credit a {
   color: var(--gold);
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 .footer-col-title {
@@ -2220,7 +2260,9 @@ h1 em {
     grid-template-columns: 1fr;
     gap: 10px;
   }
-  .motion-stage video {
+  .motion-stage video,
+  .motion-poster-picture,
+  .motion-poster-img {
     aspect-ratio: 3 / 4;
     max-height: 440px;
   }
@@ -2239,7 +2281,12 @@ h1 em {
     flex-wrap: wrap;
   }
   .hero {
-    padding: 44px 0 40px;
+    padding: 24px 0 32px;
+  }
+  .hero .lead {
+    font-size: 16px;
+    line-height: 1.55;
+    margin-bottom: 20px;
   }
   .section {
     padding: 52px 0;
@@ -2285,6 +2332,22 @@ h1 em {
   }
   .preview-bar .wrap {
     font-size: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-copy,
+  .emblem-panel,
+  .proof-chart-card {
+    transition: opacity 0.32s cubic-bezier(0.16, 1, 0.3, 1), transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @starting-style {
+    .hero-copy,
+    .emblem-panel,
+    .proof-chart-card {
+      opacity: 0;
+      transform: translateY(8px);
+    }
   }
 }
 

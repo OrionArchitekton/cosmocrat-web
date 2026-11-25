@@ -14,10 +14,10 @@ interface PaletteItem {
 }
 
 const staticPages: PaletteItem[] = [
-  { id: 'home', label: 'Home — Cosmocrat OS', section: 'Pages', href: '/', keywords: 'home overview os' },
+  { id: 'home', label: 'Home | Cosmocrat OS', section: 'Pages', href: '/', keywords: 'home overview os' },
   { id: 'tools', label: 'Orion Tool Catalog', section: 'Pages', href: '/tools', keywords: 'tools catalog pm browser phone handoff' },
   { id: 'platform', label: 'Governance Architecture', section: 'Architecture', href: '/platform', keywords: 'platform governance kernel' },
-  { id: 'gate-system', label: 'Gate System (G0–G6)', section: 'Architecture', href: '/gate-system', keywords: 'gates authorization admission g4' },
+  { id: 'gate-system', label: 'Gate System (G0-G6)', section: 'Architecture', href: '/gate-system', keywords: 'gates authorization admission g4' },
   { id: 'runtime-governance', label: 'Runtime Governance', section: 'Architecture', href: '/runtime-governance', keywords: 'runtime kernel boundary' },
   { id: 'memory-infrastructure', label: 'Memory Infrastructure', section: 'Architecture', href: '/memory-infrastructure', keywords: 'memory lanes side-brain engrams' },
   { id: 'decision-exhaust', label: 'Decision Exhaust', section: 'Architecture', href: '/decision-exhaust', keywords: 'exhaust audit receipts policy' },
@@ -90,11 +90,11 @@ export default function CommandPalette() {
         type="button"
         className="cmd-trigger"
         onClick={() => setOpen(true)}
-        aria-label="Open quick navigation"
+        aria-keyshortcuts="Meta+K Control+K"
       >
         <Search size={13} aria-hidden="true" />
         <span>Quick jump</span>
-        <kbd className="cmd-kbd">⌘K</kbd>
+        <kbd className="cmd-kbd" aria-hidden="true">⌘K</kbd>
       </button>
 
       {open && (

@@ -113,7 +113,7 @@ export async function POST(req: Request) {
           }),
         });
       } catch {
-        // Ingest forward failed — do not degrade waitlist signup
+        // Ingest forward failed; do not degrade waitlist signup
       }
     }
   }

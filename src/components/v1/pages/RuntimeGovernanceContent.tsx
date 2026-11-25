@@ -58,7 +58,7 @@ const kernelParts: readonly KernelPart[] = [
   },
   {
     id: 'gates',
-    label: 'Gates (G0–G6)',
+    label: 'Gates (G0-G6)',
     subtitle: 'Admission Pipeline',
     owns: 'Conceptual admission pipeline evaluating proposed mutations before dispatch.',
     boundary:
@@ -325,7 +325,7 @@ export default function RuntimeGovernanceContent() {
               The Kernel Architecture
             </h2>
             <p className="text-sm text-[#94a3b8]">
-              Cosmocrat centralizes authority, context, and governance—while pushing execution
+              Cosmocrat centralizes authority, context, and governance while pushing execution
               outward. Click any layer to inspect its boundary.
             </p>
           </div>

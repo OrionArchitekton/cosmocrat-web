@@ -4,9 +4,8 @@ import { useEffect, useRef, useState, type SyntheticEvent } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { ArrowDown, Gauge, Pause, Play, RotateCcw } from 'lucide-react';
 
+import { ORION_EASE_OUT_EXPO } from '@/lib/motion';
 import { PREVIEW_CHAPTERS, WELCOME_DURATION } from '@/lib/welcomeVideo';
-
-const EASE_OUT_EXPO: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 function formatSeconds(value: number): string {
   const safe = Number.isFinite(value) && value > 0 ? Math.floor(value) : 0;
@@ -19,6 +18,7 @@ export default function MotionWelcome() {
   const video = useRef<HTMLVideoElement>(null);
   const section = useRef<HTMLElement>(null);
   const failedSources = useRef(new Set<HTMLSourceElement>());
+  const pendingSeek = useRef<number | null>(null);
   const resumeAfterResize = useRef<{
     time: number;
     playing: boolean;
@@ -27,32 +27,23 @@ export default function MotionWelcome() {
 
   const shouldReduceMotion = useReducedMotion();
 
-  const [enhanced, setEnhanced] = useState(false);
+  const [activated, setActivated] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [ended, setEnded] = useState(false);
   const [failed, setFailed] = useState(false);
-  const [portrait, setPortrait] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(WELCOME_DURATION);
   const [playbackRate, setPlaybackRate] = useState<1 | 1.5>(1);
 
   useEffect(() => {
+    if (!activated) return;
     const player = video.current;
     const host = section.current;
     if (!player || !host) return;
-    setEnhanced(true);
-    if (player.networkState === player.NETWORK_NO_SOURCE) setFailed(true);
-    const motionPref = window.matchMedia('(prefers-reduced-motion: reduce)');
+
     const narrow = window.matchMedia('(max-width: 760px)');
-    setPortrait(narrow.matches);
-    const start = new URLSearchParams(window.location.search).get('t');
-    if (start && /^\d+(?:\.\d+)?$/.test(start)) {
-      const seconds = Number(start);
-      if (seconds < WELCOME_DURATION) {
-        resumeAfterResize.current = { time: seconds, playing: false, ended: false };
-      }
-    }
-    let attempted = false;
+    const motionPref = window.matchMedia('(prefers-reduced-motion: reduce)');
+
     const stop = () => player.pause();
     const hold = () => {
       if (resumeAfterResize.current) resumeAfterResize.current.playing = false;
@@ -71,13 +62,18 @@ export default function MotionWelcome() {
         ended: player.ended,
       };
       stop();
-      setPortrait(narrow.matches);
       failedSources.current.clear();
       player.load();
     };
     const restore = () => {
       if (Number.isFinite(player.duration) && player.duration > 0) {
         setDuration(player.duration);
+      }
+      if (pendingSeek.current !== null && player.readyState >= player.HAVE_METADATA) {
+        const target = Math.min(pendingSeek.current, player.duration || pendingSeek.current);
+        pendingSeek.current = null;
+        player.currentTime = target;
+        setCurrentTime(target);
       }
       const pending = resumeAfterResize.current;
       if (!pending || player.readyState < player.HAVE_METADATA) return;
@@ -93,44 +89,35 @@ export default function MotionWelcome() {
         play();
       }
     };
-    const started = () => {
-      attempted = true;
-    };
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) hold();
-        else if (!attempted && !motionPref.matches && !document.hidden) {
-          attempted = true;
-          play();
-        }
       },
       { threshold: 0.2 }
     );
     const visibility = () => {
       if (document.hidden) hold();
-      else {
-        observer.unobserve(host);
-        observer.observe(host);
-      }
     };
+
     observer.observe(host);
     motionPref.addEventListener('change', preference);
     narrow.addEventListener('change', viewport);
     document.addEventListener('visibilitychange', visibility);
     player.addEventListener('loadedmetadata', restore);
     restore();
-    player.addEventListener('play', started);
+    play();
+
     return () => {
       observer.disconnect();
       motionPref.removeEventListener('change', preference);
       narrow.removeEventListener('change', viewport);
       document.removeEventListener('visibilitychange', visibility);
       player.removeEventListener('loadedmetadata', restore);
-      player.removeEventListener('play', started);
       resumeAfterResize.current = null;
       stop();
     };
-  }, []);
+  }, [activated]);
 
   useEffect(() => {
     const player = video.current;
@@ -139,7 +126,21 @@ export default function MotionWelcome() {
     }
   }, [playbackRate]);
 
+  const activateAndPlay = (seekSeconds?: number) => {
+    if (typeof seekSeconds === 'number') {
+      pendingSeek.current = seekSeconds;
+      setCurrentTime(seekSeconds);
+    }
+    setFailed(false);
+    setEnded(false);
+    setActivated(true);
+  };
+
   const toggle = () => {
+    if (!activated) {
+      activateAndPlay();
+      return;
+    }
     const player = video.current;
     if (!player) return;
     if (player.paused) {
@@ -161,6 +162,14 @@ export default function MotionWelcome() {
   };
 
   const seekTo = (nextSeconds: number, autoPlay = false) => {
+    if (!activated) {
+      if (autoPlay) {
+        activateAndPlay(nextSeconds);
+      } else {
+        setCurrentTime(nextSeconds);
+      }
+      return;
+    }
     const player = video.current;
     if (!player) return;
     const maxTime = Number.isFinite(player.duration) && player.duration > 0 ? player.duration : duration;
@@ -205,6 +214,8 @@ export default function MotionWelcome() {
   );
   const resolvedChapterIdx = activeChapterIdx === -1 ? 0 : activeChapterIdx;
 
+  const controlLabel = playing ? 'Pause intro' : ended ? 'Replay intro' : 'Play intro';
+
   return (
     <section
       className="motion-welcome"
@@ -218,12 +229,13 @@ export default function MotionWelcome() {
           className="motion-shell"
           data-playing={playing ? 'true' : 'false'}
           initial={shouldReduceMotion ? false : { opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: shouldReduceMotion ? 0 : 0.45, ease: EASE_OUT_EXPO }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: shouldReduceMotion ? 0 : 0.4, ease: ORION_EASE_OUT_EXPO }}
         >
           <div className="motion-deck-bar">
             <span className="motion-deck-title">Cosmocrat OS · Silent introduction preview</span>
-            {enhanced && !failed && (
+            {activated && !failed && (
               <div className="motion-deck-meta">
                 <span className="motion-timecode tabular-nums">
                   {formatSeconds(currentTime)} / {formatSeconds(activeDuration)}
@@ -245,56 +257,92 @@ export default function MotionWelcome() {
             <div className="motion-stage-col">
               <div
                 className="motion-stage"
-                onClick={enhanced && !failed ? toggle : undefined}
+                onClick={!failed ? toggle : undefined}
               >
-                <video
-                  ref={video}
-                  muted
-                  playsInline
-                  controls={!enhanced}
-                  preload="metadata"
-                  poster={`/media/cosmocrat/cosmocrat-welcome-${portrait ? 'mobile' : 'desktop'}.jpg`}
-                  width={1920}
-                  height={1080}
-                  aria-describedby="welcome-caption"
-                  onPlay={() => setPlaying(true)}
-                  onPause={() => setPlaying(false)}
-                  onTimeUpdate={(event) => setCurrentTime(event.currentTarget.currentTime)}
-                  onLoadedMetadata={(event) => {
-                    const dur = event.currentTarget.duration;
-                    if (Number.isFinite(dur) && dur > 0) setDuration(dur);
-                    event.currentTarget.playbackRate = playbackRate;
-                  }}
-                  onEnded={() => {
-                    setEnded(true);
-                    setPlaying(false);
-                  }}
-                  onCanPlay={() => {
-                    setFailed(false);
-                    failedSources.current.clear();
-                  }}
-                  onError={(event) => {
-                    if (event.target === event.currentTarget) {
-                      setFailed(true);
+                {activated ? (
+                  <video
+                    ref={video}
+                    muted
+                    playsInline
+                    preload="metadata"
+                    width={1920}
+                    height={1080}
+                    aria-describedby="welcome-caption"
+                    onPlay={() => setPlaying(true)}
+                    onPause={() => setPlaying(false)}
+                    onTimeUpdate={(event) => setCurrentTime(event.currentTarget.currentTime)}
+                    onLoadedMetadata={(event) => {
+                      const dur = event.currentTarget.duration;
+                      if (Number.isFinite(dur) && dur > 0) setDuration(dur);
+                      event.currentTarget.playbackRate = playbackRate;
+                      if (pendingSeek.current !== null) {
+                        const t = Math.min(pendingSeek.current, dur || pendingSeek.current);
+                        pendingSeek.current = null;
+                        event.currentTarget.currentTime = t;
+                        setCurrentTime(t);
+                      }
+                    }}
+                    onEnded={() => {
+                      setEnded(true);
                       setPlaying(false);
-                    }
-                  }}
-                >
-                  <source
-                    src="/media/cosmocrat/cosmocrat-welcome-mobile.mp4"
-                    type="video/mp4"
-                    media="(max-width: 760px)"
-                    onError={sourceFailed}
-                  />
-                  <source
-                    src="/media/cosmocrat/cosmocrat-welcome-desktop.mp4"
-                    type="video/mp4"
-                    onError={sourceFailed}
-                  />
-                  Your browser can’t play the introduction. Continue to the site below.
-                </video>
+                    }}
+                    onCanPlay={() => {
+                      setFailed(false);
+                      failedSources.current.clear();
+                    }}
+                    onError={(event) => {
+                      if (event.target === event.currentTarget) {
+                        setFailed(true);
+                        setPlaying(false);
+                      }
+                    }}
+                  >
+                    <source
+                      src="/media/cosmocrat/cosmocrat-welcome-mobile.mp4"
+                      type="video/mp4"
+                      media="(max-width: 760px)"
+                      onError={sourceFailed}
+                    />
+                    <source
+                      src="/media/cosmocrat/cosmocrat-welcome-desktop.mp4"
+                      type="video/mp4"
+                      onError={sourceFailed}
+                    />
+                    Your browser cannot play the introduction. Continue to the site below.
+                  </video>
+                ) : (
+                  <picture className="motion-poster-picture">
+                    <source
+                      media="(max-width: 760px)"
+                      srcSet="/media/cosmocrat/cosmocrat-welcome-mobile-720w.avif"
+                      type="image/avif"
+                    />
+                    <source
+                      media="(max-width: 760px)"
+                      srcSet="/media/cosmocrat/cosmocrat-welcome-mobile-720w.webp"
+                      type="image/webp"
+                    />
+                    <source
+                      srcSet="/media/cosmocrat/cosmocrat-welcome-desktop-1280w.avif"
+                      type="image/avif"
+                    />
+                    <source
+                      srcSet="/media/cosmocrat/cosmocrat-welcome-desktop-1280w.webp"
+                      type="image/webp"
+                    />
+                    <img
+                      src="/media/cosmocrat/cosmocrat-welcome-desktop.jpg"
+                      alt="Cosmocrat OS silent introduction preview poster"
+                      width={1280}
+                      height={720}
+                      loading="lazy"
+                      decoding="async"
+                      className="motion-poster-img"
+                    />
+                  </picture>
+                )}
 
-                {enhanced && !failed && !playing && (
+                {!failed && !playing && (
                   <motion.button
                     type="button"
                     className="motion-stage-overlay"
@@ -303,9 +351,9 @@ export default function MotionWelcome() {
                       event.stopPropagation();
                       toggle();
                     }}
-                    initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.94 }}
+                    initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.96 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: shouldReduceMotion ? 0 : 0.2, ease: EASE_OUT_EXPO }}
+                    transition={{ duration: shouldReduceMotion ? 0 : 0.2, ease: ORION_EASE_OUT_EXPO }}
                   >
                     <span className="motion-stage-trigger">
                       {ended ? <RotateCcw aria-hidden="true" /> : <Play aria-hidden="true" />}
@@ -314,7 +362,7 @@ export default function MotionWelcome() {
                   </motion.button>
                 )}
 
-                {enhanced && !failed && (
+                {activated && !failed && (
                   <div
                     className="motion-scrubber"
                     onClick={(event) => event.stopPropagation()}
@@ -394,18 +442,12 @@ export default function MotionWelcome() {
               Hands keep their own boundaries.
             </p>
             <div className="motion-actions">
-              {enhanced && !failed && (
+              {!failed && (
                 <button
                   className="motion-control"
                   type="button"
                   onClick={toggle}
-                  aria-label={
-                    playing
-                      ? 'Pause introduction'
-                      : ended
-                        ? 'Replay introduction'
-                        : 'Play introduction'
-                  }
+                  aria-label={controlLabel}
                 >
                   {playing ? (
                     <Pause aria-hidden="true" />
@@ -414,18 +456,18 @@ export default function MotionWelcome() {
                   ) : (
                     <Play aria-hidden="true" />
                   )}
-                  {playing ? 'Pause' : ended ? 'Replay' : 'Play intro'}
+                  {controlLabel}
                 </button>
               )}
               <a
                 className="text-link"
-                href="#static-site"
+                href="#foundation"
                 onClick={() => {
                   if (resumeAfterResize.current) resumeAfterResize.current.playing = false;
                   video.current?.pause();
                 }}
               >
-                Continue to the site <ArrowDown aria-hidden="true" />
+                Continue to architecture <ArrowDown aria-hidden="true" />
               </a>
             </div>
           </div>

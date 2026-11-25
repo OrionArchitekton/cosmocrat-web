@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 
 const productLinks = [
@@ -26,14 +25,19 @@ export default function Footer() {
         <div className="footer-grid">
           <div>
             <Link href="/" aria-label="Cosmocrat home" className="inline-block">
-              <Image
-                className="footer-logo"
-                src="/brand/cosmocrat-wordmark.svg"
-                alt="Cosmocrat"
-                width={1753}
-                height={241}
-                unoptimized
-              />
+              <picture>
+                <source srcSet="/brand/cosmocrat-wordmark-380w.avif" type="image/avif" />
+                <source srcSet="/brand/cosmocrat-wordmark-380w.webp" type="image/webp" />
+                <img
+                  className="footer-logo"
+                  src="/brand/cosmocrat-wordmark.png"
+                  alt="Cosmocrat"
+                  width={380}
+                  height={52}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
             </Link>
             <p className="footer-tagline">
               Tools and operating practices for human-directed AI work. Live and Lead with Clarity.

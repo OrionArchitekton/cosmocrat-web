@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import Link from 'next/link';
 import {
   ArrowRight,
@@ -110,14 +111,20 @@ const principles = [
   },
 ] as const;
 
-export default function HomeSections() {
+export default function HomeSections({
+  welcomeSection,
+  proofChartSection,
+}: {
+  welcomeSection?: ReactNode;
+  proofChartSection?: ReactNode;
+} = {}) {
   return (
     <div className="os-page" id="static-site" tabIndex={-1}>
       <section className="hero">
         <div className="wrap">
           <div className="hero-grid">
             <div className="hero-copy">
-              <div className="eyebrow">Cosmocrat OS · Human-directed AI</div>
+              <div className="eyebrow">Cosmocrat OS | Human-directed AI</div>
               <h1>
                 An AI operating system
                 <br />
@@ -155,7 +162,9 @@ export default function HomeSections() {
         </div>
       </section>
 
-      <section className="section section-surface">
+      {welcomeSection}
+
+      <section className="section section-surface" id="foundation">
         <div className="wrap intro-grid">
           <div>
             <div className="eyebrow">The foundation</div>
@@ -185,6 +194,7 @@ export default function HomeSections() {
                 <span>Every tool documents its supported environment and control limits</span>
               </div>
             </div>
+            {proofChartSection ? <div className="mt-8">{proofChartSection}</div> : null}
           </div>
         </div>
       </section>

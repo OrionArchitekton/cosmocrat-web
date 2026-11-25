@@ -33,7 +33,7 @@ export async function renderSocialCard(
         fontFamily: 'Inter',
       }}
     >
-      {/* Satori (next/og) renders a real <img>, not next/image — the lint rule does not apply here. */}
+      {/* Satori (next/og) renders a real <img>, not next/image; the lint rule does not apply here. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={wordmarkSource}

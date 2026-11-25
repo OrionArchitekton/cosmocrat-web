@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { siteConfig } from '@/lib/siteConfig';
 
 // Committed content-update timestamp. Per the locked AEO doctrine, sitemap
-// lastModified must be a committed constant — never a fresh build-time clock
+// lastModified must be a committed constant, never a fresh build-time clock
 // read, which would churn every build and emit a meaningless "modified today"
 // signal. Bump this when site content is materially updated.
 const LAST_CONTENT_UPDATE = new Date('2026-11-16T00:00:00Z');

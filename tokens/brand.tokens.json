@@ -1,0 +1,52 @@
+{
+  "$extensions": {
+    "com.orion.brand": {
+      "id": "cosmocrat-web",
+      "name": "Cosmocrat OS",
+      "polarity": "dark",
+      "domain": "cosmocrat.ai"
+    },
+    "com.orion.contrastPairs": [
+      { "name": "body-on-bg", "fg": "color.fg", "bg": "color.bg", "level": "normal" },
+      { "name": "body-on-surface", "fg": "color.fg", "bg": "color.surface", "level": "normal" },
+      { "name": "body-on-elevated", "fg": "color.fg", "bg": "color.surfaceElevated", "level": "normal" },
+      { "name": "muted-on-bg", "fg": "color.fgMuted", "bg": "color.bg", "level": "normal" },
+      { "name": "muted-on-surface", "fg": "color.fgMuted", "bg": "color.surface", "level": "normal" },
+      { "name": "cta-label-on-accent", "fg": "color.accentFg", "bg": "color.accent", "level": "normal" },
+      { "name": "cta-label-on-hover", "fg": "color.accentFg", "bg": "color.accentHover", "level": "normal" },
+      { "name": "accent-text-on-bg", "fg": "color.accent", "bg": "color.bg", "level": "normal" },
+      { "name": "border-on-bg", "fg": "color.border", "bg": "color.bg", "level": "ui" },
+      { "name": "ok-badge", "fg": "color.statusOkFg", "bg": "color.statusOk", "level": "normal" },
+      { "name": "warn-badge", "fg": "color.statusWarnFg", "bg": "color.statusWarn", "level": "normal" },
+      { "name": "danger-badge", "fg": "color.statusDangerFg", "bg": "color.statusDanger", "level": "normal" }
+    ]
+  },
+  "color": {
+    "bg": { "$type": "color", "$value": "#0B1120", "$description": "Cosmocrat kernel dark slate" },
+    "surface": { "$type": "color", "$value": "#151F32", "$description": "Kernel card surface" },
+    "surfaceElevated": { "$type": "color", "$value": "#1E293B", "$description": "Elevated panel surface" },
+    "border": { "$type": "color", "$value": "#64748B", "$description": "Structural border" },
+    "fg": { "$type": "color", "$value": "#E2E8F0", "$description": "Primary crisp text" },
+    "fgMuted": { "$type": "color", "$value": "#94A3B8", "$description": "Muted kernel metadata" },
+    "accent": { "$type": "color", "$value": "#F59E0B", "$description": "Amber governance accent" },
+    "accentHover": { "$type": "color", "$value": "#FBBF24", "$description": "Brighter amber hover" },
+    "accentFg": { "$type": "color", "$value": "#0B1120", "$description": "Dark kernel ink on amber CTA" },
+    "focusRing": { "$type": "color", "$value": "#FBBF24", "$description": "Amber focus outline" },
+    "statusOk": { "$type": "color", "$value": "#4ADE80", "$description": "Admitted status" },
+    "statusOkFg": { "$type": "color", "$value": "#0B1120", "$description": "Dark label on admitted" },
+    "statusWarn": { "$type": "color", "$value": "#FBBF24", "$description": "Hold status" },
+    "statusWarnFg": { "$type": "color", "$value": "#0B1120", "$description": "Dark label on hold" },
+    "statusDanger": { "$type": "color", "$value": "#F87171", "$description": "Denied fail-closed status" },
+    "statusDangerFg": { "$type": "color", "$value": "#0B1120", "$description": "Dark label on denied" }
+  },
+  "font": {
+    "display": { "$type": "fontFamily", "$value": "'Space Grotesk Variable', 'Space Grotesk', system-ui, sans-serif" },
+    "sans": { "$type": "fontFamily", "$value": "'IBM Plex Sans Variable', 'IBM Plex Sans', system-ui, sans-serif" },
+    "mono": { "$type": "fontFamily", "$value": "'JetBrains Mono Variable', 'JetBrains Mono', monospace" }
+  },
+  "radius": {
+    "sm": { "$type": "dimension", "$value": "4px" },
+    "md": { "$type": "dimension", "$value": "6px" },
+    "lg": { "$type": "dimension", "$value": "10px" }
+  }
+}

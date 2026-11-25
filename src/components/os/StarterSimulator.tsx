@@ -113,7 +113,7 @@ export default function StarterSimulator() {
       : current.snapshotCode;
 
   return (
-    <div className="sim-shell" aria-label="Interactive Starter workflow explorer">
+    <section className="sim-shell" aria-label="Interactive Starter workflow explorer">
       <div className="sim-header">
         <div className="sim-title">STARTER WORKFLOW · 0.3.0-RC.1</div>
         <span className="tag tag-preview">PREVIEW</span>
@@ -183,6 +183,6 @@ export default function StarterSimulator() {
           </button>
         </div>
       </motion.div>
-    </div>
+    </section>
   );
 }
