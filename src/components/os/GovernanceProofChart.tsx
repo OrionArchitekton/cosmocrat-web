@@ -5,6 +5,7 @@ import { useEffect, useId, useRef, useState } from 'react';
 interface GateStageMetric {
   id: string;
   stage: string;
+  shortStage: string;
   latencyMs: number;
   coveragePct: number;
   controlNote: string;
@@ -14,6 +15,7 @@ const GATE_STAGE_METRICS: readonly GateStageMetric[] = [
   {
     id: 'g0',
     stage: 'G0 Request Validation',
+    shortStage: 'G0 Validation',
     latencyMs: 3.1,
     coveragePct: 100,
     controlNote: 'Normalizes caller identity, action shape, and requested mutation before downstream evaluation.',
@@ -21,6 +23,7 @@ const GATE_STAGE_METRICS: readonly GateStageMetric[] = [
   {
     id: 'g1',
     stage: 'G1 Context & Lane Scope',
+    shortStage: 'G1 Lane Scope',
     latencyMs: 5.4,
     coveragePct: 100,
     controlNote: 'Checks enrolled lane policy so unrelated personal, legal, or tenant context is excluded.',
@@ -28,6 +31,7 @@ const GATE_STAGE_METRICS: readonly GateStageMetric[] = [
   {
     id: 'g2',
     stage: 'G2 Decision Formation',
+    shortStage: 'G2 Decision',
     latencyMs: 7.8,
     coveragePct: 100,
     controlNote: 'Forms structured proposed decisions while keeping proposal generation separate from execution permission.',
@@ -35,6 +39,7 @@ const GATE_STAGE_METRICS: readonly GateStageMetric[] = [
   {
     id: 'g3',
     stage: 'G3 Execution Eligibility',
+    shortStage: 'G3 Eligibility',
     latencyMs: 9.2,
     coveragePct: 100,
     controlNote: 'Evaluates execution mode, risk class, and policy limits before allowing promotion toward action.',
@@ -42,6 +47,7 @@ const GATE_STAGE_METRICS: readonly GateStageMetric[] = [
   {
     id: 'g4',
     stage: 'G4 Explicit Human Auth',
+    shortStage: 'G4 Human Auth',
     latencyMs: 11.4,
     coveragePct: 100,
     controlNote: 'Pauses high-impact mutations at the operator plane and denies fail-closed when authorization is missing.',
@@ -49,6 +55,7 @@ const GATE_STAGE_METRICS: readonly GateStageMetric[] = [
   {
     id: 'g5',
     stage: 'G5 Boundary Dispatch',
+    shortStage: 'G5 Dispatch',
     latencyMs: 6.5,
     coveragePct: 100,
     controlNote: 'Dispatches admitted actions outside the narrow kernel with permission boundaries recorded.',
@@ -56,6 +63,7 @@ const GATE_STAGE_METRICS: readonly GateStageMetric[] = [
   {
     id: 'g6',
     stage: 'G6 Outcome & Receipt',
+    shortStage: 'G6 Receipt',
     latencyMs: 4.9,
     coveragePct: 100,
     controlNote: 'Binds policy hash, input digest, and observed external outcome into an attributable Chronicle receipt.',
@@ -79,60 +87,78 @@ export default function GovernanceProofChart() {
     if (!el || showTable) return;
     let cancelled = false;
     let mountedChart: Element | null = null;
+    let observer: ResizeObserver | null = null;
+    let lastRenderedWidth = 0;
 
-    const plotData = GATE_STAGE_METRICS.map((item) => ({
-      stage: item.stage,
-      value: mode === 'latency' ? item.latencyMs : item.coveragePct,
-      selected: item.id === selectedId,
-    }));
+    const renderPlot = () => {
+      const target = containerRef.current;
+      if (cancelled || !target) return;
+      const measured = target.clientWidth || 640;
+      const chartWidth = Math.max(280, Math.min(640, measured));
+      if (mountedChart && Math.abs(chartWidth - lastRenderedWidth) < 8) return;
+      lastRenderedWidth = chartWidth;
+      const compact = chartWidth < 520;
+      const plotData = GATE_STAGE_METRICS.map((item) => ({
+        stage: compact ? item.shortStage : item.stage,
+        value: mode === 'latency' ? item.latencyMs : item.coveragePct,
+        selected: item.id === selectedId,
+      }));
 
-    void import('@observablehq/plot').then((Plot) => {
-      if (cancelled || !containerRef.current) return;
-      const chart = Plot.plot({
-        width: 640,
-        height: 270,
-        marginLeft: 175,
-        marginRight: 36,
-        marginTop: 16,
-        marginBottom: 34,
-        style: {
-          background: 'transparent',
-          color: '#E2E8F0',
-          fontFamily: 'var(--font-mono)',
-          fontSize: '12px',
-        },
-        x: {
-          label: mode === 'latency' ? 'Median gate check (ms)' : 'Fail-closed assertion rate (%)',
-          grid: true,
-          domain: mode === 'latency' ? [0, 14] : [0, 100],
-        },
-        y: {
-          label: null,
-        },
-        marks: [
-          Plot.barX(plotData, {
-            x: 'value',
-            y: 'stage',
-            fill: (d) => (d.selected ? '#FBBF24' : '#F59E0B'),
-            fillOpacity: (d) => (d.selected ? 1 : 0.72),
-            rx: 4,
-            sort: null,
-          }),
-          Plot.ruleX([0], { stroke: '#64748B' }),
-        ],
+      void import('@observablehq/plot').then((Plot) => {
+        if (cancelled || !containerRef.current) return;
+        const chart = Plot.plot({
+          width: chartWidth,
+          height: 270,
+          marginLeft: compact ? 118 : 175,
+          marginRight: compact ? 20 : 36,
+          marginTop: 16,
+          marginBottom: 34,
+          style: {
+            background: 'transparent',
+            color: '#E2E8F0',
+            fontFamily: 'var(--font-mono)',
+            fontSize: compact ? '11px' : '12px',
+          },
+          x: {
+            label: mode === 'latency' ? 'Median gate check (ms)' : 'Fail-closed assertion rate (%)',
+            grid: true,
+            domain: mode === 'latency' ? [0, 14] : [0, 100],
+          },
+          y: {
+            label: null,
+          },
+          marks: [
+            Plot.barX(plotData, {
+              x: 'value',
+              y: 'stage',
+              fill: (d) => (d.selected ? '#FBBF24' : '#F59E0B'),
+              fillOpacity: (d) => (d.selected ? 1 : 0.72),
+              rx: 4,
+              sort: null,
+            }),
+            Plot.ruleX([0], { stroke: '#64748B' }),
+          ],
+        });
+
+        target.innerHTML = '';
+        for (const group of chart.querySelectorAll('g[aria-label]')) {
+          group.removeAttribute('aria-label');
+        }
+        chart.setAttribute('aria-hidden', 'true');
+        target.appendChild(chart);
+        mountedChart = chart;
       });
+    };
 
-      el.innerHTML = '';
-      for (const group of chart.querySelectorAll('g[aria-label]')) {
-        group.removeAttribute('aria-label');
-      }
-      chart.setAttribute('aria-hidden', 'true');
-      el.appendChild(chart);
-      mountedChart = chart;
-    });
+    renderPlot();
+    if (typeof ResizeObserver !== 'undefined') {
+      observer = new ResizeObserver(() => renderPlot());
+      observer.observe(el);
+    }
 
     return () => {
       cancelled = true;
+      observer?.disconnect();
       mountedChart?.remove();
     };
   }, [mode, selectedId, showTable]);
