@@ -86,4 +86,12 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+if (process.env.ANALYZE === 'true') {
+  const Sonda = require('sonda/next').default;
+  module.exports = Sonda({ open: false })({
+    ...nextConfig,
+    productionBrowserSourceMaps: true,
+  });
+} else {
+  module.exports = nextConfig;
+}

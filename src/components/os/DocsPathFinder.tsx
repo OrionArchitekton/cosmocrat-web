@@ -73,7 +73,7 @@ const paths: readonly StartPath[] = [
     title: 'Inspect the policy, authority, and receipt separation',
     description:
       'Explore the conceptual architecture covering fail-closed gates, enrolled memory boundaries, decision exhaust, and Chronicle receipts.',
-    requirements: 'No local install required — reference architecture documentation.',
+    requirements: 'No local install required: reference architecture documentation.',
     boundary:
       'Describes the separate governance kernel design and does not promise kernel enforcement inside public standalone Orion tools.',
     ctaLabel: 'Read governance architecture',

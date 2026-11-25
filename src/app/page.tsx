@@ -1,5 +1,6 @@
-import MotionWelcome from '@/components/os/MotionWelcome';
 import HomeSections from '@/components/os/HomeSections';
+import MotionWelcome from '@/components/os/MotionWelcome';
+import GovernanceProofChart from '@/components/os/GovernanceProofChart';
 import { generatePageMetadata } from '@/lib/metadata';
 import { generateHomeWebPage } from '@/lib/schemas';
 
@@ -26,8 +27,10 @@ export default function HomePage() {
         suppressHydrationWarning
         dangerouslySetInnerHTML={{ __html: homeWebPageJson }}
       />
-      <MotionWelcome />
-      <HomeSections />
+      <HomeSections
+        welcomeSection={<MotionWelcome />}
+        proofChartSection={<GovernanceProofChart />}
+      />
     </>
   );
 }

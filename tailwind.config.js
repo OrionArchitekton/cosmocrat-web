@@ -18,9 +18,9 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
-        display: ['var(--font-orbitron)', 'system-ui', 'sans-serif'],
-        mono: ['var(--font-jetbrains)', 'monospace'],
+        sans: ["'IBM Plex Sans Variable'", "'IBM Plex Sans'", 'system-ui', 'sans-serif'],
+        display: ["'Space Grotesk Variable'", "'Space Grotesk'", 'system-ui', 'sans-serif'],
+        mono: ["'JetBrains Mono Variable'", "'JetBrains Mono'", 'monospace'],
       },
       typography: {
         invert: {

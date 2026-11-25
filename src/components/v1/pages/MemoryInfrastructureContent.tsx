@@ -26,7 +26,7 @@ const engramLayers = [
     id: 'layer3',
     badge: 'Layer 3 · Governance Engrams',
     title: 'Authority & Receipts',
-    question: 'The "Authority" — may this context influence the current action?',
+    question: 'The "Authority": may this context influence the current action?',
     detail:
       'Holds policy hashes, active permissions, and lane scope metadata so gates can validate admissibility without inspecting raw payload bodies.',
     icon: Scale,
@@ -35,7 +35,7 @@ const engramLayers = [
     id: 'layer2',
     badge: 'Layer 2 · Epistemic Engrams',
     title: 'Cognition & Reasoning',
-    question: 'The "Why" — how was a conclusion derived?',
+    question: 'The "Why": how was a conclusion derived?',
     detail:
       'Captures reasoning chains and intermediate task decisions while separating confidence or derivation from execution authority.',
     icon: Brain,
@@ -44,7 +44,7 @@ const engramLayers = [
     id: 'layer1',
     badge: 'Layer 1 · Semantic Engrams',
     title: 'Facts & State Snapshots',
-    question: 'The "What" — underlying facts and observed artifacts.',
+    question: 'The "What": underlying facts and observed artifacts.',
     detail:
       'Stores raw observations and repository snapshots indexed for reference recovery rather than unfiltered global context injection.',
     icon: Database,
@@ -177,7 +177,7 @@ export default function MemoryInfrastructureContent() {
               &quot;If the AI reads it, it uses it.&quot;
             </h3>
             <p className="text-sm text-[#94a3b8] mb-5 leading-relaxed">
-              In flat vector stores, availability equals permission—credentials, drafts, and private
+              In flat vector stores, availability equals permission: credentials, drafts, and private
               notes mix inside one retrieval window.
             </p>
             <div className="rounded-lg border border-red-500/25 bg-[#0b1120] p-3.5 font-mono text-xs text-red-300 flex items-center gap-2">
@@ -443,7 +443,7 @@ export default function MemoryInfrastructureContent() {
                 <span>
                   {sideBrainEnabled
                     ? 'Non-admissible items excluded at the enrolled boundary.'
-                    : 'Filter disabled — retrieval falls back to flat context injection.'}
+                    : 'Filter disabled: retrieval falls back to flat context injection.'}
                 </span>
               </div>
             </div>

@@ -1,3 +1,14 @@
+import type {
+  BreadcrumbList,
+  Clip,
+  FAQPage,
+  Graph,
+  ItemList,
+  SoftwareApplication,
+  VideoObject,
+  WebPage,
+  WithContext,
+} from 'schema-dts';
 import { homeFaq } from './faqs';
 import { siteConfig } from './siteConfig';
 import { tools, toolDownloadUrl } from './toolCatalog';
@@ -13,7 +24,7 @@ type Questions = readonly { question: string; answer: string }[];
 
 const base = siteConfig.origin;
 
-function faqSection(url: string, questions: Questions) {
+function faqSection(url: string, questions: Questions): FAQPage {
   return {
     '@type': 'FAQPage',
     '@id': `${url}#faq`,
@@ -31,9 +42,9 @@ export function generateFeatureSchema({
   description,
   path,
   questions,
-}: PageInfo & { questions?: Questions }) {
+}: PageInfo & { questions?: Questions }): WithContext<WebPage> | Graph {
   const url = `${base}${path}`;
-  const page = {
+  const page: WebPage = {
     '@type': 'WebPage',
     '@id': `${url}#webpage`,
     url,
@@ -50,6 +61,16 @@ export function generateFeatureSchema({
     { name: 'Governance architecture', item: `${base}/platform` },
     { name, item: url },
   ];
+  const breadcrumbList: BreadcrumbList = {
+    '@type': 'BreadcrumbList',
+    '@id': `${url}#breadcrumbs`,
+    itemListElement: breadcrumbs.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      item: item.item,
+    })),
+  };
   return {
     '@context': 'https://schema.org',
     '@graph': [
@@ -59,22 +80,38 @@ export function generateFeatureSchema({
         breadcrumb: { '@id': `${url}#breadcrumbs` },
       },
       faqSection(url, questions),
-      {
-        '@type': 'BreadcrumbList',
-        '@id': `${url}#breadcrumbs`,
-        itemListElement: breadcrumbs.map((item, index) => ({
-          '@type': 'ListItem',
-          position: index + 1,
-          ...item,
-        })),
-      },
+      breadcrumbList,
     ],
   };
 }
 
-export function generateHomeWebPage({ name, description }: Pick<PageInfo, 'name' | 'description'>) {
+export function generateHomeWebPage({
+  name,
+  description,
+}: Pick<PageInfo, 'name' | 'description'>): Graph {
   const url = `${base}/`;
   const videoId = `${url}#welcome-video`;
+  const clips: Clip[] = PREVIEW_CHAPTERS.map(({ title, start, end }) => ({
+    '@type': 'Clip',
+    name: title,
+    startOffset: start,
+    endOffset: end,
+    url: `${url}?t=${start}`,
+  }));
+  const videoObject: VideoObject = {
+    '@type': 'VideoObject',
+    '@id': videoId,
+    name: 'Cosmocrat OS introduction',
+    description:
+      'A silent introduction to the independent Orion tools, Starter previews, and their operating boundaries.',
+    contentUrl: `${base}/media/cosmocrat/cosmocrat-welcome-desktop.mp4`,
+    thumbnailUrl: `${base}/media/cosmocrat/cosmocrat-welcome-desktop.jpg`,
+    // The published MP4 first entered the public repository in PR #17.
+    uploadDate: '2026-10-30T19:57:44-07:00',
+    duration: `PT${WELCOME_DURATION}S`,
+    inLanguage: 'en',
+    hasPart: clips,
+  };
   return {
     '@context': 'https://schema.org',
     '@graph': [
@@ -91,31 +128,12 @@ export function generateHomeWebPage({ name, description }: Pick<PageInfo, 'name'
         video: { '@id': videoId },
       },
       faqSection(url, homeFaq),
-      {
-        '@type': 'VideoObject',
-        '@id': videoId,
-        name: 'Cosmocrat OS introduction',
-        description:
-          'A silent introduction to the independent Orion tools, Starter previews, and their operating boundaries.',
-        contentUrl: `${base}/media/cosmocrat/cosmocrat-welcome-desktop.mp4`,
-        thumbnailUrl: `${base}/media/cosmocrat/cosmocrat-welcome-desktop.jpg`,
-        // The published MP4 first entered the public repository in PR #17.
-        uploadDate: '2026-10-30T19:57:44-07:00',
-        duration: `PT${WELCOME_DURATION}S`,
-        inLanguage: 'en',
-        hasPart: PREVIEW_CHAPTERS.map(({ title, start, end }) => ({
-          '@type': 'Clip',
-          name: title,
-          startOffset: start,
-          endOffset: end,
-          url: `${url}?t=${start}`,
-        })),
-      },
+      videoObject,
     ],
   };
 }
 
-export function generateToolCatalogSchema() {
+export function generateToolCatalogSchema(): [WithContext<WebPage>, WithContext<ItemList>] {
   return [
     {
       '@context': 'https://schema.org',
@@ -136,26 +154,27 @@ export function generateToolCatalogSchema() {
       numberOfItems: tools.length,
       itemListElement: tools.map((tool, index) => {
         const url = `${base}/tools#${tool.id}`;
+        const software: SoftwareApplication = {
+          '@type': 'SoftwareApplication',
+          '@id': url,
+          url,
+          name: tool.name,
+          description: `${tool.status}. ${tool.description} ${tool.boundary}`,
+          applicationCategory: 'DeveloperApplication',
+          applicationSubCategory: tool.kind,
+          softwareRequirements: tool.environment,
+          softwareVersion: tool.release ? tool.version : undefined,
+          license: tool.license,
+          downloadUrl: toolDownloadUrl(tool),
+          releaseNotes: tool.release,
+          subjectOf: { '@type': 'SoftwareSourceCode', codeRepository: tool.source },
+        };
         return {
           '@type': 'ListItem',
           position: index + 1,
           name: tool.name,
           url,
-          item: {
-            '@type': 'SoftwareApplication',
-            '@id': url,
-            url,
-            name: tool.name,
-            description: `${tool.status}. ${tool.description} ${tool.boundary}`,
-            applicationCategory: 'DeveloperApplication',
-            applicationSubCategory: tool.kind,
-            softwareRequirements: tool.environment,
-            softwareVersion: tool.release ? tool.version : undefined,
-            license: tool.license,
-            downloadUrl: toolDownloadUrl(tool),
-            releaseNotes: tool.release,
-            subjectOf: { '@type': 'SoftwareSourceCode', codeRepository: tool.source },
-          },
+          item: software,
         };
       }),
     },

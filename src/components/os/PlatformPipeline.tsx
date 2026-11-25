@@ -143,7 +143,7 @@ export default function PlatformPipeline() {
           <div className="flex items-center gap-2.5 mb-2">
             <ActiveIcon size={16} className="text-[#f0b66a]" aria-hidden="true" />
             <span className="font-mono text-xs text-[#f0b66a]">{active.phase}</span>
-            <h3 className="text-base font-semibold text-white m-0">{active.name}</h3>
+            <h2 className="text-base font-semibold text-white m-0">{active.name}</h2>
           </div>
           <p className="text-sm text-[#cbd5e1] mb-2">{active.summary}</p>
           <p className="text-xs text-[#94a3b8] m-0">{active.scopeNote}</p>

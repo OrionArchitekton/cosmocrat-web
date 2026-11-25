@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from 'next';
 import { Suspense } from 'react';
 import Script from 'next/script';
-import localFont from 'next/font/local';
+import '@fontsource-variable/space-grotesk';
+import '@fontsource-variable/ibm-plex-sans';
+import '@fontsource-variable/jetbrains-mono';
 import AttributionTracker from '@/components/os/AttributionTracker';
 import Header from '@/components/v1/Header';
 import Footer from '@/components/v1/Footer';
@@ -10,27 +12,6 @@ import '../styles/globals.css';
 import '../styles/os.css';
 
 const GTM_ID = 'GTM-K3RWK8SD';
-
-const inter = localFont({
-  src: '../styles/fonts/inter-latin.woff2',
-  weight: '100 900',
-  variable: '--font-inter',
-  display: 'swap',
-});
-
-const orbitron = localFont({
-  src: '../styles/fonts/orbitron-latin.woff2',
-  weight: '400 900',
-  variable: '--font-orbitron',
-  display: 'swap',
-});
-
-const jetbrains = localFont({
-  src: '../styles/fonts/jetbrains-mono-latin.woff2',
-  weight: '100 800',
-  variable: '--font-jetbrains',
-  display: 'swap',
-});
 
 export const viewport: Viewport = {
   themeColor: '#0B0B0F',
@@ -126,7 +107,7 @@ const siteJsonLd = JSON.stringify({
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${orbitron.variable} ${jetbrains.variable}`}>
+    <html lang="en">
       <head>
         {/* JSON-LD Structured Data */}
         <script

@@ -81,7 +81,7 @@ export const driftGuardFaq = [
   {
     question: "What is 'Behavioral Drift'?",
     answer:
-      "It's when an agent's response patterns shift over time—for example, becoming more aggressive, less concise, or hallucinating facts—without any code changes.",
+      "It's when an agent's response patterns shift over time (for example, becoming more aggressive, less concise, or hallucinating facts) without any code changes.",
   },
   {
     question: 'Can Drift Guard automatically fix the AI?',

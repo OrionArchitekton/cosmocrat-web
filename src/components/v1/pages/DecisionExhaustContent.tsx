@@ -264,7 +264,7 @@ export default function DecisionExhaustContent() {
                   <div>
                     <h3 className="text-lg font-semibold text-white m-0">ClickHouse</h3>
                     <p className="text-xs text-[#94a3b8] m-0">
-                      Observability Speed Layer — telemetry, latency, and runtime signals.
+                      Observability Speed Layer: telemetry, latency, and runtime signals.
                     </p>
                   </div>
                 </div>
@@ -287,7 +287,7 @@ export default function DecisionExhaustContent() {
                   <div>
                     <h3 className="text-lg font-semibold text-white m-0">Cosmocrat</h3>
                     <p className="text-xs text-[#cbd5e1] m-0">
-                      Decision Authority Plane — policy evaluation and attributable admission
+                      Decision Authority Plane: policy evaluation and attributable admission
                       receipts.
                     </p>
                   </div>
@@ -412,7 +412,7 @@ export default function DecisionExhaustContent() {
                   </div>
                   <div className="flex border-b border-[#233047] pb-2">
                     <span className="w-24 text-[#94a3b8] shrink-0">Policy</span>
-                    <span className="text-[#e2e8f0]">finance.refunds.l1 — limit: $50</span>
+                    <span className="text-[#e2e8f0]">finance.refunds.l1 (limit: $50)</span>
                   </div>
                   <div className="flex border-b border-[#233047] pb-2">
                     <span className="w-24 text-[#94a3b8] shrink-0">Actor</span>

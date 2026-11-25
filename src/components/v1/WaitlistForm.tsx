@@ -258,7 +258,7 @@ export default function WaitlistForm() {
         </p>
         <p className="m-0 text-xs text-[#94a3b8]">
           Prefer email? Write us at{' '}
-          <a href="mailto:contact@cosmocrat.ai" className="text-[#f0b66a] hover:underline">
+          <a href="mailto:contact@cosmocrat.ai" className="text-[#f0b66a] underline underline-offset-2">
             contact@cosmocrat.ai
           </a>
           .

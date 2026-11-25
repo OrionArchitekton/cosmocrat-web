@@ -146,7 +146,7 @@ test('motion welcome keeps the static homepage and offers native media and a dir
   assert.match(html, /<video/);
   assert.match(html, /cosmocrat-welcome-desktop\.mp4/);
   assert.match(html, /cosmocrat-welcome-mobile\.mp4/);
-  assert.match(html, /href="#static-site"/);
+  assert.match(html, /href="#(static-site|foundation)"/);
   assert.equal((html.match(/id="static-site"/g) || []).length, 1);
   assert.match(visibleText(html), /An AI operating system you remain in charge of\./);
   assert.doesNotMatch(html, /googletagmanager\.com/);

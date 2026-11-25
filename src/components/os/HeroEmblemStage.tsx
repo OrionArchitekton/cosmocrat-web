@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
-import { motion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
+import { ORION_EASE_OUT_EXPO } from '@/lib/motion';
 
 const pillars = [
   {
@@ -37,6 +37,7 @@ const pillars = [
 
 export default function HeroEmblemStage() {
   const [selectedId, setSelectedId] = useState<(typeof pillars)[number]['id']>('direction');
+  const shouldReduceMotion = useReducedMotion();
   const active = pillars.find((p) => p.id === selectedId) ?? pillars[0];
 
   return (
@@ -46,28 +47,32 @@ export default function HeroEmblemStage() {
         <motion.div
           className="emblem-ring"
           aria-hidden="true"
-          animate={{ rotate: 360 }}
-          transition={{ duration: 48, ease: 'linear', repeat: Infinity }}
+          animate={shouldReduceMotion ? undefined : { rotate: 360 }}
+          transition={shouldReduceMotion ? undefined : { duration: 48, ease: 'linear', repeat: Infinity }}
         />
         <motion.div
           className="emblem-ring-inner"
           aria-hidden="true"
-          animate={{ rotate: -360 }}
-          transition={{ duration: 36, ease: 'linear', repeat: Infinity }}
+          animate={shouldReduceMotion ? undefined : { rotate: -360 }}
+          transition={shouldReduceMotion ? undefined : { duration: 36, ease: 'linear', repeat: Infinity }}
         />
         <motion.div
-          initial={{ opacity: 0, scale: 0.94 }}
+          initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.94 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: shouldReduceMotion ? 0 : 0.45, ease: ORION_EASE_OUT_EXPO }}
         >
-          <Image
-            className="hero-emblem"
-            src="/brand/cosmocrat-sigil.svg"
-            alt="Cosmocrat OS sigil"
-            width={885}
-            height={952}
-            unoptimized
-          />
+          <picture>
+            <source srcSet="/brand/cosmocrat-sigil-420w.avif" type="image/avif" />
+            <source srcSet="/brand/cosmocrat-sigil-420w.webp" type="image/webp" />
+            <img
+              className="hero-emblem"
+              src="/brand/cosmocrat-sigil.svg"
+              alt="Cosmocrat OS sigil"
+              width={420}
+              height={452}
+              decoding="async"
+            />
+          </picture>
         </motion.div>
       </div>
 

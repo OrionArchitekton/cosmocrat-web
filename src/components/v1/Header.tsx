@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { ArrowRight, Menu } from 'lucide-react';
 import CommandPalette from '@/components/os/CommandPalette';
@@ -48,26 +47,29 @@ export default function Header({ preview = false }: { preview?: boolean }) {
       <a className="skip" href="#main">
         Skip to content
       </a>
-      {preview && (
-        <div className="preview-bar">
-          <div className="wrap">
-            <span className="preview-label">LOCAL PREVIEW</span>
-            <span>Interactive preview environment · Publication controls active</span>
-          </div>
-        </div>
-      )}
       <header className="site-header">
+        {preview && (
+          <div className="preview-bar">
+            <div className="wrap">
+              <span className="preview-label">LOCAL PREVIEW</span>
+              <span>Interactive preview environment · Publication controls active</span>
+            </div>
+          </div>
+        )}
         <div className="wrap header-inner">
           <Link className="brand-link" href="/" aria-label="Cosmocrat home">
-            <Image
-              className="wordmark"
-              src="/brand/cosmocrat-wordmark.svg"
-              alt="Cosmocrat"
-              width={1753}
-              height={241}
-              priority
-              unoptimized
-            />
+            <picture>
+              <source srcSet="/brand/cosmocrat-wordmark-380w.avif" type="image/avif" />
+              <source srcSet="/brand/cosmocrat-wordmark-380w.webp" type="image/webp" />
+              <img
+                className="wordmark"
+                src="/brand/cosmocrat-wordmark.png"
+                alt="Cosmocrat"
+                width={380}
+                height={52}
+                decoding="async"
+              />
+            </picture>
           </Link>
 
           <nav className="desktop-nav" aria-label="Main navigation">

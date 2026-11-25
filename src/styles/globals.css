@@ -6,10 +6,16 @@
   --bg: #0b1120;
   --fg: #e2e8f0;
   --muted: #94a3b8;
-  --card: #121b2e;
-  --border: #233047;
-  --accent: #d97706;
-  --gold: #f0b66a;
+  --card: #151f32;
+  --border: #64748b;
+  --accent: #f59e0b;
+  --gold: #fbbf24;
+  --font-display: 'Space Grotesk Variable', 'Space Grotesk', system-ui, sans-serif;
+  --font-sans: 'IBM Plex Sans Variable', 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', monospace;
+  --font-inter: var(--font-sans);
+  --font-orbitron: var(--font-display);
+  --font-jetbrains: var(--font-mono);
 }
 
 html {
