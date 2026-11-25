@@ -6,28 +6,14 @@ import Color from 'colorjs.io';
 
 const ROOT = join(import.meta.dirname, '..');
 
-interface ContrastPair {
-  name: string;
-  fg: string;
-  bg: string;
-  level: 'normal' | 'large' | 'ui';
-}
-
-interface BrandTokens {
-  $extensions: {
-    'com.orion.contrastPairs': ContrastPair[];
-  };
-  color: Record<string, { $value: string }>;
-}
-
-function resolveColor(tokens: BrandTokens, ref: string): string {
+function resolveColor(tokens, ref) {
   const [, key] = ref.split('.');
   const entry = tokens.color[key];
   assert.ok(entry, `Missing color token ${ref}`);
   return entry.$value;
 }
 
-function collectFiles(dir: string, exts: Set<string>, out: string[] = []): string[] {
+function collectFiles(dir, exts, out = []) {
   for (const name of readdirSync(dir)) {
     const full = join(dir, name);
     const st = statSync(full);
@@ -42,7 +28,7 @@ function collectFiles(dir: string, exts: Set<string>, out: string[] = []): strin
 
 test('cosmocrat-web tokens satisfy WCAG 2.1 AA and APCA contrast pairs', () => {
   const raw = readFileSync(join(ROOT, 'tokens/brand.tokens.json'), 'utf8');
-  const tokens = JSON.parse(raw) as BrandTokens;
+  const tokens = JSON.parse(raw);
   const pairs = tokens.$extensions['com.orion.contrastPairs'];
 
   assert.ok(pairs.length >= 10, 'Expected at least 10 semantic contrast pairs');

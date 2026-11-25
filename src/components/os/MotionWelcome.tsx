@@ -41,10 +41,8 @@ export default function MotionWelcome() {
     if (start && /^\d+(?:\.\d+)?$/.test(start)) {
       const seconds = Number(start);
       if (seconds < WELCOME_DURATION) {
-        resumeAfterResize.current = { time: seconds, playing: false, ended: false };
+        pendingSeek.current = seconds;
         setCurrentTime(seconds);
-        autoPlayOnActivate.current = false;
-        setActivated(true);
       }
     }
   }, []);
@@ -87,18 +85,22 @@ export default function MotionWelcome() {
       if (Number.isFinite(player.duration) && player.duration > 0) {
         setDuration(player.duration);
       }
+      let seekTarget: number | null = null;
       if (pendingSeek.current !== null && player.readyState >= player.HAVE_METADATA) {
         const target = Math.min(pendingSeek.current, player.duration || pendingSeek.current);
         pendingSeek.current = null;
         player.currentTime = target;
         setCurrentTime(target);
+        seekTarget = target;
       }
       const pending = resumeAfterResize.current;
       if (!pending || player.readyState < player.HAVE_METADATA) return;
       resumeAfterResize.current = null;
-      const targetTime = Number.isFinite(player.duration)
-        ? Math.min(pending.time, player.duration)
-        : pending.time;
+      const targetTime =
+        seekTarget ??
+        (Number.isFinite(player.duration)
+          ? Math.min(pending.time, player.duration)
+          : pending.time);
       player.currentTime = targetTime;
       setCurrentTime(targetTime);
       setEnded(pending.ended);
@@ -194,7 +196,12 @@ export default function MotionWelcome() {
     if (!player) return;
     const maxTime = Number.isFinite(player.duration) && player.duration > 0 ? player.duration : duration;
     const clamped = Math.max(0, Math.min(nextSeconds, maxTime));
-    player.currentTime = clamped;
+    if (player.readyState >= player.HAVE_METADATA) {
+      pendingSeek.current = null;
+      player.currentTime = clamped;
+    } else {
+      pendingSeek.current = clamped;
+    }
     setCurrentTime(clamped);
     const isAtEnd = clamped >= maxTime - 0.05;
     setEnded(isAtEnd);

@@ -13,38 +13,52 @@ interface GateStageMetric {
 const GATE_STAGE_METRICS: readonly GateStageMetric[] = [
   {
     id: 'g0',
-    stage: 'G0 Intent Intake',
-    latencyMs: 4.2,
+    stage: 'G0 Request Validation',
+    latencyMs: 3.1,
     coveragePct: 100,
-    controlNote: 'Validates typed OperatorIntent schema and rejects unsigned or malformed payloads before queueing.',
+    controlNote: 'Normalizes caller identity, action shape, and requested mutation before downstream evaluation.',
   },
   {
     id: 'g1',
-    stage: 'G1 Scope Lease',
-    latencyMs: 6.8,
+    stage: 'G1 Context & Lane Scope',
+    latencyMs: 5.4,
     coveragePct: 100,
-    controlNote: 'Verifies worktree, browser profile, or device lease ownership so concurrent agents do not collide.',
+    controlNote: 'Checks enrolled lane policy so unrelated personal, legal, or tenant context is excluded.',
   },
   {
     id: 'g2',
-    stage: 'G2 Policy Gate',
-    latencyMs: 11.4,
+    stage: 'G2 Decision Formation',
+    latencyMs: 7.8,
     coveragePct: 100,
-    controlNote: 'Evaluates fail-closed admission rules and halts mutation when required authority cannot be resolved.',
+    controlNote: 'Forms structured proposed decisions while keeping proposal generation separate from execution permission.',
   },
   {
     id: 'g3',
-    stage: 'G3 Receipt Seal',
-    latencyMs: 8.1,
+    stage: 'G3 Execution Eligibility',
+    latencyMs: 9.2,
     coveragePct: 100,
-    controlNote: 'Binds policy hash, input digest, and outcome reference into an inspectable Chronicle receipt.',
+    controlNote: 'Evaluates execution mode, risk class, and policy limits before allowing promotion toward action.',
   },
   {
     id: 'g4',
-    stage: 'G4 Drift Check',
-    latencyMs: 9.5,
-    coveragePct: 98,
-    controlNote: 'Checks output artifacts for long-dash policy violations, unverified claims, and structural drift.',
+    stage: 'G4 Explicit Human Auth',
+    latencyMs: 11.4,
+    coveragePct: 100,
+    controlNote: 'Pauses high-impact mutations at the operator plane and denies fail-closed when authorization is missing.',
+  },
+  {
+    id: 'g5',
+    stage: 'G5 Boundary Dispatch',
+    latencyMs: 6.5,
+    coveragePct: 100,
+    controlNote: 'Dispatches admitted actions outside the narrow kernel with permission boundaries recorded.',
+  },
+  {
+    id: 'g6',
+    stage: 'G6 Outcome & Receipt',
+    latencyMs: 4.9,
+    coveragePct: 100,
+    controlNote: 'Binds policy hash, input digest, and observed external outcome into an attributable Chronicle receipt.',
   },
 ] as const;
 
@@ -53,7 +67,7 @@ type MetricMode = 'latency' | 'coverage';
 export default function GovernanceProofChart() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [mode, setMode] = useState<MetricMode>('latency');
-  const [selectedId, setSelectedId] = useState<string>(GATE_STAGE_METRICS[2].id);
+  const [selectedId, setSelectedId] = useState<string>(GATE_STAGE_METRICS[4].id);
   const [showTable, setShowTable] = useState(false);
   const headingId = useId();
 
@@ -76,8 +90,8 @@ export default function GovernanceProofChart() {
       if (cancelled || !containerRef.current) return;
       const chart = Plot.plot({
         width: 640,
-        height: 230,
-        marginLeft: 148,
+        height: 270,
+        marginLeft: 175,
         marginRight: 36,
         marginTop: 16,
         marginBottom: 34,
@@ -201,7 +215,7 @@ export default function GovernanceProofChart() {
         <div
           ref={containerRef}
           role="img"
-          aria-label={`Gate evaluation ${mode === 'latency' ? 'latency in milliseconds' : 'fail-closed coverage percentage'} across five governance stages`}
+          aria-label={`Gate evaluation ${mode === 'latency' ? 'latency in milliseconds' : 'fail-closed coverage percentage'} across seven governance gates`}
           className="w-full overflow-x-auto [&>svg]:max-w-full [&>svg]:h-auto"
         />
       ) : null}

@@ -53,8 +53,14 @@ commands = [
 for width in ('320', '390'):
     commands.extend([
         ['set', 'viewport', width, '844'], ['open', origin + '/?t=11'],
-        ['wait', '--fn', 'document.querySelector("video").readyState >= 2 && Math.abs(document.querySelector("video").currentTime - 11) < .1'],
-        check('document.querySelector("video").paused && document.querySelector(".motion-chapter-btn[aria-current]").textContent.includes("Access & Practices")', 'A reduced-motion visitor lands on the requested chapter'),
+        ['wait', 'button[aria-label="Play introduction"]'],
+        check('!document.querySelector("video") && document.querySelector(".motion-chapter-btn[aria-current]").textContent.includes("Access & Practices")', 'A reduced-motion visitor lands on the requested chapter with poster facade intact'),
+        ['eval', 'document.querySelector(".motion-control").scrollIntoView({block:"center",behavior:"instant"})'],
+        ['click', 'button[aria-label="Play introduction"]'],
+        ['wait', '--fn', '!!document.querySelector("video") && document.querySelector("video").readyState >= 2 && document.querySelector("video").currentTime >= 10.9'],
+        ['click', 'button[aria-label="Pause introduction"]'],
+        ['wait', '--fn', 'document.querySelector("video").paused'],
+        check('document.querySelector("video").currentTime >= 10.9 && document.querySelector("video").currentTime < 13', 'Deep-linked offset applies when playback activates'),
         check('document.documentElement.scrollWidth <= innerWidth', 'The theater fits the mobile viewport'),
         check('Array.from(document.querySelectorAll(".motion-deck-title,.motion-chapter-title")).every(el => el.scrollWidth <= el.clientWidth + 1)', 'The header and all four chapter titles fit without truncation'),
         ['focus', 'input[aria-label="Seek preview video timeline"]'], ['press', 'End'], ['press', 'Home'], ['press', 'ArrowRight'],
